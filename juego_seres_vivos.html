@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Juego Seres Vivos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --yellow: #FFCC00;
+    --dark: #153244;
+    --teal-light: #8DE2D6;
+    --teal-mid: #79C7C3;
+    --white: #FFFFFF;
+    --dark-gray: #3C3C3B;
+    --bg: #f0f2f4;
+    --example-color: #5a8fa8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Archivo', sans-serif; }
+
+  body {
+    font-family: 'Archivo', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    padding: 20px;
+  }
+
+  header {
+    background: var(--dark);
+    color: white;
+    text-align: center;
+    padding: 18px 24px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    border-radius: 12px;
+    margin-bottom: 28px;
+    letter-spacing: -0.3px;
+  }
+
+  .groups-wrapper {
+    display: flex;
+    gap: 18px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+  }
+
+  .group {
+    background: rgba(21,50,68,0.05);
+    border: 2px solid rgba(21,50,68,0.12);
+    border-radius: 18px;
+    padding: 22px 16px 18px;
+    position: relative;
+  }
+
+  .group-label {
+    position: absolute;
+    top: -12px;
+    left: 18px;
+    background: var(--dark);
+    color: white;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 999px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .group-cols {
+    display: flex;
+    gap: 12px;
+  }
+
+  .column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 180px;
+  }
+
+  .column-card {
+    width: 100%;
+    border-radius: 16px;
+    padding: 18px 14px;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 800;
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: -0.5px;
+  }
+
+  .col-style-1 { background: var(--teal-light); color: var(--dark); }
+  .col-style-2 { background: var(--yellow); color: var(--dark); }
+  .col-style-3 { background: var(--dark); color: white; }
+
+  .drop-zone {
+    width: 100%;
+    border-radius: 12px;
+    border: 2.5px dashed rgba(21,50,68,0.25);
+    background: white;
+    min-height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    transition: border-color 0.2s, background 0.2s;
+    font-size: 0.78rem;
+    color: #aaa;
+    text-align: center;
+  }
+
+  .drop-zone.drag-over {
+    border-color: var(--teal-mid);
+    background: #e8faf9;
+  }
+
+  .drop-zone.filled {
+    border-style: solid;
+    border-color: transparent;
+    color: var(--dark-gray);
+    background: #f7f7f7;
+  }
+
+  .drop-zone.correct {
+    border-color: #4CAF50;
+    background: #e8f5e9;
+  }
+
+  .drop-zone.wrong {
+    border-color: #e53935;
+    background: #ffebee;
+  }
+
+  /* Pool: flex en filas, centrado */
+  .answers-pool {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    max-width: 900px;
+    margin: 0 auto 28px;
+    padding: 20px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(21,50,68,0.08);
+  }
+
+  .chip {
+    background: white;
+    border: 2px solid var(--dark);
+    color: var(--dark);
+    border-radius: 18px;
+    padding: 14px 18px;
+    font-family: 'Archivo', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: grab;
+    transition: transform 0.15s, box-shadow 0.15s, opacity 0.2s;
+    text-align: center;
+    line-height: 1.4;
+    user-select: none;
+    /* 3 por fila aprox: ancho fijo */
+    width: calc((100% - 24px) / 3);
+    min-width: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .chip-text { display: block; }
+  .chip-main { font-weight: 700; color: var(--dark); }
+  .chip-example {
+    display: block;
+    margin-top: 4px;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--example-color);
+    font-size: 0.75rem;
+  }
+
+  .chip:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(21,50,68,0.18); }
+  .chip.dragging { opacity: 0.4; cursor: grabbing; }
+  .chip.placed { visibility: hidden; }
+
+  .chip.used-in-zone {
+    background: #9e9e9e;
+    color: white;
+    border-color: #9e9e9e;
+    cursor: grab;
+    font-size: 0.74rem;
+    padding: 8px 10px;
+    width: 100%;
+    min-width: 0;
+    line-height: 1.3;
+  }
+  .chip.used-in-zone .chip-main { color: white; font-weight: 700; }
+  .chip.used-in-zone .chip-example { color: rgba(255,255,255,0.85); font-style: italic; font-weight: 400; font-size: 0.68rem; }
+  .chip.used-in-zone:hover { transform: none; box-shadow: none; }
+
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    justify-content: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .score-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .progress-track {
+    width: 120px;
+    height: 10px;
+    background: #ddd;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--yellow);
+    border-radius: 999px;
+    transition: width 0.4s;
+  }
+
+  .score-text {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--dark);
+  }
+
+  .star-icon { font-size: 1.2rem; }
+
+  .btn {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 28px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: opacity 0.2s, transform 0.1s;
+  }
+
+  .btn:active { transform: scale(0.97); }
+
+  .btn-check, .btn-retry {
+    background: var(--dark);
+    color: white;
+  }
+
+  .feedback {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 14px 20px;
+    border-radius: 10px;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    display: none;
+    text-align: center;
+  }
+
+  .feedback.success { background: var(--teal-light); color: var(--dark); display: block; }
+  .feedback.partial  { background: var(--yellow); color: var(--dark); display: block; }
+  .feedback.error    { background: #ffebee; color: #b71c1c; display: block; }
+
+  @media (max-width: 720px) {
+    .group-cols { flex-wrap: wrap; justify-content: center; }
+    .column { width: 45vw; max-width: 200px; }
+    .chip { width: 100%; min-width: 0; }
+  }
+</style>
+</head>
+<body>
+
+<header>¿A qué grupo pertenece cada ser vivo?</header>
+
+<div class="answers-pool" id="pool"></div>
+
+<div class="groups-wrapper" id="groups-wrapper"></div>
+
+<div class="controls">
+  <div class="score-bar">
+    <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    <span class="star-icon" id="star-icon">☆</span>
+    <span class="score-text" id="score-text">0 / 10</span>
+  </div>
+  <button class="btn btn-check" id="btn-check" onclick="checkAnswers()">✔ Comprobar</button>
+  <button class="btn btn-retry" id="btn-retry" onclick="resetGame()" style="display:none">↺ Reintentar</button>
+</div>
+
+<div class="feedback" id="feedback"></div>
+
+<script>
+  const GROUPS = [
+    {
+      label: 'Plantas',
+      columns: [
+        { id: 'arbol',   label: 'Árbol',   colorClass: 'col-style-1', slots: 1 },
+        { id: 'arbusto', label: 'Arbusto', colorClass: 'col-style-2', slots: 1 },
+        { id: 'hierbas', label: 'Hierbas', colorClass: 'col-style-3', slots: 1 },
+      ]
+    },
+    {
+      label: 'Animales',
+      columns: [
+        { id: 'invertebrados', label: 'Invertebrados', colorClass: 'col-style-1', slots: 1 },
+        { id: 'vertebrados',   label: 'Vertebrados',   colorClass: 'col-style-2', slots: 1 },
+      ]
+    }
+  ];
+
+  // Cada respuesta tiene "main" (descripción) y "example" (los ejemplos)
+  const ANSWERS = [
+    { id: 'a1', main: 'Presentan tronco grueso y tienen gran altura.', example: 'Por ejemplo: Ceibo, Lapacho rosado, etcétera.', correctCol: 'arbol' },
+    { id: 'a2', main: 'Presentan ramas desde la base del suelo. En general, no tienen gran altura.', example: 'Por ejemplo: Ceibillo, Camará morado, etcétera.', correctCol: 'arbusto' },
+    { id: 'a3', main: 'Tienen tallos flexibles y son de pequeño tamaño.', example: 'Por ejemplo: Salvia celeste, Flor de Santa Lucía, etcétera.', correctCol: 'hierbas' },
+    { id: 'a4', main: 'Tienen seis patas y un par de antenas, pueden o no tener alas. Pueden ser de distintos colores.', example: 'Por ejemplo: hormiga, mosca.', correctCol: 'invertebrados' },
+    { id: 'a5', main: 'Pueden tener el cuerpo cubierto de pelo o de plumas, entre otras. Tienen en su interior huesos que les permiten moverse.', example: '', correctCol: 'vertebrados' },
+  ];
+
+  let placed = {};
+  let score = 0;
+  let checked = false;
+  const MAX_SCORE = 10;
+
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  // Genera el HTML interno de un chip con descripción + ejemplo
+  function chipInnerHTML(ans) {
+    const mainHtml = `<span class="chip-text chip-main">${ans.main}</span>`;
+    const exampleHtml = ans.example ? `<span class="chip-text chip-example">${ans.example}</span>` : '';
+    return `<span>${mainHtml}${exampleHtml}</span>`;
+  }
+
+  function buildUI() {
+    const pool = document.getElementById('pool');
+    const groupsWrapper = document.getElementById('groups-wrapper');
+    pool.innerHTML = '';
+    groupsWrapper.innerHTML = '';
+
+    shuffle(ANSWERS).forEach(ans => {
+      const chip = document.createElement('div');
+      chip.className = 'chip';
+      chip.id = 'chip-' + ans.id;
+      chip.innerHTML = chipInnerHTML(ans);
+      chip.draggable = true;
+      chip.addEventListener('dragstart', onDragStart);
+      pool.appendChild(chip);
+    });
+
+    GROUPS.forEach(group => {
+      const groupEl = document.createElement('div');
+      groupEl.className = 'group';
+
+      const lbl = document.createElement('div');
+      lbl.className = 'group-label';
+      lbl.textContent = group.label;
+      groupEl.appendChild(lbl);
+
+      const colsWrap = document.createElement('div');
+      colsWrap.className = 'group-cols';
+
+      group.columns.forEach(col => {
+        const column = document.createElement('div');
+        column.className = 'column';
+
+        const card = document.createElement('div');
+        card.className = 'column-card ' + col.colorClass;
+        card.textContent = col.label;
+        column.appendChild(card);
+
+        for (let s = 0; s < col.slots; s++) {
+          const slotId = col.id + '_s' + s;
+          const zone = document.createElement('div');
+          zone.className = 'drop-zone';
+          zone.id = slotId;
+          zone.dataset.col = col.id;
+          zone.textContent = 'Arrastrá aquí';
+
+          zone.addEventListener('dragover', onDragOver);
+          zone.addEventListener('dragleave', onDragLeave);
+          zone.addEventListener('drop', onDrop);
+
+          column.appendChild(zone);
+        }
+
+        colsWrap.appendChild(column);
+      });
+
+      groupEl.appendChild(colsWrap);
+      groupsWrapper.appendChild(groupEl);
+    });
+  }
+
+  let draggedId = null;
+
+  function onDragStart(e) {
+    // El target puede ser el chip o un span hijo
+    const chipEl = e.target.closest('.chip');
+    if (!chipEl) return;
+    draggedId = chipEl.id.replace('chip-', '').replace('zone-chip-', '');
+    chipEl.classList.add('dragging');
+    setTimeout(() => chipEl.classList.remove('dragging'), 0);
+  }
+
+  function onDragOver(e) {
+    e.preventDefault();
+    e.currentTarget.classList.add('drag-over');
+  }
+
+  function onDragLeave(e) {
+    e.currentTarget.classList.remove('drag-over');
+  }
+
+  function onDrop(e) {
+    e.preventDefault();
+    const zone = e.currentTarget;
+    zone.classList.remove('drag-over');
+    if (!draggedId) return;
+
+    if (placed[zone.id] && placed[zone.id] !== draggedId) {
+      returnToPool(placed[zone.id]);
+    }
+
+    Object.keys(placed).forEach(slotId => {
+      if (placed[slotId] === draggedId && slotId !== zone.id) {
+        clearZone(slotId);
+      }
+    });
+
+    placeChip(zone.id, draggedId);
+    draggedId = null;
+  }
+
+  function placeChip(slotId, answerId) {
+    placed[slotId] = answerId;
+    const zone = document.getElementById(slotId);
+    const ans = ANSWERS.find(a => a.id === answerId);
+    zone.classList.add('filled');
+    zone.classList.remove('correct', 'wrong');
+    zone.textContent = '';
+
+    const chip = document.createElement('div');
+    chip.className = 'chip used-in-zone';
+    chip.id = 'zone-chip-' + answerId;
+    chip.innerHTML = chipInnerHTML(ans);
+    chip.draggable = true;
+    chip.addEventListener('dragstart', (e) => {
+      draggedId = answerId;
+      clearZone(slotId);
+      returnToPool(answerId, true);
+    });
+    zone.appendChild(chip);
+
+    const poolChip = document.getElementById('chip-' + answerId);
+    if (poolChip) poolChip.classList.add('placed');
+  }
+
+  function clearZone(slotId) {
+    const zone = document.getElementById(slotId);
+    if (!zone) return;
+    zone.innerHTML = '';
+    zone.textContent = 'Arrastrá aquí';
+    zone.classList.remove('filled', 'correct', 'wrong');
+    delete placed[slotId];
+  }
+
+  function returnToPool(answerId, asDragging = false) {
+    const poolChip = document.getElementById('chip-' + answerId);
+    if (poolChip) {
+      poolChip.classList.remove('placed');
+      if (asDragging) poolChip.classList.add('dragging');
+    }
+  }
+
+  function checkAnswers() {
+    if (checked) return;
+
+    let correct = 0;
+    let wrong = 0;
+
+    Object.keys(placed).forEach(slotId => {
+      const answerId = placed[slotId];
+      const ans = ANSWERS.find(a => a.id === answerId);
+      const colId = slotId.split('_s')[0];
+      const zone = document.getElementById(slotId);
+
+      if (ans.correctCol === colId) {
+        zone.classList.add('correct');
+        correct++;
+      } else {
+        zone.classList.add('wrong');
+        wrong++;
+      }
+    });
+
+    score = Math.max(0, correct * 2 - wrong * 1);
+    updateScore(score, MAX_SCORE);
+
+    const feedback = document.getElementById('feedback');
+    if (correct === ANSWERS.length) {
+      feedback.textContent = '¡Muy bien! Identificaste correctamente todos los seres vivos.';
+      feedback.className = 'feedback success';
+    } else if (correct >= 3) {
+      feedback.textContent = '¡Casi! Revisá bien y volvé a intentarlo.';
+      feedback.className = 'feedback partial';
+    } else {
+      feedback.textContent = 'Seguí intentando. Revisá las características de cada grupo.';
+      feedback.className = 'feedback error';
+    }
+
+    checked = true;
+    document.getElementById('btn-check').style.display = 'none';
+    document.getElementById('btn-retry').style.display = 'flex';
+  }
+
+  function updateScore(val, max) {
+    const pct = Math.min(100, Math.max(0, (val / max) * 100));
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('score-text').textContent = val + ' / ' + max;
+    document.getElementById('star-icon').textContent = val >= max ? '★' : '☆';
+  }
+
+  function resetGame() {
+    placed = {};
+    score = 0;
+    checked = false;
+    updateScore(0, MAX_SCORE);
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('feedback').textContent = '';
+    document.getElementById('btn-check').style.display = 'flex';
+    document.getElementById('btn-retry').style.display = 'none';
+    buildUI();
+  }
+
+  buildUI();
+</script>
+</body>
+</html>
