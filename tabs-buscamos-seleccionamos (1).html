@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buscamos y seleccionamos para aprender</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul-oscuro: #153244;
+    --turquesa: #8de2d6;
+    --amarillo: #ffcc00;
+    --amarillo-callout: #fee47c;
+    --gris-fondo: #f1f5f9;
+    --gris-borde: #e2e8f0;
+    --gris-suave: #e9edf1;
+    --texto: #334155;
+    --texto-oscuro: #0f172a;
+    --blanco: #ffffff;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    font-family: 'Archivo', sans-serif;
+    background: transparent;
+    color: var(--texto);
+    line-height: 1.6;
+    padding: 16px 12px;
+    margin: 0;
+  }
+
+  .contenedor {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .tabs-nav {
+    display: flex;
+    gap: 4px;
+    border-bottom: 3px solid var(--azul-oscuro);
+    overflow-x: auto;
+  }
+
+  .tab-btn {
+    background: var(--gris-fondo);
+    border: none;
+    border-radius: 8px 8px 0 0;
+    padding: 16px 24px;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--texto);
+    cursor: pointer;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    white-space: nowrap;
+    transition: background 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .tab-btn:hover {
+    background: var(--gris-borde);
+  }
+
+  .tab-btn.active {
+    background: var(--azul-oscuro);
+    color: var(--blanco);
+  }
+
+  .tab-numero {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: var(--amarillo);
+    color: var(--azul-oscuro);
+    border-radius: 4px;
+    font-weight: 800;
+    font-size: 14px;
+  }
+
+  .tab-panel {
+    padding: 36px 8px 0;
+    display: none;
+  }
+
+  .tab-panel.active {
+    display: block;
+  }
+
+  .header-interno {
+    background: var(--turquesa);
+    padding: 14px 20px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+  }
+
+  .header-interno h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--azul-oscuro);
+    line-height: 1.2;
+  }
+
+  .acordeon {
+    margin-bottom: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .acordeon-btn {
+    width: 100%;
+    background: var(--azul-oscuro);
+    color: var(--blanco);
+    border: none;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    cursor: pointer;
+    text-align: left;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 600;
+    font-size: 17px;
+    transition: background 0.2s ease;
+  }
+
+  .acordeon-btn:hover {
+    background: #1f4762;
+  }
+
+  .acordeon-flecha {
+    flex-shrink: 0;
+    width: 12px;
+    height: 12px;
+    border-right: 2px solid var(--blanco);
+    border-bottom: 2px solid var(--blanco);
+    transform: rotate(45deg);
+    transition: transform 0.3s ease;
+    margin-bottom: 4px;
+  }
+
+  .acordeon-btn[aria-expanded="true"] .acordeon-flecha {
+    transform: rotate(-135deg);
+    margin-bottom: -4px;
+  }
+
+  .acordeon-contenido {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+    background: var(--gris-fondo);
+  }
+
+  .acordeon-contenido-inner {
+    padding: 20px 24px;
+  }
+
+  .acordeon-contenido p {
+    font-size: 17px;
+    color: var(--texto);
+    margin-bottom: 14px;
+  }
+
+  .acordeon-contenido p:last-child {
+    margin-bottom: 0;
+  }
+
+  .acordeon-contenido strong {
+    color: var(--azul-oscuro);
+    font-weight: 700;
+  }
+
+  .lista-preguntas {
+    list-style: none;
+    margin: 12px 0;
+  }
+
+  .lista-preguntas li {
+    position: relative;
+    padding: 6px 0 6px 24px;
+    font-size: 16px;
+    color: var(--texto);
+  }
+
+  .lista-preguntas li::before {
+    content: "→";
+    position: absolute;
+    left: 4px;
+    top: 6px;
+    color: var(--azul-oscuro);
+    font-weight: 700;
+  }
+
+  .fuentes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+    margin-top: 8px;
+  }
+
+  .fuente-card {
+    background: #fff8d6;
+    border: 2px solid var(--amarillo);
+    border-radius: 6px;
+    padding: 16px;
+    text-decoration: none;
+    color: var(--texto);
+    transition: all 0.2s ease;
+    display: block;
+  }
+
+  .fuente-card:hover {
+    border-color: var(--azul-oscuro);
+    background: #fff1a8;
+  }
+
+  /* Caja simulando barra de búsqueda */
+  .ejemplo-busqueda {
+    background: var(--blanco);
+    border: 2px solid var(--gris-borde);
+    border-radius: 24px;
+    padding: 10px 20px;
+    margin: 8px 0 14px;
+    font-size: 15px;
+    color: var(--texto-oscuro);
+    font-family: 'Archivo', sans-serif;
+    display: inline-block;
+    max-width: 100%;
+  }
+
+  .fuente-nombre {
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--azul-oscuro);
+    margin-bottom: 4px;
+  }
+
+  .fuente-desc {
+    font-size: 14px;
+    color: var(--texto);
+    line-height: 1.4;
+  }
+
+  @media (max-width: 720px) {
+    body { padding: 20px 12px 60px; }
+    .tab-btn { padding: 12px 16px; font-size: 12px; }
+    .tab-panel { padding: 24px 0 0; }
+    .acordeon-btn { font-size: 15px; padding: 14px 16px; }
+    .acordeon-contenido-inner { padding: 16px 18px; }
+    .header-interno h2 { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="contenedor">
+
+  <nav class="tabs-nav" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" data-tab="1">
+      <span class="tab-numero">1</span>¿Dónde busco y cómo elijo?
+    </button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-tab="2">
+      <span class="tab-numero">2</span>¿Cómo organizo lo que encontré?
+    </button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-tab="3">
+      <span class="tab-numero">3</span>¿Cómo armo mi ficha?
+    </button>
+  </nav>
+
+  <!-- TAB 1 -->
+  <section class="tab-panel active" role="tabpanel" id="panel-1">
+
+    <div class="header-interno">
+      <h2>La importancia de una búsqueda cuidadosa</h2>
+    </div>
+
+    <div class="acordeon">
+      <button class="acordeon-btn" aria-expanded="true">
+        <span>¿Dónde puedo buscar?</span>
+        <span class="acordeon-flecha"></span>
+      </button>
+      <div class="acordeon-contenido" style="max-height: 800px;">
+        <div class="acordeon-contenido-inner">
+          <p>Existen muchos lugares donde se puede obtener información. Algunos son <strong>físicos</strong> y se pueden visitar; otros son <strong>digitales</strong> y se accede a ellos virtualmente.</p>
+          <p>Por ejemplo: la biblioteca de la escuela, páginas de museos, páginas oficiales elaboradas por científicos o especialistas en el tema.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="acordeon">
+      <button class="acordeon-btn" aria-expanded="false">
+        <span>¿Cómo busco?</span>
+        <span class="acordeon-flecha"></span>
+      </button>
+      <div class="acordeon-contenido">
+        <div class="acordeon-contenido-inner">
+          <p>En esta oportunidad, buscarán información sobre <strong>plantas nativas de Buenos Aires</strong>. Es importante explicitar con claridad qué se está buscando.</p>
+
+          <p><strong>Si la búsqueda es en la biblioteca,</strong> deben solicitar el material a partir de preguntas tales como:</p>
+          <ul class="lista-preguntas">
+            <li>¿El libro cuenta con información sobre las plantas nativas que hay en la Ciudad Autónoma de Buenos Aires y alrededores?</li>
+            <li>¿Describe las características de estas plantas?</li>
+          </ul>
+
+          <p><strong>Si indagarán a partir de un motor de búsqueda,</strong> deben escribir en la barra del navegador una solicitud clara. Por ejemplo:</p>
+          <div class="ejemplo-busqueda">Plantas nativas de la Ciudad Autónoma de Buenos Aires y alrededores</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="acordeon">
+      <button class="acordeon-btn" aria-expanded="false">
+        <span>¿Cómo seleccionar?</span>
+        <span class="acordeon-flecha"></span>
+      </button>
+      <div class="acordeon-contenido">
+        <div class="acordeon-contenido-inner">
+          <p>De las opciones disponibles, analicen si son fuentes válidas. Para hacerlo, pueden preguntarse:</p>
+          <ul class="lista-preguntas">
+            <li>¿El autor de la fuente (libro, publicación, página) es especialista en el tema?</li>
+            <li>¿La información que contiene la fuente es relevante para lo que tengo que hacer?</li>
+            <li>¿Entiendo la información que leo?</li>
+            <li>¿Podré usarla para describir o explicar lo que necesito?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="acordeon">
+      <button class="acordeon-btn" aria-expanded="false">
+        <span>Algunos ejemplos de fuentes que pueden usar</span>
+        <span class="acordeon-flecha"></span>
+      </button>
+      <div class="acordeon-contenido">
+        <div class="acordeon-contenido-inner">
+          <div class="fuentes-grid">
+            <a href="https://buenosaires.gob.ar/gcaba_historico/vicejefatura/ambiente/jardin-botanico/colecciones/nativas-rioplatenses" class="fuente-card" target="_blank" rel="noopener">
+              <div class="fuente-nombre">Nativas Rioplatenses</div>
+              <div class="fuente-desc">Página del Gobierno de la Ciudad de Buenos Aires.</div>
+            </a>
+            <a href="https://buenosaires.gob.ar/gcaba_historico/ecoparque/plantas" class="fuente-card" target="_blank" rel="noopener">
+              <div class="fuente-nombre">Plantas nativas del Ecoparque</div>
+              <div class="fuente-desc">Página del Gobierno de la Ciudad de Buenos Aires.</div>
+            </a>
+            <a href="https://www.ambiente.gba.gob.ar/pdfs/002_Catalogo_Nativas_ABRIL2024.pdf" class="fuente-card" target="_blank" rel="noopener">
+              <div class="fuente-nombre">Catálogo de especies de plantas nativas</div>
+              <div class="fuente-desc">Ministerio de Ambiente de la provincia de Buenos Aires.</div>
+            </a>
+            <a href="https://nativas.lanacion.com.ar/" class="fuente-card" target="_blank" rel="noopener">
+              <div class="fuente-nombre">Guía de Plantas Nativas</div>
+              <div class="fuente-desc">Guía interactiva propuesta por Aves Argentinas y otros.</div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- TAB 2 -->
+  <section class="tab-panel" role="tabpanel" id="panel-2" hidden>
+
+    <div class="header-interno">
+      <h2>La organización y el registro de la información</h2>
+    </div>
+
+    <div class="acordeon">
+      <button class="acordeon-btn" aria-expanded="true">
+        <span>¿Cómo organizar la información?</span>
+        <span class="acordeon-flecha"></span>
+      </button>
+      <div class="acordeon-contenido" style="max-height: 800px;">
+        <div class="acordeon-contenido-inner">
+          <p>Luego de seleccionar la información, se debe <strong>organizar y registrar con claridad</strong>. Esto permitirá que en futuras ocasiones la información esté disponible de modo sintético y accesible.</p>
+          <p>Existen diversos formatos para presentar la información que se considera esencial. Por ejemplo: tablas, esquemas, cuadros, mapas, etcétera.</p>
+          <p>Seleccionar el adecuado permitirá que, aún con el paso del tiempo, se interprete correctamente la información presentada.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="acordeon">
+      <button class="acordeon-btn" aria-expanded="false">
+        <span>¿Cómo decidir qué información incluir?</span>
+        <span class="acordeon-flecha"></span>
+      </button>
+      <div class="acordeon-contenido">
+        <div class="acordeon-contenido-inner">
+          <p>Decidir qué información se incluirá en el formato es una acción muy importante. Para tomar esta decisión, pueden reflexionar sobre las siguientes preguntas:</p>
+          <ul class="lista-preguntas">
+            <li>¿Es necesario incluir las características observables de las plantas nativas? ¿Y las del ambiente que conforman?</li>
+            <li>¿Es necesario incluir qué requerimientos presentan las plantas nativas para sobrevivir?</li>
+            <li>¿Se requiere información sobre cómo cuidarlas?</li>
+            <li>¿Es importante conocer con qué otros seres vivos interactúan?</li>
+          </ul>
+          <p>Tomar estas decisiones implica conversar con otros, conocer las ideas de otras personas, establecer acuerdos. <strong>¡Es un trabajo colaborativo!</strong> Luego de los intercambios se debe registrar en el formato seleccionado toda aquella información que se consideró relevante.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="acordeon">
+      <button class="acordeon-btn" aria-expanded="false">
+        <span>Algunos ejemplos de formatos que pueden usar</span>
+        <span class="acordeon-flecha"></span>
+      </button>
+      <div class="acordeon-contenido">
+        <div class="acordeon-contenido-inner">
+          <div class="fuentes-grid">
+            <a href="https://workspace.google.com/intl/es/products/sheets/" class="fuente-card" target="_blank" rel="noopener">
+              <div class="fuente-nombre">Hojas de cálculo de Google</div>
+              <div class="fuente-desc">Para hacer tablas en las que se puede escribir información.</div>
+            </a>
+            <a href="https://www.canva.com/" class="fuente-card" target="_blank" rel="noopener">
+              <div class="fuente-nombre">Canva</div>
+              <div class="fuente-desc">Aplicación gratuita que permite crear tablas y organizadores gráficos para presentar información.</div>
+            </a>
+            <a href="https://www.mindmeister.com/es" class="fuente-card" target="_blank" rel="noopener">
+              <div class="fuente-nombre">MindMaster</div>
+              <div class="fuente-desc">Permite organizar ideas e información a partir de la creación de mapas mentales.</div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- TAB 3 -->
+  <section class="tab-panel" role="tabpanel" id="panel-3" hidden>
+
+    <div class="header-interno">
+      <h2>La elaboración de fichas para describir</h2>
+    </div>
+
+    <div class="acordeon">
+      <button class="acordeon-btn" aria-expanded="true">
+        <span>¿Cómo elaborar una ficha a partir de la información?</span>
+        <span class="acordeon-flecha"></span>
+      </button>
+      <div class="acordeon-contenido" style="max-height: 1200px;">
+        <div class="acordeon-contenido-inner">
+          <p>En ocasiones, además de buscar y seleccionar la información, es necesario presentarla de modo atractivo para <strong>comunicar a otras personas lo indagado</strong>.</p>
+          <p>En este caso, luego de seleccionar qué plantas nativas podrán sembrar y cuidar en la escuela, podrán centrarse en comunicar la información más relevante de estas especies.</p>
+          <p>Para iniciar es importante seleccionar una imagen que permita mostrar las características que observaron durante la indagación. Pueden elegir una de las fuentes trabajadas o realizar una búsqueda nueva.</p>
+          <p>Luego, repasen la información incluida en la tabla y elijan <strong>dos o tres características</strong> que quieran compartir. Por ejemplo: en qué tipo de ambientes crece, qué requiere para sobrevivir y cómo debe cuidarse.</p>
+          <p>Con sus palabras, elaboren una oración para describir cada característica seleccionada.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="acordeon">
+      <button class="acordeon-btn" aria-expanded="false">
+        <span>¿Cómo presentar la información en la ficha?</span>
+        <span class="acordeon-flecha"></span>
+      </button>
+      <div class="acordeon-contenido">
+        <div class="acordeon-contenido-inner">
+          <p>Elaborar la ficha de manera creativa y atractiva permitirá que otras personas se interesen por conocer la información que contiene.</p>
+          <p>Para iniciar, pueden elaborar un <strong>boceto o borrador</strong> con el fin de diagramar la presentación.</p>
+          <p>Ensayen la presentación y elijan la forma que más les guste. Luego, usen los materiales que tengan a disposición y elaboren las fichas correspondientes a las plantas nativas seleccionadas.</p>
+          <p>También pueden usar una aplicación digital para su elaboración. Por ejemplo: Canva.</p>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+</div>
+
+<script>
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabPanels = document.querySelectorAll('.tab-panel');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.tab;
+
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      tabPanels.forEach(p => {
+        p.classList.remove('active');
+        p.hidden = true;
+      });
+
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      const panel = document.getElementById('panel-' + target);
+      panel.classList.add('active');
+      panel.hidden = false;
+    });
+  });
+
+  const acordeonBtns = document.querySelectorAll('.acordeon-btn');
+
+  acordeonBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      const contenido = btn.nextElementSibling;
+
+      btn.setAttribute('aria-expanded', !expanded);
+
+      if (expanded) {
+        contenido.style.maxHeight = '0';
+      } else {
+        contenido.style.maxHeight = contenido.scrollHeight + 'px';
+      }
+    });
+  });
+
+  if (window.location.hash) {
+    const hash = window.location.hash.replace('#', '');
+    const targetBtn = document.querySelector(`[data-tab="${hash}"]`);
+    if (targetBtn) targetBtn.click();
+  }
+
+  // ===========================================
+  // Comunicación de altura al iframe contenedor
+  // ===========================================
+  // Si este HTML está embebido dentro de un iframe (por ejemplo,
+  // en la plataforma BA STEAM), le avisa a la página padre cuánto
+  // alto necesita para que se ajuste y no aparezcan scrollbars internos.
+
+  function notificarAltura() {
+    const altura = Math.max(
+      document.body.scrollHeight,
+      document.documentElement.scrollHeight,
+      document.body.offsetHeight,
+      document.documentElement.offsetHeight
+    );
+    try {
+      window.parent.postMessage({ type: 'resize-iframe', height: altura }, '*');
+    } catch (e) { /* ignorar */ }
+  }
+
+  // Notificar al cargar y en cada cambio relevante
+  window.addEventListener('load', notificarAltura);
+  window.addEventListener('resize', notificarAltura);
+
+  // Cuando se cambian tabs o se abren/cierran acordeones,
+  // esperar a que termine la transición y notificar.
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => setTimeout(notificarAltura, 50));
+  });
+  document.querySelectorAll('.acordeon-btn').forEach(btn => {
+    btn.addEventListener('click', () => setTimeout(notificarAltura, 450));
+  });
+
+  // Observador de cambios en el DOM (por si algo más cambia el tamaño)
+  if (window.ResizeObserver) {
+    const ro = new ResizeObserver(() => notificarAltura());
+    ro.observe(document.body);
+  }
+
+  // Notificar también cada 500ms los primeros 3 segundos (por si la fuente tarda en cargar)
+  let count = 0;
+  const interval = setInterval(() => {
+    notificarAltura();
+    count++;
+    if (count >= 6) clearInterval(interval);
+  }, 500);
+</script>
+
+</body>
+</html>
