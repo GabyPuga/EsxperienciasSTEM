@@ -559,6 +559,30 @@
     flex-shrink: 0;
   }
 
+  /* Modal de inactividad */
+  .inactive-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(255, 154, 92, 0.15);
+    color: var(--c-orange);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    animation: pulse-icon 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse-icon {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+  .countdown-num {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--c-orange);
+    font-size: 1.05rem;
+  }
+
   .warning-box {
     background: rgba(255, 154, 92, 0.1);
     border: 1px solid rgba(255, 154, 92, 0.3);
@@ -721,6 +745,38 @@
     </div>
   </div>
 
+  <!-- Modal de inactividad: aviso antes de cierre automático -->
+  <div id="inactive-modal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <div class="inactive-icon">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <h3>¿Siguen trabajando?</h3>
+      <p class="modal-sub">La actividad se cerrará automáticamente en <span id="countdown" class="countdown-num">60</span> segundos por falta de uso.</p>
+
+      <div class="pin-actions">
+        <button id="btn-keep-going" class="btn-modal-confirm" style="width: 100%;">Seguir trabajando 5 min más</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de inactividad: aviso antes de cierre automático -->
+  <div id="inactive-modal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <div class="inactive-icon">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <h3>¿Siguen trabajando?</h3>
+      <p class="modal-sub">La actividad se cerrará automáticamente en <span id="countdown" class="countdown-num">180</span> segundos por falta de uso.</p>
+
+      <div class="pin-actions">
+        <button id="btn-keep-going" class="btn-modal-confirm" style="width: 100%;">Seguir trabajando 10 min más</button>
+      </div>
+    </div>
+  </div>
+
   <div id="end-modal" class="modal hidden" role="dialog" aria-modal="true">
     <div class="modal-backdrop"></div>
     <div class="modal-content">
@@ -757,6 +813,13 @@
   const PIN_DOCENTE = 'mundial2026';
   // ============================================================
 
+  // ============================================================
+  // CONFIGURACIÓN DE TIMEOUTS DE INACTIVIDAD
+  // ============================================================
+  const TIMEOUT_NORMAL_MS = 15 * 60 * 1000;   // 15 min ciclo normal
+  const TIMEOUT_EXTENDED_MS = 7 * 60 * 1000;  // 7 min ciclo extendido (después de "Seguir trabajando")
+  const WARNING_BEFORE_MS = 3 * 60 * 1000;    // 3 min de aviso (180s)
+
   const params = new URLSearchParams(window.location.search);
   const ACTIVIDAD_ID = (params.get('actividad') || 'default')
     .slice(0, 60)
@@ -783,7 +846,13 @@
     pinAction: null,
     knownTexts: new Set(),
     sessionCb: null,
-    wordsCb: null
+    wordsCb: null,
+    pendingOriginal: null,
+    pendingSuggestion: null,
+    // Inactividad
+    inactivityTimer: null,
+    isExtended: false,        // si estamos en ciclo extendido (7 min) o normal (15 min)
+    warningShown: false       // si el modal de aviso está visible
   };
 
   const PALETTE = [
@@ -1035,6 +1104,8 @@
       await refSession().set({
         sessionId: newSessionId,
         startedAt: firebase.database.ServerValue.TIMESTAMP,
+        lastActivity: firebase.database.ServerValue.TIMESTAMP,
+        mode: 'normal',
         isActive: true
       });
       return newSessionId;
@@ -1042,6 +1113,18 @@
       console.error('startNewSession', e);
       showConnectionError('No se pudo iniciar. Revisá la conexión.');
       return null;
+    }
+  }
+
+  // Marca actividad: actualiza lastActivity y vuelve al modo normal
+  async function bumpActivity(mode) {
+    if (!db) return;
+    try {
+      const update = { lastActivity: firebase.database.ServerValue.TIMESTAMP };
+      if (mode) update.mode = mode;
+      await refSession().update(update);
+    } catch (e) {
+      console.warn('bumpActivity', e);
     }
   }
 
@@ -1073,10 +1156,17 @@
   async function insertWord(text) {
     if (!db) return false;
     try {
-      await refWords().push({
-        text: text,
-        createdAt: firebase.database.ServerValue.TIMESTAMP
-      });
+      // Insertar palabra + actualizar lastActivity en una sola pasada
+      await Promise.all([
+        refWords().push({
+          text: text,
+          createdAt: firebase.database.ServerValue.TIMESTAMP
+        }),
+        refSession().update({
+          lastActivity: firebase.database.ServerValue.TIMESTAMP,
+          mode: 'normal' // cualquier nueva palabra vuelve al ciclo de 15 min
+        })
+      ]);
       return true;
     } catch (e) {
       console.warn('insertWord', e);
@@ -1096,9 +1186,15 @@
           state.words = [];
           state.knownTexts = new Set();
         }
+        state.isExtended = (session.mode === 'extended');
+        // Actualizar timer de inactividad con el lastActivity del servidor
+        if (session.lastActivity) {
+          updateInactivityTimer(session.lastActivity, state.isExtended);
+        }
         if (!state.active) goToActive();
       } else {
         if (state.active) goToIdle(false);
+        stopInactivityTimer();
       }
     });
 
@@ -1146,11 +1242,88 @@
     }
   }
 
+  // ============================================================
+  // SISTEMA DE INACTIVIDAD
+  // ============================================================
+  // Llamada cada vez que se recibe un nuevo lastActivity desde Firebase.
+  // Calcula cuánto tiempo queda y decide si mostrar el aviso o cerrar.
+  function updateInactivityTimer(lastActivityMs, isExtended) {
+    stopInactivityTimer();
+    if (!state.active) return;
+
+    const timeout = isExtended ? TIMEOUT_EXTENDED_MS : TIMEOUT_NORMAL_MS;
+
+    // Chequeo cada segundo: ¿queda tiempo? ¿mostrar aviso? ¿cerrar?
+    state.inactivityTimer = setInterval(() => {
+      const elapsed = Date.now() - lastActivityMs;
+      const remaining = timeout - elapsed;
+
+      if (remaining <= 0) {
+        // Tiempo agotado: cerrar actividad
+        stopInactivityTimer();
+        autoEndSession();
+      } else if (remaining <= WARNING_BEFORE_MS && !state.warningShown) {
+        // Mostrar aviso con cuenta regresiva
+        showInactivityWarning(Math.ceil(remaining / 1000));
+      } else if (state.warningShown) {
+        // El aviso ya está visible: actualizar cuenta regresiva
+        updateCountdown(Math.ceil(remaining / 1000));
+      }
+    }, 1000);
+  }
+
+  function stopInactivityTimer() {
+    if (state.inactivityTimer) {
+      clearInterval(state.inactivityTimer);
+      state.inactivityTimer = null;
+    }
+    hideInactivityWarning();
+  }
+
+  function showInactivityWarning(secondsLeft) {
+    state.warningShown = true;
+    document.getElementById('countdown').textContent = secondsLeft;
+    document.getElementById('inactive-modal').classList.remove('hidden');
+  }
+
+  function updateCountdown(secondsLeft) {
+    const el = document.getElementById('countdown');
+    if (el) el.textContent = Math.max(0, secondsLeft);
+  }
+
+  function hideInactivityWarning() {
+    state.warningShown = false;
+    const modal = document.getElementById('inactive-modal');
+    if (modal) modal.classList.add('hidden');
+  }
+
+  // Cuando alguien toca "Seguir trabajando 10 min más"
+  async function keepGoing() {
+    hideInactivityWarning();
+    // Marcar modo extendido en Firebase: dispara el listener en todos
+    await bumpActivity('extended');
+  }
+
+  // Cierre automático por inactividad
+  async function autoEndSession() {
+    if (!db) return;
+    hideInactivityWarning();
+    try {
+      await refWords().remove();
+      await refSession().remove();
+      // El listener detectará que la sesión terminó y volverá a idle en todos
+    } catch (e) {
+      console.error('autoEndSession', e);
+    }
+  }
+
   function goToIdle(clearSession = true) {
     state.active = false;
     if (clearSession) state.sessionId = null;
     state.words = [];
     state.knownTexts = new Set();
+    state.isExtended = false;
+    stopInactivityTimer();
     document.getElementById('active-view').classList.add('hidden');
     document.getElementById('idle-view').classList.remove('hidden');
   }
@@ -1492,6 +1665,9 @@
       if (text) await doInsertWord(normalizeWord(text));
     });
     document.querySelector('#suggest-modal .modal-backdrop').addEventListener('click', closeSuggestModal);
+
+    // Modal de inactividad: botón "Seguir trabajando"
+    document.getElementById('btn-keep-going').addEventListener('click', keepGoing);
 
     document.getElementById('btn-pin-cancel').addEventListener('click', closePinModal);
     document.getElementById('btn-pin-confirm').addEventListener('click', confirmPin);
