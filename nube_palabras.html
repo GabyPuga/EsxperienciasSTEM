@@ -50,8 +50,8 @@
   #app {
     position: relative;
     z-index: 1;
-    padding: 24px;
-    max-width: 1100px;
+    padding: 14px;
+    max-width: 900px;
     margin: 0 auto;
   }
 
@@ -59,21 +59,21 @@
 
   /* ===== ESTADO INICIAL ===== */
   #idle-view {
-    min-height: 70vh;
+    min-height: 360px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: 10px;
   }
 
   .idle-card {
     background: var(--bg-card);
     border: 1px solid var(--line);
-    border-radius: var(--radius-lg);
-    padding: 48px 36px;
+    border-radius: var(--radius);
+    padding: 28px 24px;
     text-align: center;
     box-shadow: var(--shadow-card);
-    max-width: 520px;
+    max-width: 420px;
     width: 100%;
     position: relative;
     overflow: hidden;
@@ -95,22 +95,22 @@
 
   .logo-mark {
     display: inline-flex;
-    gap: 6px;
+    gap: 5px;
     align-items: flex-end;
-    margin-bottom: 24px;
-    height: 36px;
+    margin-bottom: 14px;
+    height: 26px;
   }
   .logo-mark .dot {
     display: block;
-    width: 10px;
-    border-radius: 4px;
+    width: 7px;
+    border-radius: 3px;
     transform-origin: bottom;
   }
-  .dot-1 { height: 14px; background: var(--c-cyan); animation: bounce 2.4s ease-in-out infinite; }
-  .dot-2 { height: 22px; background: var(--c-magenta); animation: bounce 2.4s ease-in-out infinite 0.15s; }
-  .dot-3 { height: 30px; background: var(--c-yellow); animation: bounce 2.4s ease-in-out infinite 0.3s; }
-  .dot-4 { height: 20px; background: var(--c-orange); animation: bounce 2.4s ease-in-out infinite 0.45s; }
-  .dot-5 { height: 12px; background: var(--c-green); animation: bounce 2.4s ease-in-out infinite 0.6s; }
+  .dot-1 { height: 10px; background: var(--c-cyan); animation: bounce 2.4s ease-in-out infinite; }
+  .dot-2 { height: 16px; background: var(--c-magenta); animation: bounce 2.4s ease-in-out infinite 0.15s; }
+  .dot-3 { height: 22px; background: var(--c-yellow); animation: bounce 2.4s ease-in-out infinite 0.3s; }
+  .dot-4 { height: 14px; background: var(--c-orange); animation: bounce 2.4s ease-in-out infinite 0.45s; }
+  .dot-5 { height: 9px; background: var(--c-green); animation: bounce 2.4s ease-in-out infinite 0.6s; }
 
   @keyframes bounce {
     0%, 100% { transform: scaleY(1); }
@@ -120,47 +120,47 @@
   .idle-title {
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: clamp(2rem, 4vw, 2.6rem);
+    font-size: clamp(1.4rem, 3vw, 1.7rem);
     letter-spacing: -0.02em;
-    margin: 0 0 12px;
+    margin: 0 0 8px;
     color: var(--c-blue);
     line-height: 1.1;
   }
 
   .idle-sub {
     color: var(--ink-soft);
-    font-size: 1rem;
-    max-width: 380px;
-    margin: 0 auto 32px;
+    font-size: 0.85rem;
+    max-width: 320px;
+    margin: 0 auto 18px;
   }
 
   .btn-start {
     background: var(--c-blue);
     color: #fff;
     border: none;
-    border-radius: 12px;
-    padding: 16px 32px;
+    border-radius: 10px;
+    padding: 11px 22px;
     font-family: var(--font-body);
-    font-size: 1.05rem;
+    font-size: 0.92rem;
     font-weight: 600;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     transition: transform 0.15s, background 0.15s, box-shadow 0.15s;
-    box-shadow: 0 4px 14px rgba(21,50,68,0.18);
+    box-shadow: 0 3px 10px rgba(21,50,68,0.15);
   }
   .btn-start:hover {
     background: #0f2535;
     transform: translateY(-1px);
-    box-shadow: 0 6px 18px rgba(21,50,68,0.25);
+    box-shadow: 0 5px 14px rgba(21,50,68,0.22);
   }
   .btn-start:active { transform: translateY(0); }
 
   .idle-note {
     color: var(--ink-faint);
-    font-size: 0.82rem;
-    margin: 24px 0 0;
+    font-size: 0.72rem;
+    margin: 14px 0 0;
   }
 
   /* ===== ESTADO ACTIVO ===== */
@@ -177,26 +177,26 @@
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: 12px;
-    padding-bottom: 16px;
-    margin-bottom: 18px;
+    gap: 8px;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
     border-bottom: 1px solid var(--line);
   }
 
   .active-title {
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: clamp(1.4rem, 2.5vw, 1.7rem);
+    font-size: 0.95rem;
     margin: 0;
     color: var(--c-blue);
-    letter-spacing: -0.015em;
+    letter-spacing: -0.01em;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
   }
   .active-title .pulse {
-    width: 9px;
-    height: 9px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
     background: var(--c-green);
     animation: pulse 1.6s ease-in-out infinite;
@@ -210,15 +210,15 @@
     background: var(--bg-card);
     border: 1px solid var(--line);
     color: var(--ink-soft);
-    border-radius: 9px;
-    padding: 8px 14px;
+    border-radius: 7px;
+    padding: 5px 10px;
     font-family: var(--font-body);
-    font-size: 0.85rem;
+    font-size: 0.78rem;
     font-weight: 500;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
     transition: all 0.15s;
   }
   .btn-end:hover {
@@ -228,19 +228,20 @@
 
   .header-buttons {
     display: flex;
-    gap: 8px;
+    gap: 6px;
     flex-wrap: wrap;
   }
 
   .cloud-stage {
     background: var(--bg-card);
     border: 1px solid var(--line);
-    border-radius: var(--radius-lg);
-    aspect-ratio: 5 / 3;
+    border-radius: var(--radius);
+    aspect-ratio: 16 / 7;
     width: 100%;
     overflow: hidden;
     position: relative;
     box-shadow: var(--shadow-soft);
+    max-height: 320px;
   }
 
   #cloud-svg {
@@ -270,7 +271,7 @@
     align-items: center;
     justify-content: center;
     color: var(--ink-faint);
-    gap: 18px;
+    gap: 10px;
     pointer-events: none;
   }
   .empty-state.fade {
@@ -279,51 +280,52 @@
   }
   .empty-illus {
     position: relative;
-    width: 80px;
-    height: 80px;
+    width: 56px;
+    height: 56px;
   }
   .ei-circle {
     position: absolute;
     border-radius: 50%;
     opacity: 0.65;
   }
-  .ei-c1 { width: 28px; height: 28px; background: var(--c-cyan); top: 0; left: 25px; animation: float 3s ease-in-out infinite; }
-  .ei-c2 { width: 36px; height: 36px; background: var(--c-magenta); top: 30px; left: 0; animation: float 3s ease-in-out infinite 0.5s; }
-  .ei-c3 { width: 22px; height: 22px; background: var(--c-orange); top: 40px; left: 52px; animation: float 3s ease-in-out infinite 1s; }
+  .ei-c1 { width: 20px; height: 20px; background: var(--c-cyan); top: 0; left: 18px; animation: float 3s ease-in-out infinite; }
+  .ei-c2 { width: 26px; height: 26px; background: var(--c-magenta); top: 22px; left: 0; animation: float 3s ease-in-out infinite 0.5s; }
+  .ei-c3 { width: 16px; height: 16px; background: var(--c-orange); top: 30px; left: 38px; animation: float 3s ease-in-out infinite 1s; }
   @keyframes float {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
+    50% { transform: translateY(-6px); }
   }
+
   .empty-state p {
-    font-size: 0.92rem;
+    font-size: 0.78rem;
     margin: 0;
   }
 
   .counter-bar {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 14px 4px 4px;
-    font-size: 0.88rem;
+    gap: 6px;
+    padding: 6px 4px 2px;
+    font-size: 0.75rem;
     color: var(--ink-soft);
     flex-wrap: wrap;
   }
   .counter-num {
     font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 1.1rem;
+    font-weight: 700;
+    font-size: 0.9rem;
     color: var(--c-blue);
   }
   .counter-sep { color: var(--line-strong); }
 
   .word-form {
     display: flex;
-    gap: 10px;
-    margin-top: 14px;
+    gap: 6px;
+    margin-top: 6px;
     background: var(--bg-card);
     border: 1.5px solid var(--line);
-    border-radius: 12px;
-    padding: 6px;
+    border-radius: 10px;
+    padding: 4px;
     box-shadow: var(--shadow-soft);
     transition: border-color 0.15s;
   }
@@ -333,9 +335,9 @@
     flex: 1;
     background: transparent;
     border: none;
-    padding: 12px 14px;
+    padding: 8px 10px;
     font-family: var(--font-body);
-    font-size: 1rem;
+    font-size: 0.9rem;
     color: var(--ink);
     min-width: 0;
   }
@@ -346,15 +348,15 @@
     background: var(--c-blue);
     color: #fff;
     border: none;
-    border-radius: 9px;
-    padding: 11px 20px;
+    border-radius: 7px;
+    padding: 8px 16px;
     font-family: var(--font-body);
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     font-weight: 600;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
-    gap: 7px;
+    gap: 6px;
     transition: background 0.15s, transform 0.1s;
   }
   .btn-submit:hover { background: #0f2535; }
@@ -363,9 +365,9 @@
   .form-hint {
     text-align: center;
     color: var(--ink-faint);
-    font-size: 0.8rem;
-    margin: 8px 0 0;
-    min-height: 18px;
+    font-size: 0.72rem;
+    margin: 5px 0 0;
+    min-height: 14px;
   }
   .form-hint.error { color: var(--c-magenta); }
   .form-hint.success { color: var(--c-green); }
@@ -577,11 +579,11 @@
   }
 
   @media (max-width: 640px) {
-    #app { padding: 16px; }
-    .idle-card { padding: 36px 24px; }
-    .cloud-stage { aspect-ratio: 4 / 3; }
-    .word-form { flex-direction: column; padding: 8px; }
-    .btn-submit { width: 100%; justify-content: center; padding: 12px; }
+    #app { padding: 10px; }
+    .idle-card { padding: 22px 18px; }
+    .cloud-stage { aspect-ratio: 4 / 3; max-height: 280px; }
+    .word-form { flex-direction: column; padding: 6px; }
+    .btn-submit { width: 100%; justify-content: center; padding: 9px; }
     .btn-end span { display: none; }
   }
 
@@ -644,7 +646,7 @@
     </header>
 
     <div class="cloud-stage">
-      <svg id="cloud-svg" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet"></svg>
+      <svg id="cloud-svg" viewBox="0 0 1000 440" preserveAspectRatio="xMidYMid meet"></svg>
       <div id="empty-state" class="empty-state">
         <div class="empty-illus">
           <span class="ei-circle ei-c1"></span>
@@ -1241,16 +1243,16 @@
     }
     empty.classList.add('fade');
 
-    const W = 1000, H = 600;
+    const W = 1000, H = 440;
     const counts = state.words.map(w => w.count);
     const maxC = Math.max(...counts);
     const minC = Math.min(...counts);
     const sorted = state.words.slice().sort((a,b) => b.count - a.count);
 
     function fontSize(c) {
-      if (maxC === minC) return 48;
+      if (maxC === minC) return 36;
       const t = (c - minC) / (maxC - minC);
-      return Math.round(22 + t * 74);
+      return Math.round(16 + t * 50);
     }
 
     const placed = [];
@@ -1335,10 +1337,10 @@
     // Clonar el SVG para no afectar el original
     const clone = svgEl.cloneNode(true);
     // Asegurar dimensiones explícitas y fondo blanco
-    const W = 1600, H = 960; // 2x más definición que el viewBox
+    const W = 1600, H = 704; // proporción 16:7, alta resolución
     clone.setAttribute('width', W);
     clone.setAttribute('height', H);
-    clone.setAttribute('viewBox', '0 0 1000 600');
+    clone.setAttribute('viewBox', '0 0 1000 440');
     clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
 
     // Embed la fuente Archivo para que se renderice bien
@@ -1354,7 +1356,7 @@
     bg.setAttribute('x', '0');
     bg.setAttribute('y', '0');
     bg.setAttribute('width', '1000');
-    bg.setAttribute('height', '600');
+    bg.setAttribute('height', '440');
     bg.setAttribute('fill', '#ffffff');
     clone.insertBefore(bg, clone.firstChild);
 
