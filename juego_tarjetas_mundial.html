@@ -5,41 +5,121 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Arrastrá cada pista al Mundial correcto</title>
 <style>
+  :root {
+    --ba-azul: #153244;
+    --ba-amarillo: #FFCC00;
+    --ba-cyan: #8DE2D6;
+    --ba-cyan-soft: #C5EFE8;
+    --ba-gris: #3C3C3B;
+    --ok-bg: #DFF3E4;
+    --ok-fg: #1B5E2A;
+    --ok-border: #2E7D3D;
+    --err-bg: #FBE0E0;
+    --err-fg: #8E1A1A;
+    --err-border: #C42B2B;
+  }
   * { box-sizing: border-box; }
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
+    font-family: 'Archivo', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     margin: 0;
     padding: 2rem 1rem;
-    background: #FAF9F5;
-    color: #1F1E1D;
+    background: #FFFFFF;
+    color: var(--ba-azul);
     min-height: 100vh;
   }
   .wrap { max-width: 1000px; margin: 0 auto; }
-  h1 { font-size: 26px; font-weight: 600; text-align: center; margin: 0 0 0.5rem; }
-  .subtitle { text-align: center; color: #6B6A66; font-size: 15px; line-height: 1.6; margin: 0 auto 2rem; max-width: 620px; }
 
+  /* Encabezado con líneas decorativas */
+  .header {
+    text-align: center;
+    margin-bottom: 1.75rem;
+    position: relative;
+    padding: 1.25rem 0;
+  }
+  .header::before,
+  .header::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0;
+    height: 4px;
+    border-radius: 2px;
+  }
+  .header::before { top: 0; background: var(--ba-azul); }
+  .header::after  { bottom: 0; background: var(--ba-cyan); }
+  h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+    color: var(--ba-azul);
+    letter-spacing: -0.3px;
+  }
+  .subtitle {
+    color: var(--ba-gris);
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 0 auto;
+    max-width: 620px;
+  }
+
+  /* Stage (área de juego) */
   .stage {
-    background: #F1EFE8;
+    background: var(--ba-cyan-soft);
     border-radius: 16px;
     padding: 1.5rem;
-    min-height: 240px;
+    min-height: 250px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     margin-bottom: 1.5rem;
     position: relative;
-    transition: background 0.4s ease;
+    border: 2px solid var(--ba-cyan);
+    transition: background 0.4s ease, border-color 0.4s ease;
   }
-  .stage.ended { padding: 0; }
-  .stage.ended.perfect { background: linear-gradient(135deg, #E1F5EE 0%, #C8EBDD 100%); }
-  .stage.ended.good    { background: linear-gradient(135deg, #E6F1FB 0%, #CFE3F6 100%); }
-  .stage.ended.meh     { background: linear-gradient(135deg, #FAEEDA 0%, #F5DDB0 100%); }
-  .progress { font-size: 13px; color: #888780; position: absolute; top: 14px; right: 18px; font-weight: 500; }
-  .score-mini { font-size: 13px; color: #888780; position: absolute; top: 14px; left: 18px; font-weight: 500; }
-  .card-slot { display: flex; align-items: center; justify-content: center; min-height: 170px; }
-  .feedback { font-size: 15px; margin-top: 14px; min-height: 24px; text-align: center; font-weight: 500; }
+  .stage.ended { padding: 0; border-color: transparent; }
+  .stage.ended.perfect {
+    background: linear-gradient(135deg, var(--ba-cyan) 0%, #B5EBE2 100%);
+    border-color: var(--ba-azul);
+  }
+  .stage.ended.good {
+    background: linear-gradient(135deg, var(--ba-cyan-soft) 0%, var(--ba-cyan) 100%);
+    border-color: var(--ba-azul);
+  }
+  .stage.ended.meh {
+    background: linear-gradient(135deg, #FFE680 0%, var(--ba-amarillo) 100%);
+    border-color: var(--ba-azul);
+  }
 
+  .progress {
+    font-size: 12px;
+    color: var(--ba-azul);
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .score-mini {
+    font-size: 12px;
+    color: var(--ba-azul);
+    position: absolute;
+    top: 14px;
+    left: 18px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .card-slot { display: flex; align-items: center; justify-content: center; min-height: 170px; }
+  .feedback {
+    font-size: 15px;
+    margin-top: 14px;
+    min-height: 24px;
+    text-align: center;
+    font-weight: 700;
+  }
+
+  /* Contenedores */
   .bins {
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -47,9 +127,9 @@
   }
   .bin {
     background: #FFFFFF;
-    border: 2px dashed #C7C5BC;
+    border: 2px dashed var(--ba-azul);
     border-radius: 14px;
-    padding: 16px 8px 12px;
+    padding: 14px 8px 12px;
     text-align: center;
     min-height: 200px;
     display: flex;
@@ -58,29 +138,40 @@
     transition: background 0.15s, border-color 0.15s, transform 0.15s;
   }
   .bin.over {
-    background: #E6F1FB;
-    border-color: #378ADD;
+    background: #FFF8CC;
+    border-color: var(--ba-amarillo);
     border-style: solid;
+    border-width: 3px;
     transform: scale(1.03);
   }
-  .bin.correct-flash { background: #E1F5EE; border-color: #1D9E75; border-style: solid; }
-  .bin.wrong-flash { background: #FCEBEB; border-color: #E24B4A; border-style: solid; }
-
+  .bin.correct-flash {
+    background: var(--ok-bg);
+    border-color: var(--ok-border);
+    border-style: solid;
+  }
+  .bin.wrong-flash {
+    background: var(--err-bg);
+    border-color: var(--err-border);
+    border-style: solid;
+  }
   .bin-kicker {
     font-size: 10px;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 1.5px;
-    color: #888780;
+    color: var(--ba-cyan);
     text-transform: uppercase;
     margin-bottom: 2px;
+    background: var(--ba-azul);
+    padding: 3px 10px;
+    border-radius: 100px;
   }
   .bin-year {
-    font-size: 28px;
+    font-size: 30px;
     font-weight: 700;
-    color: #1F1E1D;
+    color: var(--ba-azul);
     line-height: 1;
-    margin-bottom: 12px;
-    letter-spacing: -0.5px;
+    margin: 8px 0 10px;
+    letter-spacing: -1px;
   }
   .bin-drops { display: flex; flex-direction: column; gap: 4px; width: 100%; }
   .dropped {
@@ -92,44 +183,45 @@
     font-weight: 500;
     text-align: center;
   }
-  .dropped.ok { background: #E1F5EE; color: #085041; }
-  .dropped.bad { background: #FCEBEB; color: #791F1F; }
+  .dropped.ok  { background: var(--ok-bg);  color: var(--ok-fg);  border-left: 3px solid var(--ok-border); }
+  .dropped.bad { background: var(--err-bg); color: var(--err-fg); border-left: 3px solid var(--err-border); text-decoration: line-through; }
 
+  /* Tarjeta */
   .card {
     background: #FFFFFF;
-    border: 1px solid #D3D1C7;
+    border: 2px solid var(--ba-azul);
     border-radius: 14px;
     padding: 18px 22px;
     cursor: grab;
     user-select: none;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    box-shadow: 0 6px 18px rgba(21,50,68,0.12);
     max-width: 380px;
     text-align: center;
     touch-action: none;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
   }
   .card:active { cursor: grabbing; }
   .card.dragging { opacity: 0.3; }
   .card-category {
     font-size: 10px;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 1.2px;
     text-transform: uppercase;
-    padding: 4px 10px;
+    padding: 4px 12px;
     border-radius: 100px;
   }
-  .card-category.tecnologia { background: #E6F1FB; color: #0C447C; }
-  .card-category.objeto    { background: #FAEEDA; color: #854F0B; }
-  .card-category.curiosidad{ background: #EEEDFE; color: #3C3489; }
-  .card-category.camiseta  { background: #FAECE7; color: #993C1D; }
+  .card-category.tecnologia { background: var(--ba-azul);     color: var(--ba-cyan); }
+  .card-category.objeto     { background: var(--ba-amarillo); color: var(--ba-azul); }
+  .card-category.curiosidad { background: var(--ba-cyan);     color: var(--ba-azul); }
+  .card-category.camiseta   { background: #FFFFFF;            color: var(--ba-azul); border: 2px solid var(--ba-azul); padding: 2px 10px; }
   .card-text {
     font-size: 16px;
     font-weight: 500;
     line-height: 1.4;
-    color: #1F1E1D;
+    color: var(--ba-azul);
   }
 
   .card-ghost {
@@ -137,7 +229,7 @@
     pointer-events: none;
     z-index: 999;
     background: #FFFFFF;
-    border: 1px solid #888780;
+    border: 2px solid var(--ba-azul);
     border-radius: 14px;
     padding: 18px 22px;
     max-width: 380px;
@@ -145,11 +237,12 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
-    box-shadow: 0 12px 28px rgba(0,0,0,0.18);
+    gap: 10px;
+    box-shadow: 0 16px 32px rgba(21,50,68,0.25);
     transform: rotate(-2deg);
   }
 
+  /* Pantalla final */
   .end-panel {
     display: none;
     padding: 2rem 1.5rem;
@@ -162,44 +255,54 @@
     to { opacity: 1; transform: translateY(0); }
   }
   .end-emoji { font-size: 56px; line-height: 1; margin-bottom: 8px; }
-  .end-title { margin: 0 0 6px; font-size: 24px; font-weight: 700; color: #1F1E1D; }
+  .end-title { margin: 0 0 6px; font-size: 26px; font-weight: 700; color: var(--ba-azul); letter-spacing: -0.3px; }
   .end-score {
     margin: 0 0 10px;
-    font-size: 44px;
+    font-size: 48px;
     font-weight: 700;
     line-height: 1;
-    letter-spacing: -1px;
+    letter-spacing: -1.5px;
+    color: var(--ba-azul);
   }
-  .end-score .of { font-size: 24px; color: #6B6A66; font-weight: 500; }
-  .stage.ended.perfect .end-score { color: #085041; }
-  .stage.ended.good    .end-score { color: #0C447C; }
-  .stage.ended.meh     .end-score { color: #854F0B; }
-  .end-detail { margin: 0 auto 18px; font-size: 15px; color: #444441; line-height: 1.5; max-width: 480px; }
+  .end-score .of { font-size: 24px; color: var(--ba-gris); font-weight: 500; }
+  .end-detail { margin: 0 auto 20px; font-size: 15px; color: var(--ba-azul); line-height: 1.5; max-width: 480px; font-weight: 500; }
+
   button {
-    font: inherit;
-    padding: 12px 28px;
-    border: none;
-    background: #1F1E1D;
-    color: #FFFFFF;
-    border-radius: 10px;
+    font-family: inherit;
+    padding: 12px 32px;
+    border: 2px solid var(--ba-azul);
+    background: var(--ba-amarillo);
+    color: var(--ba-azul);
+    border-radius: 100px;
     cursor: pointer;
     font-size: 15px;
-    font-weight: 600;
-    transition: transform 0.15s, opacity 0.15s;
+    font-weight: 700;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 4px 0 var(--ba-azul);
   }
-  button:hover { opacity: 0.9; }
-  button:active { transform: scale(0.97); }
+  button:hover { transform: translateY(-1px); box-shadow: 0 5px 0 var(--ba-azul); }
+  button:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--ba-azul); }
+
+  /* Footer ministerio */
+  .footer-mini {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 11px;
+    color: var(--ba-gris);
+    font-weight: 500;
+    letter-spacing: 0.3px;
+  }
 
   @media (max-width: 720px) {
     .bins { grid-template-columns: repeat(3, 1fr); }
     h1 { font-size: 22px; }
-    .bin-year { font-size: 24px; }
+    .bin-year { font-size: 26px; }
     .card, .card-ghost { padding: 14px 16px; max-width: 320px; }
     .card-text { font-size: 15px; }
   }
   @media (max-width: 480px) {
     .bins { grid-template-columns: repeat(2, 1fr); }
-    .end-score { font-size: 36px; }
+    .end-score { font-size: 38px; }
     .end-score .of { font-size: 20px; }
     .end-emoji { font-size: 48px; }
     .end-title { font-size: 20px; }
@@ -209,8 +312,10 @@
 <body>
 <div class="wrap">
 
-  <h1>Arrastrá cada pista al Mundial correcto</h1>
-  <p class="subtitle">Leé cada tarjeta y arrastrala al Mundial al que pertenece según las pistas de los relatos.</p>
+  <div class="header">
+    <h1>Arrastrá cada pista al Mundial correcto</h1>
+    <p class="subtitle">Leé cada tarjeta y arrastrala al Mundial al que pertenece según las pistas de los relatos.</p>
+  </div>
 
   <div class="stage" id="stage">
     <div class="score-mini" id="score-mini"></div>
@@ -243,8 +348,8 @@
 
     // Objetos de la época
     { id: 'o1930', cat: 'objeto',      catLabel: 'Objeto',      text: 'Diario doblado bajo el brazo',                 mundial: '1930' },
-    { id: 'o1958', cat: 'objeto',      catLabel: 'Objeto',      text: 'Radio encendida en el barrio',                 mundial: '1958' },
-    { id: 'o1978', cat: 'objeto',      catLabel: 'Objeto',      text: 'Televisor familiar',                           mundial: '1978' },
+    { id: 'o1958', cat: 'objeto',      catLabel: 'Objeto',      text: 'Todas las TV en blanco y negro',               mundial: '1958' },
+    { id: 'o1978', cat: 'objeto',      catLabel: 'Objeto',      text: 'Primeras TV a color en Europa',                mundial: '1978' },
     { id: 'o2002', cat: 'objeto',      catLabel: 'Objeto',      text: 'Control remoto y TV plana',                    mundial: '2002' },
     { id: 'o2022', cat: 'objeto',      catLabel: 'Objeto',      text: 'Smartphone',                                   mundial: '2022' },
 
@@ -263,8 +368,8 @@
     { id: 'm2022', cat: 'camiseta',    catLabel: 'Camiseta',    text: 'Tres estrellas y Sol de Mayo',                 mundial: '2022' }
   ];
   const BINS = ['1930','1958','1978','2002','2022'];
-
   const DECK_SIZE = 12;
+
   const deck = CARDS.slice().sort(() => Math.random() - 0.5).slice(0, DECK_SIZE);
   let idx = 0;
   let correct = 0;
@@ -302,7 +407,7 @@
     slot.innerHTML = '';
     feedback.textContent = '';
     if (idx >= deck.length){ finish(); return; }
-    progress.textContent = 'Tarjeta ' + (idx+1) + ' de ' + deck.length;
+    progress.textContent = 'Tarjeta ' + (idx+1) + '/' + deck.length;
     scoreMini.textContent = 'Aciertos: ' + correct;
     const card = deck[idx];
     const el = document.createElement('div');
@@ -354,9 +459,9 @@
       setTimeout(() => bin.classList.remove('correct-flash','wrong-flash'), 500);
       if (isCorrect){
         correct++;
-        feedback.innerHTML = '<span style="color: #085041;">✓ ¡Correcto!</span>';
+        feedback.innerHTML = '<span style="color: var(--ok-fg);">✓ ¡Correcto!</span>';
       } else {
-        feedback.innerHTML = '<span style="color: #791F1F;">✗ Era el Mundial ' + card.mundial + '</span>';
+        feedback.innerHTML = '<span style="color: var(--err-fg);">✗ Era el Mundial ' + card.mundial + '</span>';
       }
       idx++;
       scoreMini.textContent = 'Aciertos: ' + correct;
