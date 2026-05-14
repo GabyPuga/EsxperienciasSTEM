@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Historia del Mundial de Fútbol ⚽</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --verde: #1a7a4a;
+    --verde-claro: #e8f5ee;
+    --azul: #1a5fa0;
+    --azul-claro: #e6f0fb;
+    --naranja: #d4600a;
+    --naranja-claro: #fdf0e4;
+    --violeta: #5c3abf;
+    --violeta-claro: #eeebfd;
+    --rojo: #c0392b;
+    --rojo-claro: #fdecea;
+    --gris: #444;
+    --gris-claro: #f5f5f0;
+    --texto: #222;
+    --blanco: #fff;
+    --sombra: 0 2px 12px rgba(0,0,0,0.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: #f0ede6;
+    color: var(--texto);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .hero {
+    background: linear-gradient(135deg, #1a3a2a 0%, #1a7a4a 60%, #22a05a 100%);
+    padding: 3rem 1.5rem 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "⚽";
+    font-size: 220px;
+    position: absolute;
+    top: -40px; right: -40px;
+    opacity: 0.06;
+    line-height: 1;
+    pointer-events: none;
+  }
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.8rem, 8vw, 5.5rem);
+    color: #fff;
+    letter-spacing: 2px;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+    text-shadow: 0 3px 12px rgba(0,0,0,0.3);
+  }
+  .hero-sub {
+    font-size: clamp(0.95rem, 2.5vw, 1.15rem);
+    color: rgba(255,255,255,0.85);
+    font-weight: 600;
+    max-width: 600px;
+    margin: 0 auto 1.5rem;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .hero-stat {
+    background: rgba(255,255,255,0.15);
+    border: 1.5px solid rgba(255,255,255,0.25);
+    border-radius: 12px;
+    padding: 0.5rem 1.2rem;
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+  .hero-stat span { font-size: 1.4rem; display: block; line-height: 1.1; }
+
+  /* LEYENDA DE ETAPAS */
+  .leyenda {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    padding: 1.2rem 1rem;
+    background: #fff;
+    border-bottom: 2px solid #e0ddd6;
+  }
+  .leyenda-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--gris);
+  }
+  .leyenda-dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    border: 2px solid rgba(0,0,0,0.1);
+  }
+
+  /* CONTENIDO PRINCIPAL */
+  .main { max-width: 960px; margin: 0 auto; padding: 2rem 1rem 3rem; }
+
+  /* ETAPA SEPARADOR */
+  .era-sep {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 2rem 0 1rem;
+  }
+  .era-sep-line { flex: 1; height: 2px; border-radius: 2px; }
+  .era-sep-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    padding: 4px 18px;
+    border-radius: 30px;
+    white-space: nowrap;
+    border: 2px solid transparent;
+  }
+
+  .etapa-13 .era-sep-line { background: var(--verde); }
+  .etapa-13 .era-sep-label { background: var(--verde-claro); color: var(--verde); border-color: var(--verde); }
+  .etapa-16 .era-sep-line { background: var(--azul); }
+  .etapa-16 .era-sep-label { background: var(--azul-claro); color: var(--azul); border-color: var(--azul); }
+  .etapa-24 .era-sep-line { background: var(--naranja); }
+  .etapa-24 .era-sep-label { background: var(--naranja-claro); color: var(--naranja); border-color: var(--naranja); }
+  .etapa-32 .era-sep-line { background: var(--violeta); }
+  .etapa-32 .era-sep-label { background: var(--violeta-claro); color: var(--violeta); border-color: var(--violeta); }
+  .etapa-48 .era-sep-line { background: var(--rojo); }
+  .etapa-48 .era-sep-label { background: var(--rojo-claro); color: var(--rojo); border-color: var(--rojo); }
+
+  /* AVISO GUERRA */
+  .guerra {
+    background: #fff8e6;
+    border: 2px dashed #d4a017;
+    border-radius: 12px;
+    padding: 0.9rem 1.2rem;
+    margin: 0.75rem 0;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #7a5a0a;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .guerra-icon { font-size: 1.4rem; }
+
+  /* CARD */
+  .card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: var(--sombra);
+    margin-bottom: 12px;
+    overflow: hidden;
+    border: 1.5px solid rgba(0,0,0,0.07);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.13);
+  }
+
+  .card-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1.5px solid rgba(0,0,0,0.07);
+  }
+
+  .anio-badge {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 1px;
+    min-width: 68px;
+    text-align: center;
+    padding: 4px 10px;
+    border-radius: 10px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .badge-13 { background: var(--verde-claro); color: var(--verde); }
+  .badge-16 { background: var(--azul-claro); color: var(--azul); }
+  .badge-24 { background: var(--naranja-claro); color: var(--naranja); }
+  .badge-32 { background: var(--violeta-claro); color: var(--violeta); }
+  .badge-48 { background: var(--rojo-claro); color: var(--rojo); }
+
+  .sede-info { flex: 1; min-width: 0; }
+  .sede-nombre {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--texto);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .sede-campeon {
+    font-size: 0.8rem;
+    color: #666;
+    font-weight: 600;
+    margin-top: 1px;
+  }
+
+  .num-equipos {
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 1px;
+    line-height: 1;
+    flex-shrink: 0;
+    text-align: center;
+    min-width: 70px;
+  }
+  .num-equipos .num-grande {
+    font-size: 2.2rem;
+    display: block;
+    line-height: 1;
+  }
+  .num-equipos .num-label {
+    font-size: 0.6rem;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #999;
+    margin-top: 4px;
+    display: block;
+  }
+  .num-equipos .estrella-arg {
+    font-size: 1rem;
+    margin-top: 4px;
+    display: block;
+    line-height: 1;
+  }
+  .num-13 { color: var(--verde); }
+  .num-16 { color: var(--azul); }
+  .num-24 { color: var(--naranja); }
+  .num-32 { color: var(--violeta); }
+  .num-48 { color: var(--rojo); }
+
+  .card-body {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media (max-width: 600px) {
+    .card-body { grid-template-columns: 1fr; }
+    .celda { border-right: none !important; border-bottom: 1.5px solid rgba(0,0,0,0.07); }
+    .celda:last-child { border-bottom: none; }
+  }
+
+  .celda {
+    padding: 12px 14px;
+    border-right: 1.5px solid rgba(0,0,0,0.07);
+  }
+  .celda:last-child { border-right: none; }
+
+  .celda-icono {
+    margin-bottom: 6px;
+    display: block;
+    width: 34px;
+    height: 34px;
+  }
+  .celda-icono svg { width: 100%; height: 100%; display: block; }
+
+  .celda-label {
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #999;
+    margin-bottom: 4px;
+  }
+  .celda-val {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--texto);
+    line-height: 1.35;
+    margin-bottom: 3px;
+  }
+  .celda-nota {
+    font-size: 0.76rem;
+    color: #666;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  /* ANÉCDOTA */
+  .anecdota {
+    padding: 14px 18px;
+    border-top: 1.5px solid rgba(0,0,0,0.07);
+    background: #fafaf5;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .anecdota-body { flex: 1; min-width: 0; }
+  .anecdota-titulo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.05rem;
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+  }
+  .anecdota-texto {
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: #333;
+    font-weight: 500;
+  }
+  .anecdota-texto strong { color: #111; }
+  .anec-13 { background: #f4faf6; }
+  .anec-13 .anecdota-titulo { color: var(--verde); }
+  .anec-16 { background: #f4f8fc; }
+  .anec-16 .anecdota-titulo { color: var(--azul); }
+  .anec-24 { background: #fdf7f0; }
+  .anec-24 .anecdota-titulo { color: var(--naranja); }
+  .anec-32 { background: #f6f3fc; }
+  .anec-32 .anecdota-titulo { color: var(--violeta); }
+  .anec-48 { background: #fdf3f1; }
+  .anec-48 .anecdota-titulo { color: var(--rojo); }
+
+  /* BANDERAS SVG */
+  .flag {
+    display: inline-block;
+    width: 22px;
+    height: 15px;
+    vertical-align: -3px;
+    border-radius: 2px;
+    border: 1px solid rgba(0,0,0,0.15);
+    overflow: hidden;
+    margin-right: 4px;
+  }
+  .flag-sm {
+    width: 16px;
+    height: 11px;
+    vertical-align: -1px;
+  }
+  .flag svg { display: block; width: 100%; height: 100%; }
+
+  /* FOOTER */
+  .footer {
+    padding: 2rem 1.5rem 2.5rem;
+    font-size: 0.82rem;
+    color: #666;
+    font-weight: 600;
+    border-top: 2px solid #e0ddd6;
+    background: #fff;
+    margin-top: 2rem;
+    line-height: 1.6;
+  }
+  .footer-titulo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    color: #333;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+  }
+  .footer ul {
+    list-style: none;
+    margin: 6px 0 14px;
+    padding-left: 0;
+  }
+  .footer li {
+    padding: 3px 0;
+    font-size: 0.78rem;
+  }
+  .footer a {
+    color: var(--azul);
+    text-decoration: none;
+    word-break: break-all;
+  }
+  .footer a:hover { text-decoration: underline; }
+  .footer-nota {
+    text-align: center;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px dashed #ccc;
+    font-size: 0.78rem;
+    color: #888;
+  }
+</style>
+</head>
+<body>
+
+<!-- Definiciones SVG reutilizables -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- ICONO EQUIPOS: jugadores -->
+    <symbol id="icon-equipos" viewBox="0 0 64 64">
+      <circle cx="32" cy="14" r="9" fill="#f5f5f5" stroke="#333" stroke-width="1.5"/>
+      <polygon points="32,9 35,12 34,16 30,16 29,12" fill="#555"/>
+      <circle cx="32" cy="36" r="7" fill="#e8c5a0"/>
+      <path d="M22 36 q5 -10 10 -10 q5 0 10 10 z" fill="#7a3a2a"/>
+      <path d="M22 56 q0 -12 10 -12 q10 0 10 12 z" fill="#3a7fc4"/>
+      <circle cx="14" cy="38" r="5.5" fill="#e8c5a0"/>
+      <path d="M9 36 q5 -7 10 -7 v6 h-10 z" fill="#f0c040"/>
+      <path d="M5 58 q0 -10 9 -10 q9 0 9 10 z" fill="#3a7fc4"/>
+      <circle cx="50" cy="38" r="5.5" fill="#e8c5a0"/>
+      <path d="M45 32 q5 -3 10 4 v3 h-10 z" fill="#555"/>
+      <path d="M41 58 q0 -10 9 -10 q9 0 9 10 z" fill="#3a7fc4"/>
+    </symbol>
+
+    <!-- ICONO FORMATO: llave de torneo -->
+    <symbol id="icon-formato" viewBox="0 0 64 64">
+      <circle cx="32" cy="10" r="7" fill="#f5f5f5" stroke="#333" stroke-width="1.3"/>
+      <polygon points="32,6 35,9 33.5,13 30.5,13 29,9" fill="#555"/>
+      <line x1="32" y1="17" x2="32" y2="24" stroke="#666" stroke-width="2"/>
+      <line x1="16" y1="24" x2="48" y2="24" stroke="#666" stroke-width="2"/>
+      <line x1="16" y1="24" x2="16" y2="30" stroke="#666" stroke-width="2"/>
+      <line x1="48" y1="24" x2="48" y2="30" stroke="#666" stroke-width="2"/>
+      <path d="M10 30 h12 l3 4 v8 h-18 v-8 z" fill="#3a7fc4"/>
+      <path d="M42 30 h12 l3 4 v8 h-18 v-8 z" fill="#d44a5a"/>
+      <line x1="16" y1="42" x2="16" y2="46" stroke="#666" stroke-width="2"/>
+      <line x1="48" y1="42" x2="48" y2="46" stroke="#666" stroke-width="2"/>
+      <line x1="8" y1="46" x2="24" y2="46" stroke="#666" stroke-width="2"/>
+      <line x1="40" y1="46" x2="56" y2="46" stroke="#666" stroke-width="2"/>
+      <line x1="8" y1="46" x2="8" y2="50" stroke="#666" stroke-width="2"/>
+      <line x1="24" y1="46" x2="24" y2="50" stroke="#666" stroke-width="2"/>
+      <line x1="40" y1="46" x2="40" y2="50" stroke="#666" stroke-width="2"/>
+      <line x1="56" y1="46" x2="56" y2="50" stroke="#666" stroke-width="2"/>
+      <path d="M4 50 h8 l2 3 v8 h-12 v-8 z" fill="#3a7fc4"/>
+      <path d="M20 50 h8 l2 3 v8 h-12 v-8 z" fill="#7ab836"/>
+      <path d="M36 50 h8 l2 3 v8 h-12 v-8 z" fill="#5a6470"/>
+      <path d="M52 50 h8 l2 3 v8 h-12 v-8 z" fill="#d44a5a"/>
+    </symbol>
+
+    <!-- ICONO CLASIFICACIÓN: podio con estrella -->
+    <symbol id="icon-podio" viewBox="0 0 64 64">
+      <polygon points="32,4 36,14 47,14 38,21 41,32 32,25 23,32 26,21 17,14 28,14"
+               fill="#f5b720" stroke="#d4a017" stroke-width="0.5"/>
+      <rect x="2" y="40" width="20" height="22" rx="1.5" fill="#3a7fc4"/>
+      <text x="12" y="56" font-family="Arial, sans-serif" font-size="11" font-weight="900"
+            text-anchor="middle" fill="#fff">2</text>
+      <rect x="22" y="32" width="20" height="30" rx="1.5" fill="#2a8fdf"/>
+      <text x="32" y="52" font-family="Arial, sans-serif" font-size="13" font-weight="900"
+            text-anchor="middle" fill="#fff">1</text>
+      <rect x="42" y="44" width="20" height="18" rx="1.5" fill="#1c6db5"/>
+      <text x="52" y="57" font-family="Arial, sans-serif" font-size="10" font-weight="900"
+            text-anchor="middle" fill="#fff">3</text>
+    </symbol>
+
+    <!-- ICONO COPA -->
+    <symbol id="icon-copa" viewBox="0 0 64 64">
+      <ellipse cx="32" cy="20" rx="14" ry="16" fill="#f5b720"/>
+      <path d="M22 14 q4 -2 8 0 q3 2 6 5 q-2 4 -6 6 q-5 -4 -8 -11 z" fill="#d4920a" opacity="0.5"/>
+      <path d="M22 30 q-2 8 4 14 q3 3 6 5 q3 -2 6 -5 q6 -6 4 -14 q-5 4 -10 4 q-5 0 -10 -4 z" fill="#f5b720"/>
+      <path d="M28 35 q1 8 4 14 q3 -6 4 -14 q-4 1 -8 0 z" fill="#d4920a" opacity="0.4"/>
+      <rect x="22" y="48" width="20" height="4" fill="#f5b720"/>
+      <rect x="22" y="52" width="20" height="3" fill="#1a7a4a"/>
+      <rect x="22" y="55" width="20" height="2" fill="#f5b720"/>
+      <rect x="22" y="57" width="20" height="3" fill="#1a7a4a"/>
+      <rect x="20" y="60" width="24" height="3" rx="0.5" fill="#f5b720"/>
+    </symbol>
+
+    <!-- BANDERAS -->
+    <!-- Uruguay -->
+    <symbol id="flag-uy" viewBox="0 0 30 20">
+      <rect width="30" height="20" fill="#fff"/>
+      <rect y="2.2" width="30" height="2.2" fill="#0038A8"/>
+      <rect y="6.7" width="30" height="2.2" fill="#0038A8"/>
+      <rect y="11.1" width="30" height="2.2" fill="#0038A8"/>
+      <rect y="15.6" width="30" height="2.2" fill="#0038A8"/>
+      <rect width="12" height="11.1" fill="#fff"/>
+      <circle cx="6" cy="5.55" r="2.5" fill="#FCD116"/>
+    </symbol>
+    <!-- Italia -->
+    <symbol id="flag-it" viewBox="0 0 30 20">
+      <rect width="10" height="20" fill="#009246"/>
+      <rect x="10" width="10" height="20" fill="#fff"/>
+      <rect x="20" width="10" height="20" fill="#CE2B37"/>
+    </symbol>
+    <!-- Alemania -->
+    <symbol id="flag-de" viewBox="0 0 30 20">
+      <rect width="30" height="6.67" fill="#000"/>
+      <rect y="6.67" width="30" height="6.67" fill="#DD0000"/>
+      <rect y="13.33" width="30" height="6.67" fill="#FFCE00"/>
+    </symbol>
+    <!-- Brasil -->
+    <symbol id="flag-br" viewBox="0 0 30 20">
+      <rect width="30" height="20" fill="#009C3B"/>
+      <polygon points="15,3 27,10 15,17 3,10" fill="#FFDF00"/>
+      <circle cx="15" cy="10" r="3.5" fill="#002776"/>
+    </symbol>
+    <!-- Inglaterra -->
+    <symbol id="flag-en" viewBox="0 0 30 20">
+      <rect width="30" height="20" fill="#fff"/>
+      <rect x="13" width="4" height="20" fill="#CE1124"/>
+      <rect y="8" width="30" height="4" fill="#CE1124"/>
+    </symbol>
+    <!-- Argentina -->
+    <symbol id="flag-ar" viewBox="0 0 30 20">
+      <rect width="30" height="20" fill="#fff"/>
+      <rect width="30" height="6.67" fill="#75AADB"/>
+      <rect y="13.33" width="30" height="6.67" fill="#75AADB"/>
+      <circle cx="15" cy="10" r="1.8" fill="#F6B40E"/>
+    </symbol>
+    <!-- Francia -->
+    <symbol id="flag-fr" viewBox="0 0 30 20">
+      <rect width="10" height="20" fill="#0055A4"/>
+      <rect x="10" width="10" height="20" fill="#fff"/>
+      <rect x="20" width="10" height="20" fill="#EF4135"/>
+    </symbol>
+    <!-- España -->
+    <symbol id="flag-es" viewBox="0 0 30 20">
+      <rect width="30" height="20" fill="#AA151B"/>
+      <rect y="5" width="30" height="10" fill="#F1BF00"/>
+    </symbol>
+    <!-- Chile -->
+    <symbol id="flag-cl" viewBox="0 0 30 20">
+      <rect width="30" height="20" fill="#fff"/>
+      <rect y="10" width="30" height="10" fill="#D52B1E"/>
+      <rect width="10" height="10" fill="#0039A6"/>
+      <polygon points="5,2 6,4.2 8.4,4.2 6.4,5.7 7.2,8 5,6.6 2.8,8 3.6,5.7 1.6,4.2 4,4.2" fill="#fff"/>
+    </symbol>
+    <!-- Suiza -->
+    <symbol id="flag-ch" viewBox="0 0 20 20">
+      <rect width="20" height="20" fill="#D52B1E"/>
+      <rect x="8.5" y="4" width="3" height="12" fill="#fff"/>
+      <rect x="4" y="8.5" width="12" height="3" fill="#fff"/>
+    </symbol>
+    <!-- Suecia -->
+    <symbol id="flag-se" viewBox="0 0 30 20">
+      <rect width="30" height="20" fill="#006AA7"/>
+      <rect x="9" width="3" height="20" fill="#FECC02"/>
+      <rect y="8.5" width="30" height="3" fill="#FECC02"/>
+    </symbol>
+    <!-- México -->
+    <symbol id="flag-mx" viewBox="0 0 30 20">
+      <rect width="10" height="20" fill="#006847"/>
+      <rect x="10" width="10" height="20" fill="#fff"/>
+      <rect x="20" width="10" height="20" fill="#CE1126"/>
+      <ellipse cx="15" cy="10" rx="2" ry="3" fill="#8B4513" opacity="0.7"/>
+    </symbol>
+    <!-- Estados Unidos -->
+    <symbol id="flag-us" viewBox="0 0 30 20">
+      <rect width="30" height="20" fill="#fff"/>
+      <rect y="0" width="30" height="1.54" fill="#B22234"/>
+      <rect y="3.08" width="30" height="1.54" fill="#B22234"/>
+      <rect y="6.15" width="30" height="1.54" fill="#B22234"/>
+      <rect y="9.23" width="30" height="1.54" fill="#B22234"/>
+      <rect y="12.31" width="30" height="1.54" fill="#B22234"/>
+      <rect y="15.38" width="30" height="1.54" fill="#B22234"/>
+      <rect y="18.46" width="30" height="1.54" fill="#B22234"/>
+      <rect width="12" height="10.77" fill="#3C3B6E"/>
+    </symbol>
+    <!-- Corea del Sur -->
+    <symbol id="flag-kr" viewBox="0 0 30 20">
+      <rect width="30" height="20" fill="#fff"/>
+      <circle cx="15" cy="10" r="4" fill="#CD2E3A"/>
+      <path d="M11 10 a4 4 0 0 1 8 0 a2 2 0 0 1 -4 0 a2 2 0 0 0 -4 0" fill="#0047A0"/>
+    </symbol>
+    <!-- Japón -->
+    <symbol id="flag-jp" viewBox="0 0 30 20">
+      <rect width="30" height="20" fill="#fff"/>
+      <circle cx="15" cy="10" r="5" fill="#BC002D"/>
+    </symbol>
+    <!-- Sudáfrica -->
+    <symbol id="flag-za" viewBox="0 0 30 20">
+      <rect width="30" height="20" fill="#fff"/>
+      <rect width="30" height="6.67" fill="#DE3831"/>
+      <rect y="13.33" width="30" height="6.67" fill="#002395"/>
+      <polygon points="0,0 14,10 0,20" fill="#000"/>
+      <polygon points="0,3 10,10 0,17" fill="#FFB612"/>
+      <polygon points="0,5 7,10 0,15" fill="#007749"/>
+    </symbol>
+    <!-- Rusia -->
+    <symbol id="flag-ru" viewBox="0 0 30 20">
+      <rect width="30" height="6.67" fill="#fff"/>
+      <rect y="6.67" width="30" height="6.67" fill="#0039A6"/>
+      <rect y="13.33" width="30" height="6.67" fill="#D52B1E"/>
+    </symbol>
+    <!-- Catar -->
+    <symbol id="flag-qa" viewBox="0 0 30 20">
+      <rect width="30" height="20" fill="#8D1B3D"/>
+      <polygon points="0,0 10,0 8,2 10,4 8,6 10,8 8,10 10,12 8,14 10,16 8,18 10,20 0,20" fill="#fff"/>
+    </symbol>
+    <!-- Canadá -->
+    <symbol id="flag-ca" viewBox="0 0 30 20">
+      <rect width="30" height="20" fill="#fff"/>
+      <rect width="7.5" height="20" fill="#FF0000"/>
+      <rect x="22.5" width="7.5" height="20" fill="#FF0000"/>
+      <polygon points="15,5 16,8 19,8 16.5,10 17.5,13 15,11 12.5,13 13.5,10 11,8 14,8" fill="#FF0000"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="hero">
+  <div class="hero-title">Historia del Mundial de Fútbol ⚽</div>
+  <div class="hero-sub">Todas las ediciones: cuántos equipos jugaron, cómo fue el torneo y cómo se clasificaron</div>
+  <div class="hero-stats">
+    <div class="hero-stat"><span>23</span>Ediciones</div>
+    <div class="hero-stat"><span>1930</span>Primer Mundial</div>
+    <div class="hero-stat"><span>8</span>Campeones distintos</div>
+    <div class="hero-stat"><span>48</span>Equipos en 2026</div>
+  </div>
+</div>
+
+<div class="leyenda">
+  <div class="leyenda-item"><div class="leyenda-dot" style="background:var(--verde)"></div>Etapa de 13 equipos</div>
+  <div class="leyenda-item"><div class="leyenda-dot" style="background:var(--azul)"></div>Etapa de 16 equipos</div>
+  <div class="leyenda-item"><div class="leyenda-dot" style="background:var(--naranja)"></div>Etapa de 24 equipos</div>
+  <div class="leyenda-item"><div class="leyenda-dot" style="background:var(--violeta)"></div>Etapa de 32 equipos</div>
+  <div class="leyenda-item"><div class="leyenda-dot" style="background:var(--rojo)"></div>Etapa de 48 equipos</div>
+</div>
+
+<div class="main">
+
+  <!-- ETAPA 13 -->
+  <div class="era-sep etapa-13">
+    <div class="era-sep-line"></div>
+    <div class="era-sep-label">Etapa de 13 equipos</div>
+    <div class="era-sep-line"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="anio-badge badge-13">1930</div>
+      <div class="sede-info">
+        <div class="sede-nombre"><span class="flag"><svg><use href="#flag-uy"/></svg></span>Uruguay</div>
+        <div class="sede-campeon"><svg width="14" height="14" style="vertical-align:-2px"><use href="#icon-copa"/></svg> Campeón: <span class="flag flag-sm"><svg><use href="#flag-uy"/></svg></span>Uruguay</div>
+      </div>
+      <div class="num-equipos num-13"><span class="num-grande">1°</span><span class="num-label">Mundial</span></div>
+    </div>
+    <div class="card-body">
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-equipos"/></svg></span>
+        <div class="celda-label">Equipos participantes</div>
+        <div class="celda-val">13 selecciones</div>
+        <div class="celda-nota">7 de América, 4 de Europa y 2 de Norteamérica</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-formato"/></svg></span>
+        <div class="celda-label">Formato del torneo</div>
+        <div class="celda-val">4 grupos → semifinales → final</div>
+        <div class="celda-nota">El 1.° de cada grupo pasaba a semifinales</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-podio"/></svg></span>
+        <div class="celda-label">¿Cómo se clasificaron?</div>
+        <div class="celda-val">Invitación directa de la FIFA</div>
+        <div class="celda-nota">No hubo eliminatorias. Muchos europeos no viajaron por la distancia y los costos</div>
+      </div>
+    </div>
+    <div class="anecdota anec-13">
+      <div class="anecdota-body">
+        <div class="anecdota-titulo">¿Sabías qué...?</div>
+        <div class="anecdota-texto">
+          La final entre Uruguay y Argentina fue tan tensa que <strong>el primer tiempo se jugó con una pelota argentina y el segundo con una uruguaya</strong>, porque ninguno de los dos países quería ceder. Ganó Uruguay 4-2 en el estadio Centenario, construido especialmente para el torneo. El escritor Juan Sasturain la llamó "el clásico de barrio más grande de la historia". ¡Además fue el único Mundial sin partido por el tercer puesto!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ETAPA 16 -->
+  <div class="era-sep etapa-16">
+    <div class="era-sep-line"></div>
+    <div class="era-sep-label">Etapa de 16 equipos</div>
+    <div class="era-sep-line"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="anio-badge badge-16">1934</div>
+      <div class="sede-info">
+        <div class="sede-nombre"><span class="flag"><svg><use href="#flag-it"/></svg></span>Italia</div>
+        <div class="sede-campeon"><svg width="14" height="14" style="vertical-align:-2px"><use href="#icon-copa"/></svg> Campeón: <span class="flag flag-sm"><svg><use href="#flag-it"/></svg></span>Italia</div>
+      </div>
+      <div class="num-equipos num-16"><span class="num-grande">2°</span><span class="num-label">Mundial</span></div>
+    </div>
+    <div class="card-body">
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-equipos"/></svg></span>
+        <div class="celda-label">Equipos participantes</div>
+        <div class="celda-val">16 selecciones</div>
+        <div class="celda-nota">Primer mundial con representación africana (Egipto). 10 países debutaron</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-formato"/></svg></span>
+        <div class="celda-label">Formato del torneo</div>
+        <div class="celda-val">Eliminación directa desde el inicio</div>
+        <div class="celda-nota">Quien perdía un partido quedaba eliminado. Sin fase de grupos. 8vos → 4tos → semis → final</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-podio"/></svg></span>
+        <div class="celda-label">¿Cómo se clasificaron?</div>
+        <div class="celda-val">Primeras eliminatorias de la historia</div>
+        <div class="celda-nota">Jugaron partidos clasificatorios por primera vez. El propio anfitrión (Italia) también clasificó</div>
+      </div>
+    </div>
+    <div class="anecdota anec-16">
+      <div class="anecdota-body">
+        <div class="anecdota-titulo">¿Sabías qué...?</div>
+        <div class="anecdota-texto">
+          Italia estaba gobernada por el dictador <strong>Benito Mussolini, que nunca había visto fútbol en su vida</strong>, pero aceptó organizar el Mundial. En cada partido los jugadores italianos hacían el saludo fascista. Antes de la final, Mussolini les dijo a sus jugadores: <em>"Vencer o morir"</em>, mientras pasaba el dedo por su cuello. Italia ganó 2-1 a Checoslovaquia... ¡con cuatro argentinos en el plantel! (Monti, Guaita, Demaría y Orsi).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="anio-badge badge-16">1938</div>
+      <div class="sede-info">
+        <div class="sede-nombre"><span class="flag"><svg><use href="#flag-fr"/></svg></span>Francia</div>
+        <div class="sede-campeon"><svg width="14" height="14" style="vertical-align:-2px"><use href="#icon-copa"/></svg> Campeón: <span class="flag flag-sm"><svg><use href="#flag-it"/></svg></span>Italia (bicampeón)</div>
+      </div>
+      <div class="num-equipos num-16"><span class="num-grande">3°</span><span class="num-label">Mundial</span></div>
+    </div>
+    <div class="card-body">
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-equipos"/></svg></span>
+        <div class="celda-label">Equipos participantes</div>
+        <div class="celda-val">15 selecciones</div>
+        <div class="celda-nota">Eran 16, pero Austria se retiró por conflictos bélicos (fue anexionada por la Alemania nazi)</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-formato"/></svg></span>
+        <div class="celda-label">Formato del torneo</div>
+        <div class="celda-val">Eliminación directa (última vez)</div>
+        <div class="celda-nota">Mismo sistema que 1934. Si había empate, se jugaba un partido de desempate al día siguiente</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-podio"/></svg></span>
+        <div class="celda-label">¿Cómo se clasificaron?</div>
+        <div class="celda-val">Eliminatorias + cupo automático</div>
+        <div class="celda-nota">El anfitrión y el campeón anterior clasificaban directo. El resto jugaba eliminatorias</div>
+      </div>
+    </div>
+    <div class="anecdota anec-16">
+      <div class="anecdota-body">
+        <div class="anecdota-titulo">¿Sabías qué...?</div>
+        <div class="anecdota-texto">
+          ¡La sede tenía que ser <strong>Argentina</strong>! Existía un acuerdo de alternancia entre Europa y Sudamérica, e incluso el estadio Monumental se construía pensando en este Mundial. Pero la FIFA eligió a Francia y Argentina, enojada, no participó. En este torneo se marcaron <strong>17 goles de cabeza</strong>, muchísimo más que en mundiales anteriores: ¡por primera vez se usó una pelota con válvula (mucho más liviana) inventada por tres argentinos de <strong>Bell Ville, Córdoba</strong>!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="guerra">
+    <span class="guerra-icon">⚔️</span>
+    Los mundiales de <strong>1942 y 1946 fueron cancelados</strong> por la Segunda Guerra Mundial. El fútbol volvió en 1950.
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="anio-badge badge-16">1950</div>
+      <div class="sede-info">
+        <div class="sede-nombre"><span class="flag"><svg><use href="#flag-br"/></svg></span>Brasil</div>
+        <div class="sede-campeon"><svg width="14" height="14" style="vertical-align:-2px"><use href="#icon-copa"/></svg> Campeón: <span class="flag flag-sm"><svg><use href="#flag-uy"/></svg></span>Uruguay — ¡el Maracanazo!</div>
+      </div>
+      <div class="num-equipos num-16"><span class="num-grande">4°</span><span class="num-label">Mundial</span></div>
+    </div>
+    <div class="card-body">
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-equipos"/></svg></span>
+        <div class="celda-label">Equipos participantes</div>
+        <div class="celda-val">13 selecciones</div>
+        <div class="celda-nota">Eran 16, pero India, Escocia y Turquía se retiraron antes de empezar</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-formato"/></svg></span>
+        <div class="celda-label">Formato del torneo</div>
+        <div class="celda-val">Grupos + liguilla final entre 4 equipos</div>
+        <div class="celda-nota">¡Única edición sin partido final! Los 4 mejores jugaron una liguilla. El último partido definió al campeón</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-podio"/></svg></span>
+        <div class="celda-label">¿Cómo se clasificaron?</div>
+        <div class="celda-val">Eliminatorias clasificatorias</div>
+        <div class="celda-nota">Torneos de clasificación por zonas. Varios países no participaron por conflictos políticos</div>
+      </div>
+    </div>
+    <div class="anecdota anec-16">
+      <div class="anecdota-body">
+        <div class="anecdota-titulo">¿Sabías qué...?</div>
+        <div class="anecdota-texto">
+          <strong>India se había clasificado, pero se retiró porque sus jugadores querían jugar descalzos</strong> ¡y la FIFA no se los permitió! El estadio Maracaná albergaba a casi 200.000 espectadores. En el partido decisivo, a Brasil le alcanzaba con empatar y ya estaba todo preparado para la gran fiesta... pero Uruguay ganó 2-1. Quedó registrado para siempre como <strong>"el Maracanazo"</strong>, una de las mayores hazañas del fútbol mundial.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="anio-badge badge-16">1954</div>
+      <div class="sede-info">
+        <div class="sede-nombre"><span class="flag"><svg><use href="#flag-ch"/></svg></span>Suiza</div>
+        <div class="sede-campeon"><svg width="14" height="14" style="vertical-align:-2px"><use href="#icon-copa"/></svg> Campeón: <span class="flag flag-sm"><svg><use href="#flag-de"/></svg></span>Alemania Occidental</div>
+      </div>
+      <div class="num-equipos num-16"><span class="num-grande">5°</span><span class="num-label">Mundial</span></div>
+    </div>
+    <div class="card-body">
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-equipos"/></svg></span>
+        <div class="celda-label">Equipos participantes</div>
+        <div class="celda-val">16 selecciones</div>
+        <div class="celda-nota">¡Primer mundial televisado de la historia!</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-formato"/></svg></span>
+        <div class="celda-label">Formato del torneo</div>
+        <div class="celda-val">4 grupos de 4 → cuartos → semis → final</div>
+        <div class="celda-nota">Se estableció el modelo clásico de grupos + eliminación directa que se usó por muchos años</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-podio"/></svg></span>
+        <div class="celda-label">¿Cómo se clasificaron?</div>
+        <div class="celda-val">Eliminatorias zonales + cupos automáticos</div>
+        <div class="celda-nota">Anfitrión y campeón clasificaban directo. El resto disputaba eliminatorias regionales</div>
+      </div>
+    </div>
+    <div class="anecdota anec-16">
+      <div class="anecdota-body">
+        <div class="anecdota-titulo">¿Sabías qué...?</div>
+        <div class="anecdota-texto">
+          ¡Fue el Mundial con <strong>más goles por partido de la historia: 5,30 goles cada 90 minutos!</strong> El récord lo lograron Austria 7 - Suiza 4: ¡un gol cada 8 minutos! Hungría, con el genial Ferenc Puskás, era la gran favorita y había vapuleado 8-3 a Alemania en la fase de grupos. Pero en la final ganaron los alemanes 3-2. Además, fue el primer Mundial transmitido por televisión (solo a algunos países europeos).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="anio-badge badge-16">1958</div>
+      <div class="sede-info">
+        <div class="sede-nombre"><span class="flag"><svg><use href="#flag-se"/></svg></span>Suecia</div>
+        <div class="sede-campeon"><svg width="14" height="14" style="vertical-align:-2px"><use href="#icon-copa"/></svg> Campeón: <span class="flag flag-sm"><svg><use href="#flag-br"/></svg></span>Brasil (con el joven Pelé)</div>
+      </div>
+      <div class="num-equipos num-16"><span class="num-grande">6°</span><span class="num-label">Mundial</span></div>
+    </div>
+    <div class="card-body">
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-equipos"/></svg></span>
+        <div class="celda-label">Equipos participantes</div>
+        <div class="celda-val">16 selecciones</div>
+        <div class="celda-nota">Todas las regiones del mundo representadas. Pelé debutó con 17 años</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-formato"/></svg></span>
+        <div class="celda-label">Formato del torneo</div>
+        <div class="celda-val">4 grupos de 4 → cuartos → semis → final</div>
+        <div class="celda-nota">Los 2 primeros de cada grupo avanzaban a la fase eliminatoria</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-podio"/></svg></span>
+        <div class="celda-label">¿Cómo se clasificaron?</div>
+        <div class="celda-val">Eliminatorias regionales</div>
+        <div class="celda-nota">Anfitrión y campeón directo. El resto por torneos clasificatorios en cada continente</div>
+      </div>
+    </div>
+    <div class="anecdota anec-16">
+      <div class="anecdota-body">
+        <div class="anecdota-titulo">¿Sabías qué...?</div>
+        <div class="anecdota-texto">
+          ¡Apareció <strong>Edson Arantes do Nascimento, "Pelé", con apenas 17 años</strong>! Formó parte de un ataque inolvidable: Garrincha, Didí, Vavá, Pelé y Zagallo. Brasil ganó la final 5-2 a Suecia y consiguió su primer título mundial. El francés <strong>Just Fontaine convirtió 13 goles</strong> en un solo Mundial: ¡un récord que ningún jugador pudo superar hasta hoy! En este torneo jugaron los cuatro países del Reino Unido (Inglaterra, Gales, Escocia e Irlanda del Norte), pero no se enfrentaron entre sí.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="anio-badge badge-16">1962</div>
+      <div class="sede-info">
+        <div class="sede-nombre"><span class="flag"><svg><use href="#flag-cl"/></svg></span>Chile</div>
+        <div class="sede-campeon"><svg width="14" height="14" style="vertical-align:-2px"><use href="#icon-copa"/></svg> Campeón: <span class="flag flag-sm"><svg><use href="#flag-br"/></svg></span>Brasil (bicampeón)</div>
+      </div>
+      <div class="num-equipos num-16"><span class="num-grande">7°</span><span class="num-label">Mundial</span></div>
+    </div>
+    <div class="card-body">
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-equipos"/></svg></span>
+        <div class="celda-label">Equipos participantes</div>
+        <div class="celda-val">16 selecciones</div>
+        <div class="celda-nota">Brasil retuvo el título con Garrincha como la gran figura del torneo</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-formato"/></svg></span>
+        <div class="celda-label">Formato del torneo</div>
+        <div class="celda-val">4 grupos de 4 → cuartos → semis → final</div>
+        <div class="celda-nota">Novedad: se introdujo la diferencia de goles para desempatar posiciones en los grupos</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-podio"/></svg></span>
+        <div class="celda-label">¿Cómo se clasificaron?</div>
+        <div class="celda-val">Eliminatorias por confederación</div>
+        <div class="celda-nota">Anfitrión y campeón directo. El resto por eliminatorias de cada confederación (CONMEBOL, UEFA, etc.)</div>
+      </div>
+    </div>
+    <div class="anecdota anec-16">
+      <div class="anecdota-body">
+        <div class="anecdota-titulo">¿Sabías qué...?</div>
+        <div class="anecdota-texto">
+          <strong>Pelé se lesionó en el segundo partido</strong> y no pudo seguir, pero apareció <strong>Garrincha</strong>, el "Ángel de las piernas torcidas", que fue la gran figura. La frase de Carlos Dittborn (presidente de la federación chilena) quedó para la historia: <em>"Porque nada tenemos, lo haremos todo"</em>. Lamentablemente, falleció un mes y medio antes del torneo y nunca llegó a verlo. Brasil ganó la final 3-1 a Checoslovaquia y se consagró bicampeón.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="anio-badge badge-16">1966</div>
+      <div class="sede-info">
+        <div class="sede-nombre"><span class="flag"><svg><use href="#flag-en"/></svg></span>Inglaterra</div>
+        <div class="sede-campeon"><svg width="14" height="14" style="vertical-align:-2px"><use href="#icon-copa"/></svg> Campeón: <span class="flag flag-sm"><svg><use href="#flag-en"/></svg></span>Inglaterra (único título)</div>
+      </div>
+      <div class="num-equipos num-16"><span class="num-grande">8°</span><span class="num-label">Mundial</span></div>
+    </div>
+    <div class="card-body">
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-equipos"/></svg></span>
+        <div class="celda-label">Equipos participantes</div>
+        <div class="celda-val">16 selecciones</div>
+        <div class="celda-nota">La selección anfitriona ganó su único y primer título mundial</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-formato"/></svg></span>
+        <div class="celda-label">Formato del torneo</div>
+        <div class="celda-val">4 grupos de 4 → cuartos → semis → final</div>
+        <div class="celda-nota">Mismo formato clásico. Los 2 primeros de cada grupo avanzaban a cuartos</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-podio"/></svg></span>
+        <div class="celda-label">¿Cómo se clasificaron?</div>
+        <div class="celda-val">Eliminatorias por confederación</div>
+        <div class="celda-nota">Las selecciones de cada continente jugaban entre sí para obtener sus cupos</div>
+      </div>
+    </div>
+    <div class="anecdota anec-16">
+      <div class="anecdota-body">
+        <div class="anecdota-titulo">¿Sabías qué...?</div>
+        <div class="anecdota-texto">
+          En cuartos, <strong>el capitán argentino Antonio Rattín fue expulsado</strong> y no entendía por qué (el árbitro era alemán y no hablaban el mismo idioma): se quedó discutiendo varios minutos antes de salir. ¡Ese partido dio origen a la invención de las <strong>tarjetas amarilla y roja</strong>! Y en la final, el inglés Geoff Hurst pateó al arco y la pelota dio en el travesaño y pegó en la línea. Claramente <em>no había sido gol</em>, pero los árbitros lo dieron por válido. Inglaterra ganó 4-2 a Alemania en su único Mundial.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="anio-badge badge-16">1970</div>
+      <div class="sede-info">
+        <div class="sede-nombre"><span class="flag"><svg><use href="#flag-mx"/></svg></span>México</div>
+        <div class="sede-campeon"><svg width="14" height="14" style="vertical-align:-2px"><use href="#icon-copa"/></svg> Campeón: <span class="flag flag-sm"><svg><use href="#flag-br"/></svg></span>Brasil (tricampeón, se queda con la Copa Jules Rimet)</div>
+      </div>
+      <div class="num-equipos num-16"><span class="num-grande">9°</span><span class="num-label">Mundial</span></div>
+    </div>
+    <div class="card-body">
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-equipos"/></svg></span>
+        <div class="celda-label">Equipos participantes</div>
+        <div class="celda-val">16 selecciones</div>
+        <div class="celda-nota">Se crearon las tarjetas amarilla y roja. Brasil se quedó definitivamente con el trofeo Jules Rimet</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-formato"/></svg></span>
+        <div class="celda-label">Formato del torneo</div>
+        <div class="celda-val">4 grupos de 4 → cuartos → semis → final</div>
+        <div class="celda-nota">Mismo formato clásico. Considerado uno de los mejores mundiales de la historia</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-podio"/></svg></span>
+        <div class="celda-label">¿Cómo se clasificaron?</div>
+        <div class="celda-val">Eliminatorias por confederación</div>
+        <div class="celda-nota">Anfitrión y campeón defensor con cupo automático. El resto por eliminatorias regionales</div>
+      </div>
+    </div>
+    <div class="anecdota anec-16">
+      <div class="anecdota-body">
+        <div class="anecdota-titulo">¿Sabías qué...?</div>
+        <div class="anecdota-texto">
+          ¡Fue el <strong>primer Mundial transmitido por televisión en color</strong> y en vivo a la Argentina! Brasil mostró un ataque demoledor con <strong>cinco jugadores que llevaban la camiseta 10 en sus clubes</strong>: Jairzinho, Gérson, Tostao, Pelé y Rivelino. Brasil goleó a Italia 4-1 en la final. Como ganó tres Copas del Mundo (1958, 1962 y 1970), <strong>se quedó para siempre con el trofeo "Jules Rimet"</strong>. Empezaron a usarse los cambios durante el partido y las tarjetas amarilla y roja.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="anio-badge badge-16">1974</div>
+      <div class="sede-info">
+        <div class="sede-nombre"><span class="flag"><svg><use href="#flag-de"/></svg></span>Alemania Occidental</div>
+        <div class="sede-campeon"><svg width="14" height="14" style="vertical-align:-2px"><use href="#icon-copa"/></svg> Campeón: <span class="flag flag-sm"><svg><use href="#flag-de"/></svg></span>Alemania Occidental. Se estrenó el nuevo trofeo actual</div>
+      </div>
+      <div class="num-equipos num-16"><span class="num-grande">10°</span><span class="num-label">Mundial</span></div>
+    </div>
+    <div class="card-body">
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-equipos"/></svg></span>
+        <div class="celda-label">Equipos participantes</div>
+        <div class="celda-val">16 selecciones</div>
+        <div class="celda-nota">Se creó un nuevo trofeo ya que Brasil, al ser tricampeón, retuvo la Copa Jules Rimet</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-formato"/></svg></span>
+        <div class="celda-label">Formato del torneo</div>
+        <div class="celda-val">2 rondas de grupos → partido por el 3.° → final</div>
+        <div class="celda-nota">Novedad: 2.ª ronda con grupos de 4. Los mejores de esos grupos disputaban la final directamente</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-podio"/></svg></span>
+        <div class="celda-label">¿Cómo se clasificaron?</div>
+        <div class="celda-val">Eliminatorias por confederación</div>
+        <div class="celda-nota">Solo el anfitrión tuvo cupo automático. El campeón ya no clasificaba directo. El resto por eliminatorias</div>
+      </div>
+    </div>
+    <div class="anecdota anec-16">
+      <div class="anecdota-body">
+        <div class="anecdota-titulo">¿Sabías qué...?</div>
+        <div class="anecdota-texto">
+          ¡<strong>Alemania estaba dividida en dos países: Federal (Occidental) y Democrática (Oriental)</strong>! Y los dos clasificaron al Mundial. Se cruzaron en la primera fase y, sorpresa: ganó la Oriental 1-0. Brilló <strong>Holanda con "La Naranja Mecánica"</strong> de Johan Cruyff, que inventó una forma totalmente nueva de jugar al fútbol. Pero en la final Alemania Federal ganó 2-1. En el partido de Argentina contra la Alemania Oriental, <strong>los jugadores argentinos llevaron un brazalete de luto</strong> por la muerte de Juan Domingo Perón.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="anio-badge badge-16">1978</div>
+      <div class="sede-info">
+        <div class="sede-nombre"><span class="flag"><svg><use href="#flag-ar"/></svg></span>Argentina</div>
+        <div class="sede-campeon"><svg width="14" height="14" style="vertical-align:-2px"><use href="#icon-copa"/></svg> Campeón: <span class="flag flag-sm"><svg><use href="#flag-ar"/></svg></span>Argentina (primer título)</div>
+      </div>
+      <div class="num-equipos num-16"><span class="num-grande">11°</span><span class="num-label">Mundial</span><span class="estrella-arg">⭐</span></div>
+    </div>
+    <div class="card-body">
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-equipos"/></svg></span>
+        <div class="celda-label">Equipos participantes</div>
+        <div class="celda-val">16 selecciones</div>
+        <div class="celda-nota">Argentina ganó su primer título mundial como anfitriona, 48 años después de la primera final</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-formato"/></svg></span>
+        <div class="celda-label">Formato del torneo</div>
+        <div class="celda-val">2 rondas de grupos → partido por el 3.° → final</div>
+        <div class="celda-nota">Mismo formato que 1974: dos rondas de grupos, sin cuartos ni semifinales tradicionales</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-podio"/></svg></span>
+        <div class="celda-label">¿Cómo se clasificaron?</div>
+        <div class="celda-val">Eliminatorias por confederación</div>
+        <div class="celda-nota">Solo el anfitrión tenía cupo asegurado. El resto clasificó por eliminatorias regionales</div>
+      </div>
+    </div>
+    <div class="anecdota anec-16">
+      <div class="anecdota-body">
+        <div class="anecdota-titulo">¿Sabías qué...?</div>
+        <div class="anecdota-texto">
+          El sueño argentino de organizar un Mundial <strong>tardó 40 años en cumplirse</strong>: se había prometido para 1938. El torneo se jugó durante la última dictadura militar, y para muchos chicos el fútbol fue un oasis en medio de tiempos muy difíciles. Argentina, dirigida por <strong>César Luis Menotti</strong>, le ganó la final a Holanda 3-1 en tiempo suplementario. La figura fue <strong>Mario Kempes</strong>, nacido en Bell Ville, Córdoba. ¡Fue el primer título mundial de la Argentina!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ETAPA 24 -->
+  <div class="era-sep etapa-24">
+    <div class="era-sep-line"></div>
+    <div class="era-sep-label">Etapa de 24 equipos</div>
+    <div class="era-sep-line"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="anio-badge badge-24">1982</div>
+      <div class="sede-info">
+        <div class="sede-nombre"><span class="flag"><svg><use href="#flag-es"/></svg></span>España</div>
+        <div class="sede-campeon"><svg width="14" height="14" style="vertical-align:-2px"><use href="#icon-copa"/></svg> Campeón: <span class="flag flag-sm"><svg><use href="#flag-it"/></svg></span>Italia (tricampeón)</div>
+      </div>
+      <div class="num-equipos num-24"><span class="num-grande">12°</span><span class="num-label">Mundial</span></div>
+    </div>
+    <div class="card-body">
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-equipos"/></svg></span>
+        <div class="celda-label">Equipos participantes</div>
+        <div class="celda-val">24 selecciones</div>
+        <div class="celda-nota">Primera gran expansión del torneo desde 1934. Más cupos para todos los continentes</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-formato"/></svg></span>
+        <div class="celda-label">Formato del torneo</div>
+        <div class="celda-val">6 grupos de 4 → 2.ª ronda grupos → semis → final</div>
+        <div class="celda-nota">Los 2 mejores de cada grupo pasaban a una segunda ronda en grupos de 3. Los ganadores iban a semis</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-podio"/></svg></span>
+        <div class="celda-label">¿Cómo se clasificaron?</div>
+        <div class="celda-val">Eliminatorias por confederación + anfitrión automático</div>
+        <div class="celda-nota">Más cupos disponibles por continente. Más países de África, Asia y América participaron por primera vez</div>
+      </div>
+    </div>
+    <div class="anecdota anec-24">
+      <div class="anecdota-body">
+        <div class="anecdota-titulo">¿Sabías qué...?</div>
+        <div class="anecdota-texto">
+          ¡Ocurrió la <strong>mayor goleada en la historia de los mundiales: Hungría 10 - El Salvador 1</strong>! También pasó algo polémico: en el partido Alemania-Austria, ambos sabían que un resultado 1-0 los clasificaba a los dos y dejaba afuera a Argelia. Jugaron sin esforzarse y ganaron 1-0 los alemanes. ¡Desde ese día los <strong>últimos partidos de cada grupo se juegan al mismo tiempo</strong>! Y un dato curioso: un jeque de Kuwait se metió en pleno partido a la cancha ¡y logró que anularan un gol!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="anio-badge badge-24">1986</div>
+      <div class="sede-info">
+        <div class="sede-nombre"><span class="flag"><svg><use href="#flag-mx"/></svg></span>México</div>
+        <div class="sede-campeon"><svg width="14" height="14" style="vertical-align:-2px"><use href="#icon-copa"/></svg> Campeón: <span class="flag flag-sm"><svg><use href="#flag-ar"/></svg></span>Argentina — Diego Maradona y el gol del siglo</div>
+      </div>
+      <div class="num-equipos num-24"><span class="num-grande">13°</span><span class="num-label">Mundial</span><span class="estrella-arg">⭐</span></div>
+    </div>
+    <div class="card-body">
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-equipos"/></svg></span>
+        <div class="celda-label">Equipos participantes</div>
+        <div class="celda-val">24 selecciones</div>
+        <div class="celda-nota">Maradona marcó el "gol del siglo" y la "mano de Dios" contra Inglaterra</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-formato"/></svg></span>
+        <div class="celda-label">Formato del torneo</div>
+        <div class="celda-val">6 grupos de 4 → octavos → cuartos → semis → final</div>
+        <div class="celda-nota">Nueva fase de octavos: los 2 primeros de cada grupo + los 4 mejores terceros avanzaban</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-podio"/></svg></span>
+        <div class="celda-label">¿Cómo se clasificaron?</div>
+        <div class="celda-val">Eliminatorias por confederación</div>
+        <div class="celda-nota">Anfitrión con cupo automático. El resto por torneos clasificatorios de cada confederación</div>
+      </div>
+    </div>
+    <div class="anecdota anec-24">
+      <div class="anecdota-body">
+        <div class="anecdota-titulo">¿Sabías qué...?</div>
+        <div class="anecdota-texto">
+          <strong>Colombia era la sede elegida</strong>, ¡pero renunció por problemas económicos y de seguridad! México la reemplazó. Y poco antes del torneo hubo un fuerte terremoto en la capital mexicana. En cuartos contra Inglaterra, <strong>Diego Maradona hizo "la mano de Dios" y, minutos después, el "gol del siglo"</strong>, esquivando a media Inglaterra. Argentina ganó la final 3-2 a Alemania. Daniel Passarella, intoxicado, no pudo jugar ningún partido pero es el <strong>único futbolista que estuvo en los dos planteles campeones</strong> (1978 y 1986).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="anio-badge badge-24">1990</div>
+      <div class="sede-info">
+        <div class="sede-nombre"><span class="flag"><svg><use href="#flag-it"/></svg></span>Italia</div>
+        <div class="sede-campeon"><svg width="14" height="14" style="vertical-align:-2px"><use href="#icon-copa"/></svg> Campeón: <span class="flag flag-sm"><svg><use href="#flag-de"/></svg></span>Alemania Occidental</div>
+      </div>
+      <div class="num-equipos num-24"><span class="num-grande">14°</span><span class="num-label">Mundial</span></div>
+    </div>
+    <div class="card-body">
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-equipos"/></svg></span>
+        <div class="celda-label">Equipos participantes</div>
+        <div class="celda-val">24 selecciones</div>
+        <div class="celda-nota">Edición de muy pocos goles. Esto llevó a crear reglas nuevas para incentivar el ataque</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-formato"/></svg></span>
+        <div class="celda-label">Formato del torneo</div>
+        <div class="celda-val">6 grupos de 4 → octavos → cuartos → semis → final</div>
+        <div class="celda-nota">Mismo formato que 1986. Se empezaron a usar los penales para resolver empates en eliminación directa</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-podio"/></svg></span>
+        <div class="celda-label">¿Cómo se clasificaron?</div>
+        <div class="celda-val">Eliminatorias por confederación</div>
+        <div class="celda-nota">Anfitrión clasificado directo. Cada confederación organizó su propio torneo clasificatorio</div>
+      </div>
+    </div>
+    <div class="anecdota anec-24">
+      <div class="anecdota-body">
+        <div class="anecdota-titulo">¿Sabías qué...?</div>
+        <div class="anecdota-texto">
+          ¡Fue el Mundial con <strong>menos goles de la historia: solo 2,21 goles por partido</strong>! El héroe argentino fue <strong>Sergio "Goyco" Goycochea</strong>, que entró por la lesión de Pumpido y se hizo famoso atajando penales (le tapó a Yugoslavia e Italia). En la final, Argentina perdió 1-0 con Alemania por un <strong>penal muy discutido</strong>. La canción oficial <em>"Un'estate italiana"</em> quedó como un himno para todos los mundiales. Además, <strong>Franz Beckenbauer</strong> fue campeón como entrenador, después de haberlo sido como jugador en 1974.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="anio-badge badge-24">1994</div>
+      <div class="sede-info">
+        <div class="sede-nombre"><span class="flag"><svg><use href="#flag-us"/></svg></span>Estados Unidos</div>
+        <div class="sede-campeon"><svg width="14" height="14" style="vertical-align:-2px"><use href="#icon-copa"/></svg> Campeón: <span class="flag flag-sm"><svg><use href="#flag-br"/></svg></span>Brasil (tetracampeón) — primera final por penales</div>
+      </div>
+      <div class="num-equipos num-24"><span class="num-grande">15°</span><span class="num-label">Mundial</span></div>
+    </div>
+    <div class="card-body">
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-equipos"/></svg></span>
+        <div class="celda-label">Equipos participantes</div>
+        <div class="celda-val">24 selecciones</div>
+        <div class="celda-nota">Se otorgaron 3 puntos por victoria (antes eran 2) para incentivar más el ataque</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-formato"/></svg></span>
+        <div class="celda-label">Formato del torneo</div>
+        <div class="celda-val">6 grupos de 4 → octavos → cuartos → semis → final</div>
+        <div class="celda-nota">Primera final resuelta por penales en la historia. Brasil venció a Italia 3-2 en los penales</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-podio"/></svg></span>
+        <div class="celda-label">¿Cómo se clasificaron?</div>
+        <div class="celda-val">Eliminatorias por confederación</div>
+        <div class="celda-nota">Anfitrión directo. Torneos clasificatorios regionales para los demás</div>
+      </div>
+    </div>
+    <div class="anecdota anec-24">
+      <div class="anecdota-body">
+        <div class="anecdota-titulo">¿Sabías qué...?</div>
+        <div class="anecdota-texto">
+          ¡En Estados Unidos el fútbol no era muy popular! El diario <em>Boston Globe</em> publicó al comenzar el Mundial: <em>"en el fútbol no está permitido tocar la pelota con las manos"</em>. Aún así, <strong>se superaron los 3 millones de espectadores</strong>, un récord. Fue el último Mundial de Maradona: <strong>dio positivo en el control antidoping</strong> tras el partido contra Nigeria y fue excluido. La final entre Brasil e Italia <strong>se definió por penales por primera vez en la historia</strong>: ganó Brasil 3-2 luego de un aburrido 0-0.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ETAPA 32 -->
+  <div class="era-sep etapa-32">
+    <div class="era-sep-line"></div>
+    <div class="era-sep-label">Etapa de 32 equipos</div>
+    <div class="era-sep-line"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="anio-badge badge-32">1998</div>
+      <div class="sede-info">
+        <div class="sede-nombre"><span class="flag"><svg><use href="#flag-fr"/></svg></span>Francia</div>
+        <div class="sede-campeon"><svg width="14" height="14" style="vertical-align:-2px"><use href="#icon-copa"/></svg> Campeón: <span class="flag flag-sm"><svg><use href="#flag-fr"/></svg></span>Francia (primer título)</div>
+      </div>
+      <div class="num-equipos num-32"><span class="num-grande">16°</span><span class="num-label">Mundial</span></div>
+    </div>
+    <div class="card-body">
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-equipos"/></svg></span>
+        <div class="celda-label">Equipos participantes</div>
+        <div class="celda-val">32 selecciones</div>
+        <div class="celda-nota">Segunda gran expansión. Más cupos para África, Asia y CONCACAF. Mayor diversidad continental</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-formato"/></svg></span>
+        <div class="celda-label">Formato del torneo</div>
+        <div class="celda-val">8 grupos de 4 → octavos → cuartos → semis → final</div>
+        <div class="celda-nota">Formato clásico moderno: los 2 primeros de cada grupo avanzan a octavos de final. Este formato se usó hasta 2022</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-podio"/></svg></span>
+        <div class="celda-label">¿Cómo se clasificaron?</div>
+        <div class="celda-val">Eliminatorias por confederación</div>
+        <div class="celda-nota">El anfitrión clasifica directo. Cada confederación define sus cupos mediante eliminatorias propias</div>
+      </div>
+    </div>
+    <div class="anecdota anec-32">
+      <div class="anecdota-body">
+        <div class="anecdota-titulo">¿Sabías qué...?</div>
+        <div class="anecdota-texto">
+          ¡Fue el Mundial con <strong>más expulsados de la historia: 22 tarjetas rojas</strong>! Y un total de 174 selecciones participaron en las eliminatorias. <strong>Zinedine Zidane fue la gran estrella</strong>: hizo dos goles de cabeza en la final y Francia ganó por primera vez al vencer 3-0 a Brasil. En la previa hubo un misterio: <strong>Ronaldo, el goleador brasileño, tuvo un ataque de convulsiones horas antes del partido</strong> y casi no pudo jugar. Argentina cayó en cuartos ante Holanda en tiempo suplementario, con un golazo de Dennis Bergkamp.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="anio-badge badge-32">2002</div>
+      <div class="sede-info">
+        <div class="sede-nombre"><span class="flag"><svg><use href="#flag-kr"/></svg></span><span class="flag"><svg><use href="#flag-jp"/></svg></span>Corea del Sur y Japón</div>
+        <div class="sede-campeon"><svg width="14" height="14" style="vertical-align:-2px"><use href="#icon-copa"/></svg> Campeón: <span class="flag flag-sm"><svg><use href="#flag-br"/></svg></span>Brasil (pentacampeón)</div>
+      </div>
+      <div class="num-equipos num-32"><span class="num-grande">17°</span><span class="num-label">Mundial</span></div>
+    </div>
+    <div class="card-body">
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-equipos"/></svg></span>
+        <div class="celda-label">Equipos participantes</div>
+        <div class="celda-val">32 selecciones</div>
+        <div class="celda-nota">Primer mundial organizado por dos países y el primero en disputarse en Asia</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-formato"/></svg></span>
+        <div class="celda-label">Formato del torneo</div>
+        <div class="celda-val">8 grupos de 4 → octavos → cuartos → semis → final</div>
+        <div class="celda-nota">Grandes sorpresas: Corea del Sur llegó a semifinales. Muchos favoritos cayeron temprano</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-podio"/></svg></span>
+        <div class="celda-label">¿Cómo se clasificaron?</div>
+        <div class="celda-val">Eliminatorias + 2 anfitriones automáticos</div>
+        <div class="celda-nota">Primera vez que dos países anfitriones (Corea del Sur y Japón) clasificaron directamente</div>
+      </div>
+    </div>
+    <div class="anecdota anec-32">
+      <div class="anecdota-body">
+        <div class="anecdota-titulo">¿Sabías qué...?</div>
+        <div class="anecdota-texto">
+          ¡El turco <strong>Hakan Sukur convirtió el gol más rápido en la historia de los mundiales: a los 11 segundos!</strong> (en el partido por el tercer puesto contra Corea del Sur). Argentina iba como una de las favoritas con Marcelo Bielsa como técnico, pero <strong>quedó eliminada en la primera ronda</strong>: lo vivieron como un gran fracaso. Brasil ganó la final 2-0 a Alemania y consiguió su <strong>quinto título mundial</strong>. ¡Una curiosidad: para repartir todo equitativamente, cada país anfitrión organizó 32 partidos!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="anio-badge badge-32">2006</div>
+      <div class="sede-info">
+        <div class="sede-nombre"><span class="flag"><svg><use href="#flag-de"/></svg></span>Alemania</div>
+        <div class="sede-campeon"><svg width="14" height="14" style="vertical-align:-2px"><use href="#icon-copa"/></svg> Campeón: <span class="flag flag-sm"><svg><use href="#flag-it"/></svg></span>Italia (4.° título). Final memorable con Zidane expulsado</div>
+      </div>
+      <div class="num-equipos num-32"><span class="num-grande">18°</span><span class="num-label">Mundial</span></div>
+    </div>
+    <div class="card-body">
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-equipos"/></svg></span>
+        <div class="celda-label">Equipos participantes</div>
+        <div class="celda-val">32 selecciones</div>
+        <div class="celda-nota">Final con el cabezazo de Zidane. Italia venció a Francia por penales</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-formato"/></svg></span>
+        <div class="celda-label">Formato del torneo</div>
+        <div class="celda-val">8 grupos de 4 → octavos → cuartos → semis → final</div>
+        <div class="celda-nota">Solo el anfitrión clasifica directo (ya no el campeón defensor). Formato estándar moderno</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-podio"/></svg></span>
+        <div class="celda-label">¿Cómo se clasificaron?</div>
+        <div class="celda-val">Eliminatorias por confederación</div>
+        <div class="celda-nota">Anfitrión directo. El resto por eliminatorias regionales, con partidos de repechaje entre confederaciones</div>
+      </div>
+    </div>
+    <div class="anecdota anec-32">
+      <div class="anecdota-body">
+        <div class="anecdota-titulo">¿Sabías qué...?</div>
+        <div class="anecdota-texto">
+          ¡<strong>Lionel Messi debutó en un Mundial</strong>, en la goleada 6-0 a Serbia y Montenegro, y metió un gol! Argentina hizo un gol histórico contra Serbia: <strong>una jugada de 26 toques entre todos los jugadores</strong>. La final fue inolvidable por algo triste: <strong>Zinedine Zidane le dio un cabezazo a Marco Materazzi</strong> y el árbitro argentino Horacio Elizondo lo expulsó. Ganó Italia 5-3 en penales tras empatar 1-1. Para Argentina, fue dura la eliminación en cuartos por penales contra Alemania.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="anio-badge badge-32">2010</div>
+      <div class="sede-info">
+        <div class="sede-nombre"><span class="flag"><svg><use href="#flag-za"/></svg></span>Sudáfrica</div>
+        <div class="sede-campeon"><svg width="14" height="14" style="vertical-align:-2px"><use href="#icon-copa"/></svg> Campeón: <span class="flag flag-sm"><svg><use href="#flag-es"/></svg></span>España (primer título)</div>
+      </div>
+      <div class="num-equipos num-32"><span class="num-grande">19°</span><span class="num-label">Mundial</span></div>
+    </div>
+    <div class="card-body">
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-equipos"/></svg></span>
+        <div class="celda-label">Equipos participantes</div>
+        <div class="celda-val">32 selecciones</div>
+        <div class="celda-nota">Primer mundial en el continente africano. Las vuvuzelas marcaron el sonido del torneo</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-formato"/></svg></span>
+        <div class="celda-label">Formato del torneo</div>
+        <div class="celda-val">8 grupos de 4 → octavos → cuartos → semis → final</div>
+        <div class="celda-nota">Formato estándar. España ganó con su famoso "tiquitaca" y el gol de Iniesta en la final</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-podio"/></svg></span>
+        <div class="celda-label">¿Cómo se clasificaron?</div>
+        <div class="celda-val">Eliminatorias por confederación</div>
+        <div class="celda-nota">Cada confederación (UEFA, CONMEBOL, CAF, AFC, CONCACAF, OFC) organizó sus propias eliminatorias</div>
+      </div>
+    </div>
+    <div class="anecdota anec-32">
+      <div class="anecdota-body">
+        <div class="anecdota-titulo">¿Sabías qué...?</div>
+        <div class="anecdota-texto">
+          ¡<strong>El primer Mundial en África</strong>! El sonido del torneo fueron las <strong>vuvuzelas</strong>, unas trompetas larguísimas que sonaban muy fuerte en los estadios. España, con <strong>Andrés Iniesta convirtiendo en el minuto 116</strong>, ganó su primer título mundial venciendo 1-0 a Holanda en el alargue. Argentina tuvo a <strong>Diego Maradona como entrenador</strong>: ganó los primeros 4 partidos pero perdió 4-0 con Alemania en cuartos. ¡Y un dato gracioso: <strong>el pulpo Paul</strong>, un animal alemán, "adivinó" correctamente los 8 partidos que predijo, incluida la final!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="anio-badge badge-32">2014</div>
+      <div class="sede-info">
+        <div class="sede-nombre"><span class="flag"><svg><use href="#flag-br"/></svg></span>Brasil</div>
+        <div class="sede-campeon"><svg width="14" height="14" style="vertical-align:-2px"><use href="#icon-copa"/></svg> Campeón: <span class="flag flag-sm"><svg><use href="#flag-de"/></svg></span>Alemania — el Mineirazo (7-1 a Brasil)</div>
+      </div>
+      <div class="num-equipos num-32"><span class="num-grande">20°</span><span class="num-label">Mundial</span></div>
+    </div>
+    <div class="card-body">
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-equipos"/></svg></span>
+        <div class="celda-label">Equipos participantes</div>
+        <div class="celda-val">32 selecciones</div>
+        <div class="celda-nota">Alemania goleó 7-1 a Brasil (anfitrión) en semis. Uno de los resultados más impactantes de la historia</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-formato"/></svg></span>
+        <div class="celda-label">Formato del torneo</div>
+        <div class="celda-val">8 grupos de 4 → octavos → cuartos → semis → final</div>
+        <div class="celda-nota">Brasil fue sede por segunda vez, 64 años después de 1950. Formato estándar</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-podio"/></svg></span>
+        <div class="celda-label">¿Cómo se clasificaron?</div>
+        <div class="celda-val">Eliminatorias por confederación</div>
+        <div class="celda-nota">Anfitrión directo. Eliminatorias regionales durante 2011-2013</div>
+      </div>
+    </div>
+    <div class="anecdota anec-32">
+      <div class="anecdota-body">
+        <div class="anecdota-titulo">¿Sabías qué...?</div>
+        <div class="anecdota-texto">
+          ¡<strong>El "Mineirazo"!</strong> En semifinales, Alemania le ganó 7-1 a Brasil en su propia casa: uno de los resultados más impactantes de la historia. Argentina llegó a la final con un Messi increíble (cuatro goles en la primera fase) y un arquero héroe, <strong>Sergio Romero, que atajó dos penales contra Holanda en semis</strong>. Pero en la final perdió 1-0 con Alemania por un gol de Mario Götze a 7 minutos del final del alargue. Miles de argentinos viajaron a Brasil para vivir ese Mundial.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="anio-badge badge-32">2018</div>
+      <div class="sede-info">
+        <div class="sede-nombre"><span class="flag"><svg><use href="#flag-ru"/></svg></span>Rusia</div>
+        <div class="sede-campeon"><svg width="14" height="14" style="vertical-align:-2px"><use href="#icon-copa"/></svg> Campeón: <span class="flag flag-sm"><svg><use href="#flag-fr"/></svg></span>Francia (2.° título)</div>
+      </div>
+      <div class="num-equipos num-32"><span class="num-grande">21°</span><span class="num-label">Mundial</span></div>
+    </div>
+    <div class="card-body">
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-equipos"/></svg></span>
+        <div class="celda-label">Equipos participantes</div>
+        <div class="celda-val">32 selecciones</div>
+        <div class="celda-nota">Primer mundial en Europa del Este. Se usó el VAR (revisión de video) por primera vez en un mundial</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-formato"/></svg></span>
+        <div class="celda-label">Formato del torneo</div>
+        <div class="celda-val">8 grupos de 4 → octavos → cuartos → semis → final</div>
+        <div class="celda-nota">Formato estándar. El VAR revolucionó los arbitrajes y generó muchas controversias</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-podio"/></svg></span>
+        <div class="celda-label">¿Cómo se clasificaron?</div>
+        <div class="celda-val">Eliminatorias por confederación</div>
+        <div class="celda-nota">Anfitrión directo. Eliminatorias regionales 2015-2017. Repechajes intercontinentales para algunos clasificados</div>
+      </div>
+    </div>
+    <div class="anecdota anec-32">
+      <div class="anecdota-body">
+        <div class="anecdota-titulo">¿Sabías qué...?</div>
+        <div class="anecdota-texto">
+          ¡Fue el Mundial con <strong>más penales (28) y más goles en contra (11) de la historia</strong>! Se usó por primera vez el <strong>VAR</strong> (revisión por video), una tecnología que cambió los arbitrajes. <strong>Se jugó en dos continentes a la vez</strong>: la ciudad rusa de Ekaterimburgo pertenece a Asia. Argentina perdió 4-3 con Francia en octavos, en un partidazo donde brilló un jovencísimo <strong>Kylian Mbappé</strong>. Francia ganó su segundo título al vencer 4-2 a Croacia en una final con muchos goles.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="anio-badge badge-32">2022</div>
+      <div class="sede-info">
+        <div class="sede-nombre"><span class="flag"><svg><use href="#flag-qa"/></svg></span>Catar</div>
+        <div class="sede-campeon"><svg width="14" height="14" style="vertical-align:-2px"><use href="#icon-copa"/></svg> Campeón: <span class="flag flag-sm"><svg><use href="#flag-ar"/></svg></span>Argentina — la Copa para Messi, gracias al esfuerzo de todo el equipo</div>
+      </div>
+      <div class="num-equipos num-32"><span class="num-grande">22°</span><span class="num-label">Mundial</span><span class="estrella-arg">⭐</span></div>
+    </div>
+    <div class="card-body">
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-equipos"/></svg></span>
+        <div class="celda-label">Equipos participantes</div>
+        <div class="celda-val">32 selecciones</div>
+        <div class="celda-nota">Última edición con 32 equipos. Primer mundial en Oriente Medio y en noviembre-diciembre</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-formato"/></svg></span>
+        <div class="celda-label">Formato del torneo</div>
+        <div class="celda-val">8 grupos de 4 → octavos → cuartos → semis → final</div>
+        <div class="celda-nota">Argentina venció a Francia 3-3 en la final más emocionante de la historia. Ganó por penales 4-2</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-podio"/></svg></span>
+        <div class="celda-label">¿Cómo se clasificaron?</div>
+        <div class="celda-val">Eliminatorias por confederación</div>
+        <div class="celda-nota">Anfitrión directo. Eliminatorias 2019-2022, con interrupciones por la pandemia de COVID-19</div>
+      </div>
+    </div>
+    <div class="anecdota anec-32">
+      <div class="anecdota-body">
+        <div class="anecdota-titulo">¿Sabías qué...?</div>
+        <div class="anecdota-texto">
+          ¡Por primera vez un Mundial se jugó <strong>en noviembre y diciembre</strong>, para evitar el calor extremo del verano árabe! Argentina <strong>perdió el primer partido contra Arabia Saudita 2-1</strong>, una de las grandes sorpresas. Pero se recuperó y llegó a la final. Fue <strong>la final más emocionante de la historia: 3-3 contra Francia con dos goles de Messi y un Mbappé extraterrestre</strong>. Argentina ganó por penales 4-2 con el arquero Emiliano "Dibu" Martínez como gran figura. <strong>Toda la selección se entregó para que Messi pudiera levantar la Copa</strong>: 36 años después de Maradona, el sueño se cumplió.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ETAPA 48 -->
+  <div class="era-sep etapa-48">
+    <div class="era-sep-line"></div>
+    <div class="era-sep-label">Etapa de 48 equipos — desde 2026</div>
+    <div class="era-sep-line"></div>
+  </div>
+
+  <div class="card" style="border: 2.5px solid var(--rojo);">
+    <div class="card-head" style="background: var(--rojo-claro);">
+      <div class="anio-badge badge-48">2026</div>
+      <div class="sede-info">
+        <div class="sede-nombre"><span class="flag"><svg><use href="#flag-us"/></svg></span><span class="flag"><svg><use href="#flag-mx"/></svg></span><span class="flag"><svg><use href="#flag-ca"/></svg></span>EE.UU. / México / Canadá</div>
+        <div class="sede-campeon">⏳ En curso — 11 de junio al 19 de julio de 2026</div>
+      </div>
+      <div class="num-equipos num-48"><span class="num-grande">23°</span><span class="num-label">Mundial</span></div>
+    </div>
+    <div class="card-body">
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-equipos"/></svg></span>
+        <div class="celda-label">Equipos participantes</div>
+        <div class="celda-val">48 selecciones</div>
+        <div class="celda-nota">El más grande de la historia. 104 partidos en 39 días. Tres países anfitriones por primera vez. 16 más que en 2022</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-formato"/></svg></span>
+        <div class="celda-label">Formato del torneo</div>
+        <div class="celda-val">12 grupos de 4 → 1/16 → octavos → cuartos → semis → final</div>
+        <div class="celda-nota">Novedad: los 2 primeros de cada grupo + los 8 mejores terceros (32 en total) pasan a una nueva ronda: los dieciseisavos</div>
+      </div>
+      <div class="celda">
+        <span class="celda-icono"><svg><use href="#icon-podio"/></svg></span>
+        <div class="celda-label">¿Cómo se clasificaron?</div>
+        <div class="celda-val">Eliminatorias ampliadas + 3 anfitriones automáticos</div>
+        <div class="celda-nota">EE.UU., México y Canadá clasificaron directo. Los 45 restantes por eliminatorias con más cupos disponibles por continente</div>
+      </div>
+    </div>
+    <div class="anecdota anec-48">
+      <div class="anecdota-body">
+        <div class="anecdota-titulo">¿Sabías qué...?</div>
+        <div class="anecdota-texto">
+          ¡Va a ser el <strong>Mundial más grande de la historia</strong>! Por primera vez lo organizan <strong>tres países a la vez</strong>: EE.UU., México y Canadá. <strong>México será sede por tercera vez</strong> (ya lo fue en 1970 y 1986), ¡un récord! La final se jugará en el MetLife Stadium de Nueva Jersey. La idea original de Gianni Infantino era hacer <strong>16 grupos de 3 equipos</strong>, pero al final se eligió el formato de 12 grupos de 4 con una nueva ronda de dieciseisavos. Argentina va como <strong>campeona defensora</strong> e intentará algo que solo Italia (1938) y Brasil (1962) lograron: <em>ganar dos mundiales seguidos</em>.
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<div class="footer">
+  <div class="footer-titulo">Fuentes consultadas</div>
+  <ul>
+    <li>Ministerio de Educación de la Nación Argentina — <em>"Historia de los mundiales"</em>: <a href="https://www.argentina.gob.ar/educacion/el-mundial-en-la-escuela/historia-de-los-mundiales" target="_blank" rel="noopener">argentina.gob.ar/educacion/el-mundial-en-la-escuela/historia-de-los-mundiales</a></li>
+    <li>Ámbito Financiero — <em>"¿Cómo fue la evolución de los Mundiales desde 1930 a la actualidad?"</em>: <a href="https://www.ambito.com/portada-principal/como-fue-la-evolucion-los-mundiales-1930-la-actualidad-n3968868" target="_blank" rel="noopener">ambito.com</a></li>
+    <li>Infobae — <em>"La historia de las reglas del fútbol a lo largo del tiempo"</em>: <a href="https://www.infobae.com/deportes/2025/03/04/la-historia-de-las-reglas-del-futbol-a-lo-largo-del-tiempo-y-como-se-fueron-adaptando/" target="_blank" rel="noopener">infobae.com</a></li>
+    <li>Primicias — <em>"Cambios y reglas importantes en la historia de los mundiales de la FIFA"</em>: <a href="https://www.primicias.ec/noticias/catar2022/cambios-reglas-importantes-historia-mundiales-fifa/" target="_blank" rel="noopener">primicias.ec</a></li>
+    <li>FIFA.com (datos oficiales de cada edición)</li>
+  </ul>
+  <div class="footer-nota">
+    Infografía educativa para nivel primario · Los mundiales de 1942 y 1946 no se disputaron por la Segunda Guerra Mundial.
+  </div>
+</div>
+
+</body>
+</html>
