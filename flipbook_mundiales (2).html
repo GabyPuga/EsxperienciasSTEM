@@ -1,0 +1,1820 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mundiales · 5 historias, 5 épocas</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=Special+Elite&family=Bebas+Neue&family=Oswald:wght@400;600&family=DM+Sans:wght@400;500;700&family=Inter:wght@400;500;600;700&family=VT323&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body {
+    background: #1a1612;
+    min-height: 100vh;
+    padding: 30px 20px 60px;
+    transition: background 0.6s ease;
+  }
+  
+  body.era-1930 { background: #2a2520; }
+  body.era-1958 { background: #2a2a2a; }
+  body.era-1978 { background: #2a1f15; }
+  body.era-2002 { background: #1a2030; }
+  body.era-2022 { background: #0d1117; }
+  
+  /* ============ PORTADA GENERAL ============ */
+  .cover {
+    max-width: 900px;
+    margin: 0 auto 30px;
+    text-align: center;
+    padding: 30px 20px;
+    color: #f0e6d2;
+  }
+  
+  .cover-mini {
+    font-family: 'Special Elite', monospace;
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #b8a684;
+    margin-bottom: 12px;
+  }
+  
+  .cover-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 42px;
+    line-height: 1;
+    margin-bottom: 8px;
+    color: #f4ecd8;
+  }
+  
+  .cover-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: #b8a684;
+  }
+  
+  /* ============ TIMELINE NAVEGABLE ============ */
+  .timeline-wrapper {
+    max-width: 900px;
+    margin: 0 auto 30px;
+    background: #f0e6d2;
+    border-radius: 8px;
+    padding: 18px 24px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+  
+  .timeline-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    color: #6b5d4a;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  
+  .timeline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 5%;
+    right: 5%;
+    height: 2px;
+    background: #b8a684;
+    z-index: 0;
+  }
+  
+  .timeline-node {
+    position: relative;
+    z-index: 1;
+    background: #f0e6d2;
+    padding: 8px 14px;
+    border: 2px solid #b8a684;
+    border-radius: 20px;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: #6b5d4a;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    min-width: 80px;
+  }
+  
+  .timeline-node:hover {
+    background: #b8a684;
+    color: #f0e6d2;
+  }
+  
+  .timeline-node.active {
+    background: #8b3a1d;
+    border-color: #8b3a1d;
+    color: #f0e6d2;
+    transform: scale(1.1);
+    box-shadow: 0 2px 8px rgba(139, 58, 29, 0.4);
+  }
+  
+  /* ============ CONTENEDOR DE RELATOS ============ */
+  .relato-container {
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+  }
+  
+  .relato {
+    display: none;
+    animation: fadeIn 0.6s ease;
+  }
+  
+  .relato.active {
+    display: block;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  /* ============ IMÁGENES REALES (hot-link Wikimedia) ============ */
+  .imagen-real {
+    width: 100%;
+    max-height: 320px;
+    object-fit: cover;
+    display: block;
+    background: rgba(0,0,0,0.05);
+  }
+  
+  /* 1930: borde rústico tipo foto pegada */
+  .relato-1930 .imagen-real {
+    border: 2px solid #6b5d4a;
+    box-shadow: 4px 4px 0 rgba(139, 90, 43, 0.3);
+    filter: sepia(0.15);
+  }
+  
+  /* 1958: marco simple gris, B&N */
+  .relato-1958 .imagen-real {
+    border: 1px solid #6b6b6b;
+    filter: grayscale(1) contrast(1.05);
+  }
+  
+  /* 1978: marco TV de tubo */
+  .relato-1978 .imagen-real {
+    border: 4px solid #2a1810;
+    border-radius: 12px;
+    filter: saturate(0.85) sepia(0.1);
+  }
+  
+  /* 2002: nítido, bordes redondeados sutiles */
+  .relato-2002 .imagen-real {
+    border-radius: 8px;
+    border: 1px solid #c4ccd4;
+  }
+  
+  /* 2022: bordes generosos, nítido */
+  .relato-2022 .imagen-real {
+    border-radius: 12px;
+  }
+  
+  /* ============ TOOLTIP COMÚN ============ */
+  .contexto {
+    cursor: pointer;
+    position: relative;
+    font-weight: 500;
+  }
+  
+  .tooltip {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1a1612;
+    color: #f4ecd8;
+    padding: 14px 18px;
+    border-radius: 6px;
+    font-family: 'Lora', serif;
+    font-size: 13px;
+    line-height: 1.5;
+    width: 260px;
+    text-align: left;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s, visibility 0.2s;
+    z-index: 100;
+    column-count: 1;
+    pointer-events: none;
+    font-style: normal;
+    font-weight: 400;
+  }
+  
+  .tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: #1a1612;
+  }
+  
+  .tooltip-titulo {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: #d4a847;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: block;
+  }
+  
+  .tooltip-aviso {
+    color: #f5c4b3;
+    font-size: 11px;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid #444;
+    font-style: italic;
+    display: block;
+  }
+  
+  .contexto:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  /* ============ NAVEGACIÓN DE PÁGINA ============ */
+  .page-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 35px;
+    padding-top: 20px;
+    border-top: 1px solid currentColor;
+    opacity: 0.7;
+  }
+  
+  .nav-btn {
+    background: transparent;
+    border: 2px solid currentColor;
+    color: inherit;
+    padding: 8px 18px;
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .nav-btn:hover {
+    background: currentColor;
+  }
+  
+  .nav-btn:hover span {
+    color: var(--bg-color);
+  }
+  
+  /* ============================================ */
+  /* ============ ESTÉTICA 1930 ================= */
+  /* ============================================ */
+  .relato-1930 {
+    background: 
+      radial-gradient(ellipse at top left, rgba(184, 134, 74, 0.15), transparent 50%),
+      radial-gradient(ellipse at bottom right, rgba(139, 58, 29, 0.1), transparent 50%),
+      #f4ecd8;
+    border-radius: 4px;
+    box-shadow: 
+      0 20px 60px rgba(0,0,0,0.4),
+      inset 0 0 60px rgba(184, 134, 74, 0.15);
+    position: relative;
+    overflow: hidden;
+    color: #1a1612;
+    font-family: 'Lora', Georgia, serif;
+  }
+  
+  .relato-1930::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: 
+      radial-gradient(circle at 20% 30%, rgba(139, 90, 43, 0.08) 0%, transparent 8%),
+      radial-gradient(circle at 80% 70%, rgba(139, 90, 43, 0.06) 0%, transparent 12%),
+      radial-gradient(circle at 60% 20%, rgba(139, 90, 43, 0.05) 0%, transparent 6%),
+      radial-gradient(circle at 30% 80%, rgba(139, 90, 43, 0.07) 0%, transparent 10%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  
+  .relato-1930 .page-content { position: relative; z-index: 2; padding: 50px 60px; }
+  
+  .relato-1930 .header-zone {
+    border-bottom: 3px double #6b5d4a;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  
+  .relato-1930 .fecha {
+    font-family: 'Special Elite', monospace;
+    font-size: 12px;
+    color: #6b5d4a;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  
+  .relato-1930 h1 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 56px;
+    color: #1a1612;
+    letter-spacing: -1px;
+    line-height: 0.95;
+    margin-bottom: 6px;
+  }
+  
+  .relato-1930 .narrador {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: #6b5d4a;
+  }
+  
+  .relato-1930 .info-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 30px;
+    padding: 15px 0;
+    border-top: 1px solid rgba(139, 90, 43, 0.3);
+    border-bottom: 1px solid rgba(139, 90, 43, 0.3);
+  }
+  
+  .relato-1930 .info-item { text-align: center; }
+  .relato-1930 .info-label {
+    font-family: 'Special Elite', monospace;
+    font-size: 10px;
+    color: #6b5d4a;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+  .relato-1930 .info-value {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: #1a1612;
+  }
+  
+  .relato-1930 .texto {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #2a1f15;
+    column-count: 2;
+    column-gap: 35px;
+    column-rule: 1px solid rgba(139, 90, 43, 0.2);
+    text-align: justify;
+    hyphens: auto;
+  }
+  
+  .relato-1930 .texto p { margin-bottom: 14px; }
+  .relato-1930 .texto p:first-child::first-letter {
+    font-family: 'Playfair Display', serif;
+    font-size: 56px;
+    font-weight: 900;
+    float: left;
+    line-height: 0.9;
+    margin: 4px 8px 0 0;
+    color: #8b3a1d;
+  }
+  
+  .relato-1930 .contexto {
+    text-decoration: underline dotted #8b3a1d;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 3px;
+    color: #5a2a14;
+  }
+  .relato-1930 .contexto:hover { background: rgba(139, 58, 29, 0.1); }
+  
+  .relato-1930 .imagen-wrapper {
+    margin: 25px 0;
+    text-align: center;
+    break-inside: avoid;
+  }
+  .relato-1930 .imagen-placeholder {
+    width: 100%;
+    height: 180px;
+    background: 
+      repeating-linear-gradient(45deg, #d4c5a0, #d4c5a0 8px, #c4b590 8px, #c4b590 16px);
+    border: 2px solid #6b5d4a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: #3a2f20;
+    font-family: 'Special Elite', monospace;
+    font-size: 11px;
+    padding: 10px;
+    box-shadow: 4px 4px 0 rgba(139, 90, 43, 0.3);
+  }
+  .relato-1930 .imagen-placeholder .icon { font-size: 32px; margin-bottom: 6px; opacity: 0.5; }
+  .relato-1930 .imagen-placeholder .label { text-transform: uppercase; letter-spacing: 2px; margin-bottom: 4px; font-weight: bold; }
+  .relato-1930 .imagen-placeholder .link { font-size: 9px; word-break: break-all; color: #6b5d4a; margin-top: 4px; }
+  .relato-1930 .imagen-caption {
+    font-style: italic;
+    font-size: 12px;
+    color: #6b5d4a;
+    margin-top: 8px;
+    line-height: 1.4;
+  }
+  
+  .relato-1930 .dato-curioso {
+    margin: 25px 0;
+    padding: 18px 20px;
+    background: rgba(212, 168, 71, 0.15);
+    border-left: 4px solid #d4a847;
+    break-inside: avoid;
+  }
+  .relato-1930 .dato-curioso-label {
+    font-family: 'Special Elite', monospace;
+    font-size: 10px;
+    color: #8b6914;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+  .relato-1930 .dato-curioso-texto {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #3a2f20;
+  }
+  
+  /* ============================================ */
+  /* ============ ESTÉTICA 1958 ================= */
+  /* ============================================ */
+  .relato-1958 {
+    background: #efeae0;
+    border-radius: 2px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    position: relative;
+    overflow: hidden;
+    color: #1a1a1a;
+    font-family: 'Lora', Georgia, serif;
+  }
+  
+  .relato-1958 .page-content { position: relative; padding: 50px 60px; }
+  
+  .relato-1958 .header-zone {
+    background: #c44545;
+    margin: -50px -60px 30px;
+    padding: 30px 60px 25px;
+    color: #efeae0;
+    position: relative;
+  }
+  
+  .relato-1958 .header-zone::before {
+    content: 'EL GRÁFICO';
+    position: absolute;
+    top: 12px;
+    right: 60px;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 4px;
+    opacity: 0.6;
+  }
+  
+  .relato-1958 .fecha {
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    opacity: 0.85;
+  }
+  
+  .relato-1958 h1 {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+    font-size: 48px;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  
+  .relato-1958 .narrador {
+    font-family: 'Lora', serif;
+    font-style: italic;
+    font-size: 16px;
+    opacity: 0.9;
+  }
+  
+  .relato-1958 .info-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    margin-bottom: 30px;
+    background: #1a1a1a;
+    color: #efeae0;
+  }
+  
+  .relato-1958 .info-item {
+    text-align: center;
+    padding: 14px 10px;
+    border-right: 1px solid #444;
+  }
+  .relato-1958 .info-item:last-child { border-right: none; }
+  
+  .relato-1958 .info-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 9px;
+    color: #b8b8b8;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 4px;
+  }
+  .relato-1958 .info-value {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+  }
+  
+  .relato-1958 .texto {
+    font-size: 16px;
+    line-height: 1.75;
+    color: #1a1a1a;
+    column-count: 2;
+    column-gap: 35px;
+    text-align: justify;
+    hyphens: auto;
+  }
+  
+  .relato-1958 .texto p { margin-bottom: 14px; }
+  .relato-1958 .texto p:first-child::first-letter {
+    font-family: 'Oswald', sans-serif;
+    font-size: 64px;
+    font-weight: 600;
+    float: left;
+    line-height: 0.85;
+    margin: 6px 8px 0 0;
+    color: #c44545;
+  }
+  
+  .relato-1958 .contexto {
+    text-decoration: underline dotted #5a8fae;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 3px;
+    color: #2a5a7a;
+  }
+  .relato-1958 .contexto:hover { background: rgba(90, 143, 174, 0.12); }
+  
+  .relato-1958 .imagen-wrapper { margin: 25px 0; text-align: center; break-inside: avoid; }
+  .relato-1958 .imagen-placeholder {
+    width: 100%;
+    height: 180px;
+    background: #d4d4d0;
+    border: 1px solid #6b6b6b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: #2a2a2a;
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    padding: 10px;
+    filter: grayscale(1);
+  }
+  .relato-1958 .imagen-placeholder .icon { font-size: 32px; margin-bottom: 6px; opacity: 0.4; }
+  .relato-1958 .imagen-placeholder .label { text-transform: uppercase; letter-spacing: 3px; margin-bottom: 4px; }
+  .relato-1958 .imagen-placeholder .link { font-size: 9px; word-break: break-all; color: #6b6b6b; margin-top: 4px; }
+  .relato-1958 .imagen-caption {
+    font-style: italic;
+    font-size: 12px;
+    color: #6b6b6b;
+    margin-top: 8px;
+  }
+  
+  .relato-1958 .dato-curioso {
+    margin: 25px 0;
+    padding: 18px 20px;
+    background: #1a1a1a;
+    color: #efeae0;
+    border-left: 4px solid #c44545;
+    break-inside: avoid;
+  }
+  .relato-1958 .dato-curioso-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 10px;
+    color: #c44545;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 6px;
+  }
+  .relato-1958 .dato-curioso-texto {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  
+  /* ============================================ */
+  /* ============ ESTÉTICA 1978 ================= */
+  /* ============================================ */
+  .relato-1978 {
+    background: #e8d9c0;
+    border-radius: 8px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    position: relative;
+    overflow: hidden;
+    color: #2a1810;
+    font-family: 'DM Sans', sans-serif;
+  }
+  
+  .relato-1978 .page-content { position: relative; padding: 50px 60px; }
+  
+  .relato-1978 .header-zone {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 25px;
+    border-bottom: 6px solid #c97a3f;
+    position: relative;
+  }
+  
+  .relato-1978 .header-zone::after {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 6px;
+    background: #5c3a20;
+  }
+  
+  .relato-1978 .fecha {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    color: #c97a3f;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  
+  .relato-1978 h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px;
+    color: #5c3a20;
+    letter-spacing: 2px;
+    line-height: 0.95;
+    margin-bottom: 6px;
+  }
+  
+  .relato-1978 .narrador {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    color: #8b5a3a;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  
+  .relato-1978 .info-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 30px;
+  }
+  
+  .relato-1978 .info-item {
+    text-align: center;
+    background: #c97a3f;
+    color: #efe5d0;
+    padding: 14px 10px;
+    border-radius: 6px;
+  }
+  
+  .relato-1978 .info-label {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+    opacity: 0.85;
+  }
+  .relato-1978 .info-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 1px;
+  }
+  
+  .relato-1978 .texto {
+    font-size: 16px;
+    line-height: 1.75;
+    color: #2a1810;
+    column-count: 2;
+    column-gap: 35px;
+    text-align: justify;
+    hyphens: auto;
+  }
+  
+  .relato-1978 .texto p { margin-bottom: 14px; }
+  .relato-1978 .texto p:first-child::first-letter {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 72px;
+    float: left;
+    line-height: 0.85;
+    margin: 4px 8px 0 0;
+    color: #c97a3f;
+  }
+  
+  .relato-1978 .contexto {
+    text-decoration: underline dotted #5c3a20;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 3px;
+    color: #5c3a20;
+  }
+  .relato-1978 .contexto:hover { background: rgba(201, 122, 63, 0.15); }
+  
+  .relato-1978 .imagen-wrapper { margin: 25px 0; text-align: center; break-inside: avoid; }
+  .relato-1978 .imagen-placeholder {
+    width: 100%;
+    height: 180px;
+    background: #5c3a20;
+    border: 4px solid #2a1810;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: #c97a3f;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    padding: 10px;
+    position: relative;
+  }
+  .relato-1978 .imagen-placeholder::before {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border: 1px solid rgba(201, 122, 63, 0.3);
+    border-radius: 6px;
+    pointer-events: none;
+  }
+  .relato-1978 .imagen-placeholder .icon { font-size: 32px; margin-bottom: 6px; }
+  .relato-1978 .imagen-placeholder .label { text-transform: uppercase; letter-spacing: 3px; margin-bottom: 4px; font-weight: 700; }
+  .relato-1978 .imagen-placeholder .link { font-size: 9px; word-break: break-all; opacity: 0.6; margin-top: 4px; }
+  .relato-1978 .imagen-caption {
+    font-style: italic;
+    font-size: 12px;
+    color: #8b5a3a;
+    margin-top: 8px;
+  }
+  
+  .relato-1978 .dato-curioso {
+    margin: 25px 0;
+    padding: 18px 20px;
+    background: #7cb5d6;
+    border-radius: 6px;
+    break-inside: avoid;
+  }
+  .relato-1978 .dato-curioso-label {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    color: #1a3a4f;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+  .relato-1978 .dato-curioso-texto {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #1a2530;
+  }
+  
+  .relato-1978 .nota-sensible {
+    margin: 25px 0;
+    padding: 18px 20px;
+    background: #2a1810;
+    color: #e8d9c0;
+    border-radius: 6px;
+    break-inside: avoid;
+  }
+  .relato-1978 .nota-sensible-label {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    color: #c97a3f;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+  .relato-1978 .nota-sensible-texto {
+    font-size: 13px;
+    line-height: 1.65;
+  }
+  
+  /* ============================================ */
+  /* ============ ESTÉTICA 2002 ================= */
+  /* ============================================ */
+  .relato-2002 {
+    background: #f0f4f8;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    position: relative;
+    overflow: hidden;
+    color: #1a2030;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  .relato-2002 .page-content { position: relative; padding: 50px 60px; }
+  
+  .relato-2002 .header-zone {
+    background: #1e5ba8;
+    color: #f0f4f8;
+    margin: -50px -60px 30px;
+    padding: 35px 60px;
+    position: relative;
+  }
+  
+  .relato-2002 .header-zone::before {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 4px;
+    pointer-events: none;
+  }
+  
+  .relato-2002 .fecha {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    opacity: 0.7;
+  }
+  
+  .relato-2002 h1 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 44px;
+    letter-spacing: -1.5px;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  
+  .relato-2002 .narrador {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 15px;
+    opacity: 0.85;
+  }
+  
+  .relato-2002 .info-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 30px;
+  }
+  
+  .relato-2002 .info-item {
+    background: #ffffff;
+    border: 1px solid #c4ccd4;
+    padding: 14px 12px;
+    border-radius: 8px;
+    text-align: left;
+  }
+  
+  .relato-2002 .info-label {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 10px;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 6px;
+  }
+  .relato-2002 .info-value {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    color: #1a2030;
+  }
+  
+  .relato-2002 .texto {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #1a2030;
+    column-count: 2;
+    column-gap: 35px;
+    text-align: left;
+  }
+  
+  .relato-2002 .texto p { margin-bottom: 14px; }
+  .relato-2002 .texto p:first-child::first-letter {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 56px;
+    float: left;
+    line-height: 0.9;
+    margin: 6px 8px 0 0;
+    color: #1e5ba8;
+  }
+  
+  .relato-2002 .contexto {
+    text-decoration: underline dotted #1e5ba8;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 3px;
+    color: #1e5ba8;
+  }
+  .relato-2002 .contexto:hover { background: rgba(30, 91, 168, 0.1); }
+  
+  .relato-2002 .imagen-wrapper { margin: 25px 0; text-align: center; break-inside: avoid; }
+  .relato-2002 .imagen-placeholder {
+    width: 100%;
+    height: 180px;
+    background: #1a2030;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: #6baFd9;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    padding: 10px;
+    position: relative;
+  }
+  .relato-2002 .imagen-placeholder::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    width: 6px;
+    height: 6px;
+    background: #4ade80;
+    border-radius: 50%;
+    box-shadow: 0 0 6px #4ade80;
+  }
+  .relato-2002 .imagen-placeholder .icon { font-size: 32px; margin-bottom: 6px; }
+  .relato-2002 .imagen-placeholder .label { text-transform: uppercase; letter-spacing: 2px; margin-bottom: 4px; font-weight: 600; }
+  .relato-2002 .imagen-placeholder .link { font-size: 9px; word-break: break-all; opacity: 0.6; margin-top: 4px; }
+  .relato-2002 .imagen-caption {
+    font-style: italic;
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 8px;
+  }
+  
+  .relato-2002 .dato-curioso {
+    margin: 25px 0;
+    padding: 18px 20px;
+    background: #ffffff;
+    border: 1px solid #c4ccd4;
+    border-left: 4px solid #1e5ba8;
+    border-radius: 6px;
+    break-inside: avoid;
+  }
+  .relato-2002 .dato-curioso-label {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    color: #1e5ba8;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+  .relato-2002 .dato-curioso-texto {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #1a2030;
+  }
+  
+  /* Sin imágenes en 2002, mostramos placeholders ilustrados */
+  .relato-2002 .ilustracion {
+    margin: 25px 0;
+    padding: 30px 20px;
+    background: linear-gradient(135deg, #f0f4f8 0%, #e0e8f0 100%);
+    border: 1px solid #c4ccd4;
+    border-radius: 8px;
+    text-align: center;
+    break-inside: avoid;
+  }
+  .relato-2002 .ilustracion .icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+    color: #1e5ba8;
+  }
+  .relato-2002 .ilustracion .caption {
+    font-size: 12px;
+    color: #6b7280;
+    font-style: italic;
+  }
+  
+  /* Camiseta SVG estilizada para 2002 */
+  .relato-2002 .camiseta-svg-2002 {
+    margin: 25px 0;
+    padding: 25px 20px;
+    background: linear-gradient(135deg, #f0f4f8 0%, #e0e8f0 100%);
+    border: 1px solid #c4ccd4;
+    border-radius: 8px;
+    text-align: center;
+    break-inside: avoid;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .relato-2002 .camiseta-svg-caption {
+    font-size: 12px;
+    color: #6b7280;
+    font-style: italic;
+    max-width: 280px;
+  }
+  
+  /* ============================================ */
+  /* ============ ESTÉTICA 2022 ================= */
+  /* ============================================ */
+  .relato-2022 {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    position: relative;
+    overflow: hidden;
+    color: #1a1a2e;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  .relato-2022 .page-content { position: relative; padding: 40px 50px; }
+  
+  .relato-2022 .header-zone {
+    background: linear-gradient(135deg, #74acdf 0%, #4a8fd0 100%);
+    margin: -40px -50px 25px;
+    padding: 30px 50px;
+    color: #ffffff;
+    position: relative;
+  }
+  
+  .relato-2022 .header-zone::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #74acdf 0%, #ffffff 33%, #74acdf 66%, #d4a847 100%);
+  }
+  
+  .relato-2022 .fecha {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    opacity: 0.9;
+  }
+  
+  .relato-2022 h1 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 42px;
+    letter-spacing: -1.5px;
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+  
+  .relato-2022 .narrador {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 15px;
+    opacity: 0.95;
+  }
+  
+  .relato-2022 .stars {
+    display: inline-flex;
+    gap: 6px;
+    margin-top: 12px;
+    font-size: 18px;
+  }
+  .relato-2022 .star {
+    color: #d4a847;
+  }
+  
+  .relato-2022 .info-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 25px;
+  }
+  
+  .relato-2022 .info-item {
+    background: #f4f6fa;
+    border-radius: 12px;
+    padding: 14px 16px;
+    text-align: left;
+  }
+  
+  .relato-2022 .info-label {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 10px;
+    color: #8b95a8;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+  }
+  .relato-2022 .info-value {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    color: #1a1a2e;
+  }
+  
+  .relato-2022 .texto {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #1a1a2e;
+    column-count: 2;
+    column-gap: 35px;
+    text-align: left;
+  }
+  
+  .relato-2022 .texto p { margin-bottom: 14px; }
+  .relato-2022 .texto p:first-child::first-letter {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 56px;
+    float: left;
+    line-height: 0.9;
+    margin: 6px 8px 0 0;
+    color: #74acdf;
+  }
+  
+  .relato-2022 .contexto {
+    text-decoration: underline dotted #74acdf;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+    color: #2a5a8a;
+  }
+  .relato-2022 .contexto:hover { background: rgba(116, 172, 223, 0.15); }
+  
+  .relato-2022 .imagen-wrapper { margin: 25px 0; text-align: center; break-inside: avoid; }
+  .relato-2022 .imagen-placeholder {
+    width: 100%;
+    height: 180px;
+    background: linear-gradient(135deg, #74acdf 0%, #4a8fd0 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    padding: 10px;
+    position: relative;
+  }
+  .relato-2022 .imagen-placeholder .icon { font-size: 36px; margin-bottom: 6px; }
+  .relato-2022 .imagen-placeholder .label { text-transform: uppercase; letter-spacing: 2px; margin-bottom: 4px; font-weight: 600; }
+  .relato-2022 .imagen-placeholder .link { font-size: 9px; word-break: break-all; opacity: 0.75; margin-top: 4px; }
+  .relato-2022 .imagen-caption {
+    font-size: 12px;
+    color: #8b95a8;
+    margin-top: 8px;
+  }
+  
+  .relato-2022 .dato-curioso {
+    margin: 25px 0;
+    padding: 18px 20px;
+    background: linear-gradient(135deg, #fff8e8 0%, #ffe9b8 100%);
+    border-radius: 12px;
+    break-inside: avoid;
+    position: relative;
+  }
+  .relato-2022 .dato-curioso-label {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    color: #8b6914;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+  .relato-2022 .dato-curioso-texto {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #5a4514;
+  }
+  
+  /* Chat bubble para 2022 */
+  .relato-2022 .chat-card {
+    margin: 25px 0;
+    padding: 14px 16px;
+    background: #f0f8ff;
+    border-radius: 16px;
+    border: 1px solid #d4e6f5;
+    break-inside: avoid;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #1a3a5a;
+    position: relative;
+  }
+  .relato-2022 .chat-card::before {
+    content: '💬';
+    position: absolute;
+    top: -10px;
+    left: 16px;
+    background: #74acdf;
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+  }
+  
+  /* ============ FOOTER ============ */
+  .footer-info {
+    max-width: 900px;
+    margin: 30px auto 0;
+    text-align: center;
+    color: #b8a684;
+    font-family: 'Lora', serif;
+    font-size: 13px;
+    font-style: italic;
+    line-height: 1.6;
+    opacity: 0.7;
+  }
+  
+  /* Responsive */
+  @media (max-width: 700px) {
+    .relato-1930 .texto, .relato-1958 .texto, .relato-1978 .texto, 
+    .relato-2002 .texto, .relato-2022 .texto {
+      column-count: 1;
+    }
+    .relato-1930 .page-content, .relato-1958 .page-content, 
+    .relato-1978 .page-content, .relato-2002 .page-content, 
+    .relato-2022 .page-content {
+      padding: 30px 25px;
+    }
+    .relato-1958 .header-zone, .relato-2002 .header-zone {
+      margin-left: -25px;
+      margin-right: -25px;
+      padding-left: 25px;
+      padding-right: 25px;
+    }
+    .relato-2022 .header-zone {
+      margin-left: -25px;
+      margin-right: -25px;
+      padding-left: 25px;
+      padding-right: 25px;
+    }
+    .info-strip { grid-template-columns: 1fr !important; }
+    .cover-title { font-size: 32px; }
+    .relato-1930 h1, .relato-1958 h1, .relato-1978 h1, .relato-2002 h1, .relato-2022 h1 {
+      font-size: 36px;
+    }
+    .tooltip { width: 220px; font-size: 12px; }
+  }
+</style>
+</head>
+<body class="era-1930">
+
+  <!-- PORTADA -->
+  <div class="cover">
+    <div class="cover-mini">— Cinco historias, cinco épocas —</div>
+    <div class="cover-title">Mundiales</div>
+    <div class="cover-subtitle">Argentina contada desde la pasión, la camiseta y la tecnología</div>
+  </div>
+
+  <!-- TIMELINE NAVEGABLE -->
+  <div class="timeline-wrapper">
+    <div class="timeline-title">— Elegí el año para empezar a leer —</div>
+    <div class="timeline">
+      <div class="timeline-node active" data-year="1930">1930</div>
+      <div class="timeline-node" data-year="1958">1958</div>
+      <div class="timeline-node" data-year="1978">1978</div>
+      <div class="timeline-node" data-year="2002">2002</div>
+      <div class="timeline-node" data-year="2022">2022</div>
+    </div>
+  </div>
+
+  <!-- CONTENEDOR DE RELATOS -->
+  <div class="relato-container">
+
+    <!-- ================ RELATO 1930 ================ -->
+    <div class="relato active" id="relato-1930">
+      <div class="relato-1930">
+        <div class="page-content">
+          
+          <div class="header-zone">
+            <div class="fecha">— Buenos Aires · 31 de Julio de 1930 —</div>
+            <h1>El primer Mundial</h1>
+            <div class="narrador">El relato de Juan, 20 años, tallerista</div>
+          </div>
+
+          <div class="info-strip">
+            <div class="info-item">
+              <div class="info-label">Sede</div>
+              <div class="info-value">Uruguay</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Final</div>
+              <div class="info-value">Argentina 2 — 4 Uruguay</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Vivido por</div>
+              <div class="info-value">Diario y radio</div>
+            </div>
+          </div>
+
+          <div class="texto">
+            <p>Qué silencio hay hoy en Buenos Aires. Anoche casi no pude dormir y hoy, mientras abro el taller, siento que el aire está pesado. Ayer fue el gran día, la final contra los uruguayos, y aunque perdimos 4 a 2, no puedo dejar de pensar en todo lo que pasó.</p>
+            
+            <p>Yo tengo 20 años y, como soy el más joven acá en el laburo, ayer me tocó quedarme a cumplir el horario completo. ¡Qué ganas de ir que tenía! Pero el patrón fue claro: "Juan, el trabajo es lo primero". Así que me pasé el miércoles acomodando estanterías y esperando noticias.</p>
+
+            <div class="imagen-wrapper">
+              <img class="imagen-real" 
+                   src="https://commons.wikimedia.org/wiki/Special:FilePath/Uruguay_1930_World_Cup.jpg?width=600" 
+                   alt="Selección de Uruguay 1930"
+                   onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                   loading="lazy">
+              <div class="imagen-placeholder" style="display:none">
+                <div class="icon">⚽</div>
+                <div class="label">Imagen — Uruguay campeón 1930</div>
+                <div class="link">Uruguay_1930_World_Cup.jpg</div>
+              </div>
+              <div class="imagen-caption">Afiche oficial del primer Mundial (Wikimedia Commons · dominio público)</div>
+            </div>
+
+            <p>Hoy el diario cuenta lo que yo no pude ver. Dicen que el puerto era una locura nunca vista. Docenas de barcos de todos los tamaños cruzaron el río: desde los vapores grandes y elegantes hasta lanchas pesqueras y <span class="contexto">remolcadores chiquitos<span class="tooltip"><span class="tooltip-titulo">Remolcadores</span>Barquitos chicos pero potentes que normalmente se usan para empujar barcos grandes en el puerto. Que se animaran a cruzar el Río de la Plata muestra las ganas locas que tenía la gente de ir a la final.</span></span>. ¡Cualquier cosa que flotara servía para cruzar a Montevideo!</p>
+
+            <p>Me contaron que la neblina era tan espesa que los barcos hacían sonar las sirenas para no chocarse. Miles de argentinos cruzaron así, a ciegas, solo por las ganas de estar ahí.</p>
+
+            <div class="dato-curioso">
+              <div class="dato-curioso-label">✦ ¿Sabías que?</div>
+              <div class="dato-curioso-texto">Este fue el primer Mundial de la historia. Para que todo fuera justo, jugaron con dos pelotas distintas: la argentina en el primer tiempo y la uruguaya en el segundo.</div>
+            </div>
+
+            <p>Ayer, antes de entrar a trabajar, volví a pasar por la vidriera de <span class="contexto">Gath &amp; Chaves<span class="tooltip"><span class="tooltip-titulo">Gath &amp; Chaves</span>Una tienda muy famosa de Buenos Aires en esa época. Era como un shopping de hoy: vendían ropa, juguetes, muebles. Estaba en pleno centro y mirar sus vidrieras era un paseo.</span></span>. Me quedé mirando esa camiseta de lana celeste y blanca con el cuello de cordones. Es tan linda...</p>
+
+            <p>El diario dice hoy que, a pesar de la derrota, los muchachos jugaron con una dignidad enorme. Verlos vestidos así, tan elegantes y bien puestos, nos hizo sentir a todos que estábamos a la altura de cualquier país del mundo.</p>
+
+            <div class="imagen-wrapper">
+              <img class="imagen-real" 
+                   src="https://commons.wikimedia.org/wiki/Special:FilePath/Argentina_national_team_1930.jpg?width=600" 
+                   alt="Selección Argentina 1930 con la camiseta de lana celeste y blanca"
+                   onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                   loading="lazy">
+              <div class="imagen-placeholder" style="display:none">
+                <div class="icon">👕</div>
+                <div class="label">Imagen — Selección Argentina 1930</div>
+                <div class="link">Argentina_national_team_1930.jpg</div>
+              </div>
+              <div class="imagen-caption">La selección argentina con la camiseta de lana de 1930 (Wikimedia Commons · dominio público)</div>
+            </div>
+
+            <p>Ahora hay que seguir trabajando. Perdimos la Copa, es cierto, pero hoy camino por la calle y veo a todos con el diario bajo el brazo, orgullosos. Argentina demostró que sabe jugar, que tiene estilo y que, aunque el río sea ancho, siempre vamos a encontrar la forma de cruzarlo para estar presentes.</p>
+
+            <div class="dato-curioso">
+              <div class="dato-curioso-label">✦ Dato extra</div>
+              <div class="dato-curioso-texto">El estadio Centenario de Montevideo se inauguró especialmente para este Mundial. Su nombre celebra los 100 años de la primera Constitución de Uruguay.</div>
+            </div>
+          </div>
+
+          <div class="page-nav">
+            <button class="nav-btn" disabled style="opacity:0.3;cursor:not-allowed">← Anterior</button>
+            <button class="nav-btn nav-next" data-next="1958"><span>Siguiente: 1958 →</span></button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ================ RELATO 1958 ================ -->
+    <div class="relato" id="relato-1958">
+      <div class="relato-1958">
+        <div class="page-content">
+          
+          <div class="header-zone">
+            <div class="fecha">— Buenos Aires · 16 de Junio de 1958 —</div>
+            <h1>El desastre de Suecia</h1>
+            <div class="narrador">El relato de un hombre de 50 años, barrio de Flores</div>
+          </div>
+
+          <div class="info-strip">
+            <div class="info-item">
+              <div class="info-label">Sede</div>
+              <div class="info-value">Suecia</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Argentina</div>
+              <div class="info-value">Eliminada en 1° ronda</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Vivido por</div>
+              <div class="info-value">Radio y El Gráfico</div>
+            </div>
+          </div>
+
+          <div class="texto">
+            <p>¡Qué tarde amarga! Me encuentro acá, sentado en el umbral de mi casa en el barrio de Flores, y todavía no puedo creer lo que escuché por la radio. Tengo 50 años, he visto fútbol del bueno, pero lo que pasó en este Mundial de Suecia me ha dejado un nudo en la garganta.</p>
+
+            <p>Hacía 24 años que no íbamos a un Mundial. ¡Tanto tiempo! Desde que era un muchacho que no sentía esta ilusión de ver a la Argentina mezclada con los grandes de Europa. El barrio era un solo murmullo de radios encendidas.</p>
+
+            <div class="imagen-wrapper">
+              <img class="imagen-real" 
+                   src="https://commons.wikimedia.org/wiki/Special:FilePath/Enthusiastic_folks_1958_WC.jpg?width=600" 
+                   alt="Hinchas escuchando el Mundial 1958"
+                   onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                   loading="lazy">
+              <div class="imagen-placeholder" style="display:none">
+                <div class="icon">📻</div>
+                <div class="label">Imagen — Hinchas escuchando 1958</div>
+                <div class="link">Enthusiastic_folks_1958_WC.jpg</div>
+              </div>
+              <div class="imagen-caption">La gente seguía los partidos pegada a la radio (Wikimedia Commons)</div>
+            </div>
+
+            <p>Todo el mundo hablaba de que ahora, por fin, los partidos se estaban viendo por televisión allá en Europa, con esas imágenes en blanco y negro que viajan por el aire. ¡Qué cosa de locos la tecnología! Estoy seguro que acá también muy pronto vamos a poder tenerlos así, nos olvidamos de la voz del relator con fritura por la <span class="contexto">radiotelefonía<span class="tooltip"><span class="tooltip-titulo">Radiotelefonía</span>Así se le decía a la radio en esa época. Era el medio más importante para enterarse de lo que pasaba en el mundo. La señal viajaba por el aire y a veces se escuchaba con ruido o "fritura".</span></span>.</p>
+
+            <div class="dato-curioso">
+              <div class="dato-curioso-label">✦ ¿Sabías que?</div>
+              <div class="dato-curioso-texto">El Mundial de 1958 fue el primero que se transmitió por televisión a varios países de Europa. En Argentina solo se podía escuchar por radio.</div>
+            </div>
+
+            <p>Lo del debut contra los alemanes fue de no creer. Lo escuchamos todos: el árbitro inglés dijo que nuestras franjas blancas y celestes se confundían con el blanco de ellos en esas pantallas de televisión. Hubo que ir a sorteo porque no teníamos camiseta suplente. Perdimos el sorteo y nuestros muchachos tuvieron que salir a la cancha vestidos de amarillo, con la camiseta de un club de allá, el <span class="contexto">Malmö<span class="tooltip"><span class="tooltip-titulo">Malmö FF</span>Un club de fútbol de Suecia. Como Argentina no tenía camiseta alternativa, le prestaron la suya. Por eso los argentinos jugaron con camiseta amarilla, algo nunca visto.</span></span>.</p>
+
+            <p>Me dio una cosa ver en las fotos en la revista <span class="contexto">"El Gráfico"<span class="tooltip"><span class="tooltip-titulo">El Gráfico</span>La revista deportiva más importante de Argentina por casi un siglo. Salía cada semana con fotos y crónicas de los partidos. Era LA fuente de información del fútbol antes de internet.</span></span> de amarillo... parecía que no éramos nosotros.</p>
+
+            <div class="imagen-wrapper">
+              <img class="imagen-real" 
+                   src="https://commons.wikimedia.org/wiki/Special:FilePath/Argentina_1958_amarillo.jpg?width=600" 
+                   alt="Argentina vestida con camiseta amarilla del Malmö"
+                   onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                   loading="lazy">
+              <div class="imagen-placeholder" style="display:none">
+                <div class="icon">👕</div>
+                <div class="label">Imagen — Argentina de amarillo</div>
+                <div class="link">Argentina_1958_amarillo.jpg</div>
+              </div>
+              <div class="imagen-caption">Argentina debutó vestida con la camiseta del Malmö (Wikimedia Commons)</div>
+            </div>
+
+            <p>Para los otros partidos ya pudimos usar la nuestra. ¡Qué linda es! Esta vez le pusieron unos <span class="contexto">bastones bien anchos<span class="tooltip"><span class="tooltip-titulo">Bastones</span>Las franjas verticales celestes y blancas de la camiseta argentina. En 1958 las hicieron más anchas que en años anteriores. Es uno de los diseños más recordados.</span></span> y ese cuello en V blanco que la hace ver muy moderna. Hasta los pantalones y las medias eran oscuras, bien elegantes. Yo decía: "Con esta percha, les ganamos a todos".</p>
+
+            <p>Pero el fútbol es así de ingrato. Ese 6 a 1 contra los checoslovacos dolió como una puñalada. El diario de hoy lo llama "el desastre de Suecia" y tienen razón. Pasamos de la ilusión a quedarnos afuera en la primera ronda. Ahora apago la radio, que ya no quiero oír más nada.</p>
+
+            <div class="dato-curioso">
+              <div class="dato-curioso-label">✦ Dato extra</div>
+              <div class="dato-curioso-texto">La camiseta amarilla del Malmö que usó Argentina hoy es considerada una pieza histórica de coleccionista.</div>
+            </div>
+
+            <p>Me quedo con el recuerdo de nuestra camiseta, la de los bastones anchos, que aunque este año no tuvo suerte, sigue siendo la más linda del mundo, aunque en Suecia nos hayan obligado a esconderla bajo ese amarillo que no nos pertenece.</p>
+          </div>
+
+          <div class="page-nav">
+            <button class="nav-btn nav-prev" data-prev="1930"><span>← Anterior: 1930</span></button>
+            <button class="nav-btn nav-next" data-next="1978"><span>Siguiente: 1978 →</span></button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ================ RELATO 1978 ================ -->
+    <div class="relato" id="relato-1978">
+      <div class="relato-1978">
+        <div class="page-content">
+          
+          <div class="header-zone">
+            <div class="fecha">— Buenos Aires · 26 de Junio de 1978 —</div>
+            <h1>Campeones en casa</h1>
+            <div class="narrador">El relato de un hombre de 35 años</div>
+          </div>
+
+          <div class="info-strip">
+            <div class="info-item">
+              <div class="info-label">Sede</div>
+              <div class="info-value">Argentina</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Final</div>
+              <div class="info-value">3 — 1 Holanda</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Vivido por</div>
+              <div class="info-value">TV blanco y negro</div>
+            </div>
+          </div>
+
+          <div class="texto">
+            <p>¡Qué día inolvidable! Todavía tengo papelitos picados en el pelo y la garganta a la miseria de tanto gritar el gol de <span class="contexto">Mario Kempes<span class="tooltip"><span class="tooltip-titulo">Mario Kempes</span>El máximo goleador del Mundial 78 y uno de los héroes de la final. Conocido como "El Matador", hizo dos goles contra Holanda. Su pelo largo y su bigote son inconfundibles en las fotos de la época.</span></span>. Se siente un aire raro en la Ciudad; por un lado, hay una alegría que desborda las calles, pero por otro, se siente una tensión que no se puede explicar, como si tuviéramos que festejar bajito, aunque hoy nadie pueda parar los bocinazos.</p>
+
+            <div class="nota-sensible">
+              <div class="nota-sensible-label">⚠ Contexto histórico</div>
+              <div class="nota-sensible-texto">En 1978 Argentina estaba bajo una dictadura militar. Muchas personas vivían con miedo y no podían expresarse libremente. El Mundial se jugó en ese contexto difícil. Si querés saber más, hablalo con un adulto de confianza o con tu maestra.</div>
+            </div>
+
+            <p>Hacía 40 años que esperábamos organizar nuestro Mundial. ¡Y finalmente se nos dio! Yo tengo 35 años y nunca vi a la gente tan unida detrás de una radio o un televisor.</p>
+
+            <p>Lo de la tecnología es de ciencia ficción: dicen que por los <span class="contexto">satélites<span class="tooltip"><span class="tooltip-titulo">Satélites</span>Aparatos lanzados al espacio que rebotan las señales de TV de un continente a otro. En 1978 eran una tecnología nueva y sorprendente. Por eso en Europa veían los partidos en directo, mientras nosotros los veíamos en blanco y negro.</span></span> nos están viendo en vivo en todo el planeta. Mi primo, que trabaja en el microcentro, me contó que en Europa nos ven en colores, ¡se imaginan! Nosotros acá seguimos frente al televisor de siempre, viendo las franjas de la camiseta en blanco y negro, pero no importa... el brillo se nota igual.</p>
+
+            <div class="imagen-wrapper">
+              <img class="imagen-real" 
+                   src="https://commons.wikimedia.org/wiki/Special:FilePath/Mario_Kempes_Argentina_vs._Holanda.JPG?width=600" 
+                   alt="Mario Kempes en la final del Mundial 1978"
+                   onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                   loading="lazy">
+              <div class="imagen-placeholder" style="display:none">
+                <div class="icon">📺</div>
+                <div class="label">Imagen — Kempes en la final</div>
+                <div class="link">Mario_Kempes_Argentina_vs_Holanda.jpg</div>
+              </div>
+              <div class="imagen-caption">Mario Kempes durante la final contra Holanda (Wikimedia Commons)</div>
+            </div>
+
+            <p>Hablando de la camiseta, ¡qué joya hicieron para este año! Los colores son mucho más brillantes, se nota desde lejos. Las franjas son más finitas que las de antes y el cuello es redondo, bien sencillo. Pero hay algo que me hizo quedar mudo cuando la vi: ¡le estamparon el <span class="contexto">escudo de la AFA<span class="tooltip"><span class="tooltip-titulo">Escudo de la AFA</span>AFA significa "Asociación del Fútbol Argentino". Es la institución que organiza la Selección. En 1978 fue la primera vez que su escudo apareció bordado en la camiseta. Desde entonces nunca más se sacó.</span></span> en el pecho! Es la primera vez que lo veo ahí, bordado, dándonos una elegancia que mete miedo.</p>
+
+            <div class="dato-curioso">
+              <div class="dato-curioso-label">✦ ¿Sabías que?</div>
+              <div class="dato-curioso-texto">Este fue el primer Mundial organizado por Argentina y la primera vez que la camiseta llevó el escudo de la AFA. Desde entonces, el escudo no se sacó más.</div>
+            </div>
+
+            <p>Y las medias... blancas con tres tiritas celestes, impecables. Es un momento difícil para el país, todos lo sabemos, pero el fútbol parece ser el único lugar donde podemos abrazarnos con un desconocido.</p>
+
+            <p>Anoche, mientras el Monumental era un mar de papelitos, sentí que esa camiseta celeste y blanca con el escudo nuevo pesaba más que nunca.</p>
+
+            <div class="imagen-wrapper">
+              <img class="imagen-real" 
+                   src="https://commons.wikimedia.org/wiki/Special:FilePath/Estadio_Monumental_Mundial_78.jpg?width=600" 
+                   alt="Estadio Monumental durante el Mundial 1978"
+                   onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                   loading="lazy">
+              <div class="imagen-placeholder" style="display:none">
+                <div class="icon">🎉</div>
+                <div class="label">Imagen — Estadio Monumental</div>
+                <div class="link">Estadio_Monumental_Mundial_78.jpg</div>
+              </div>
+              <div class="imagen-caption">El estadio Monumental durante el Mundial 78 (Wikimedia Commons)</div>
+            </div>
+
+            <p>Ganamos nuestra primera Copa y, aunque el mundo nos vea en colores y nosotros todavía en gris, el orgullo que siento por estos muchachos no me lo quita nadie. Argentina es campeón y esa camiseta, con su escudo brillante, ya entró en la historia para siempre.</p>
+
+            <div class="dato-curioso">
+              <div class="dato-curioso-label">✦ Dato extra</div>
+              <div class="dato-curioso-texto">La final se jugó en el estadio Monumental de River Plate, en Buenos Aires. Se calcula que más de mil millones de personas la vieron por televisión en el mundo.</div>
+            </div>
+          </div>
+
+          <div class="page-nav">
+            <button class="nav-btn nav-prev" data-prev="1958"><span>← Anterior: 1958</span></button>
+            <button class="nav-btn nav-next" data-next="2002"><span>Siguiente: 2002 →</span></button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ================ RELATO 2002 ================ -->
+    <div class="relato" id="relato-2002">
+      <div class="relato-2002">
+        <div class="page-content">
+          
+          <div class="header-zone">
+            <div class="fecha">— Buenos Aires · Junio de 2002 —</div>
+            <h1>Mundial en la madrugada</h1>
+            <div class="narrador">El relato de una mujer de 30 años</div>
+          </div>
+
+          <div class="info-strip">
+            <div class="info-item">
+              <div class="info-label">Sede</div>
+              <div class="info-value">Corea y Japón</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Argentina</div>
+              <div class="info-value">Eliminada en 1° ronda</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Vivido por</div>
+              <div class="info-value">TV LCD en alta definición</div>
+            </div>
+          </div>
+
+          <div class="texto">
+            <p>¡Qué sueño tengo, por favor! Son las 7 de la mañana y siento que viví una noche eterna. Tengo 30 años y nunca me imaginé que un Mundial me iba a obligar a cambiar tanto la rutina. Para ver a la Selección en <span class="contexto">Corea y Japón<span class="tooltip"><span class="tooltip-titulo">Corea y Japón</span>Dos países asiáticos al otro lado del mundo. Cuando acá es de noche, allá es de mañana. Por eso los partidos del Mundial 2002 se veían en Argentina a las 3 o 4 de la madrugada.</span></span>, acá en Argentina nos estamos convirtiendo en sonámbulos: ponemos la alarma a las 3 o las 4 de la mañana, preparamos el mate con bizcochitos y nos sentamos frente a la tele mientras todo el barrio duerme.</p>
+
+            <p>¡Es rarísimo gritar un gol cuando todavía no salió el sol!</p>
+
+            <div class="imagen-wrapper">
+              <img class="imagen-real" 
+                   src="https://commons.wikimedia.org/wiki/Special:FilePath/Nissan_International_Stadium_Yokohama.jpg?width=600" 
+                   alt="Estadio Internacional de Yokohama, sede de la final del Mundial 2002"
+                   onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                   loading="lazy">
+              <div class="ilustracion" style="display:none">
+                <div class="icon">📺☕🌙</div>
+                <div class="caption">Living a las 4 de la mañana: mate, bizcochitos y partido</div>
+              </div>
+              <div class="imagen-caption">Estadio Internacional de Yokohama, sede de la final 2002 (Wikimedia Commons · Arne Müseler · CC BY-SA 3.0)</div>
+            </div>
+
+            <p>Lo que sí me tiene impactada es cómo se ve la imagen. Mi hermano se compró una de esas pantallas planas, un <span class="contexto">LCD<span class="tooltip"><span class="tooltip-titulo">LCD</span>Significa "Liquid Crystal Display" o pantalla de cristal líquido. Era la nueva tecnología que reemplazaba a los televisores grandes y pesados de tubo. Tenían pantalla plana, eran finitos y se podían colgar de la pared.</span></span>, y la diferencia es total. Dicen que ahora la transmisión es digital y en alta definición... se le ven hasta las gotas de sudor a los jugadores. Es un lujo, nada que ver con los televisores de tubo con los que crecimos.</p>
+
+            <div class="dato-curioso">
+              <div class="dato-curioso-label">✦ ¿Sabías que?</div>
+              <div class="dato-curioso-texto">Este fue el primer Mundial jugado en Asia y el primero organizado por dos países a la vez. Por la diferencia horaria, en Argentina hubo que verlo de madrugada.</div>
+            </div>
+
+            <p>Además, es la primera vez que el Mundial se juega en Asia y que dos países se reparten la organización. ¡Se nota que Corea y Japón están en el futuro!</p>
+
+            <p>En la calle y en las tribunas se ve algo increíble: hay camisetas argentinas por todos lados. Parece que la pasión se masificó. La camiseta de este año es hermosa, tiene un diseño muy limpio, con las tres tiras celestes en los hombros y una tela que parece súper liviana, técnica, de esa que no se empapa.</p>
+
+            <div class="imagen-wrapper">
+              <img class="imagen-real" 
+                   src="https://commons.wikimedia.org/wiki/Special:FilePath/ArgentinaShirt2002WorldCup.jpg?width=600" 
+                   alt="Camiseta de la Selección Argentina del Mundial 2002"
+                   onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                   loading="lazy">
+              <div class="imagen-placeholder" style="display:none">
+                <div class="icon">👕</div>
+                <div class="label">Imagen — Camiseta Argentina 2002</div>
+                <div class="link">ArgentinaShirt2002WorldCup.jpg</div>
+              </div>
+              <div class="imagen-caption">La camiseta argentina del Mundial 2002: tres tiras celestes en los hombros (Wikimedia Commons)</div>
+            </div>
+
+            <p>Aunque <span class="contexto">Brasil terminó festejando su quinta copa<span class="tooltip"><span class="tooltip-titulo">Brasil pentacampeón</span>En 2002, Brasil ganó su quinta Copa del Mundo, por eso se los llama "pentacampeones". Ronaldo, su delantero estrella, fue el máximo goleador del torneo.</span></span> y nosotros nos volvimos antes de lo que esperábamos, me queda grabada esa sensación de comunidad en la madrugada. Las luces de los edificios prendidas a las 5 de la mañana, los gritos que se escuchan por todos lados...</p>
+
+            <div class="dato-curioso">
+              <div class="dato-curioso-label">✦ Dato extra</div>
+              <div class="dato-curioso-texto">En 2002 todavía no existían los smartphones ni las redes sociales como las conocemos hoy. Los goles se festejaban cara a cara con los vecinos.</div>
+            </div>
+
+            <p>El Mundial 2002 fue el de las pantallas brillantes y el de aprender que, aunque estemos en la otra punta del mapa, por la Selección nos despertamos a cualquier hora.</p>
+          </div>
+
+          <div class="page-nav">
+            <button class="nav-btn nav-prev" data-prev="1978"><span>← Anterior: 1978</span></button>
+            <button class="nav-btn nav-next" data-next="2022"><span>Siguiente: 2022 →</span></button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ================ RELATO 2022 ================ -->
+    <div class="relato" id="relato-2022">
+      <div class="relato-2022">
+        <div class="page-content">
+          
+          <div class="header-zone">
+            <div class="fecha">— Buenos Aires · 18 de Diciembre de 2022 —</div>
+            <h1>La tercera estrella</h1>
+            <div class="narrador">El relato de una adolescente de 17 años</div>
+            <div class="stars">
+              <span class="star">★</span>
+              <span class="star">★</span>
+              <span class="star">★</span>
+            </div>
+          </div>
+
+          <div class="info-strip">
+            <div class="info-item">
+              <div class="info-label">Sede</div>
+              <div class="info-value">Qatar</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Final</div>
+              <div class="info-value">3 — 3 Francia (pen. 4-2)</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Vivido por</div>
+              <div class="info-value">Celular, redes, TV</div>
+            </div>
+          </div>
+
+          <div class="texto">
+            <p>¡Todavía no puedo dejar de mirar la pantalla! Juro que este es el mejor día de toda mi vida.</p>
+
+            <p>Mi celular no para de vibrar: el grupo de mis amigos es una locura, Instagram está lleno de fotos de Messi con la copa y en TikTok todos están bailando la canción de <span class="contexto">"Muchachos"<span class="tooltip"><span class="tooltip-titulo">Muchachos</span>La canción que se convirtió en himno del Mundial 2022. Está basada en una canción de la banda La Mosca y le agregaron una letra sobre la Selección, Maradona y la ilusión de salir campeones. Todo el país la cantó.</span></span>.</p>
+
+            <div class="chat-card">
+              <strong>Grupo "Las pibas" · 18 dic 2022 · 18:47</strong><br>
+              "LOCOOOO NO LO PUEDO CREER 🏆🏆🏆 TERCERA ESTRELLA AMIGAAA SALGAN A LA CALLE YAAA me tiembla todo 😭😭"
+            </div>
+
+            <p>Siento que viví el mundial en dos lugares al mismo tiempo: en el living de casa sufriendo frente a la tele y en las redes sociales compartiendo memes y videos con mis amigos a cada minuto.</p>
+
+            <div class="imagen-wrapper">
+              <img class="imagen-real" 
+                   src="https://commons.wikimedia.org/wiki/Special:FilePath/Festejos_en_el_Obelisco_de_Buenos_Aires_por_la_obtención_de_la_Copa_del_Mundo_de_Fútbol_2022.jpg?width=600" 
+                   alt="Festejos en el Obelisco tras ganar el Mundial 2022"
+                   onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                   loading="lazy">
+              <div class="imagen-placeholder" style="display:none">
+                <div class="icon">🏆</div>
+                <div class="label">Imagen — Festejos en el Obelisco</div>
+                <div class="link">Festejos_Obelisco_2022.jpg</div>
+              </div>
+              <div class="imagen-caption">Los festejos en el Obelisco tras la final (Wikimedia Commons)</div>
+            </div>
+
+            <p>Mi momento favorito de este mundial fue cuando me regalaron mi camiseta nueva. Es hermosa y tiene un montón de secretos. Si la mirás de atrás, la franja del medio no es cualquier raya: ¡es una <span class="contexto">bandera vertical<span class="tooltip"><span class="tooltip-titulo">Bandera vertical</span>El diseño de la camiseta 2022 tiene una franja central que representa las banderas que la gente cuelga en los balcones cuando juega la Selección. Es un detalle escondido pero hermoso.</span></span>! Mi papá me explicó que está hecha así para que se parezca a las banderas que nosotros colgamos en los balcones de las casas cuando juega la Selección.</p>
+
+            <p>Y lo más lindo de todo es el <span class="contexto">Sol de Mayo<span class="tooltip"><span class="tooltip-titulo">Sol de Mayo</span>El sol que aparece en la bandera argentina. Tiene 32 rayos (16 rectos y 16 ondulados) y representa al Sol incaico. En la camiseta 2022 está bordado atrás, en el cuello.</span></span> que tiene atrás, en el cuello; es como si el sol nos estuviera cuidando la espalda en cada partido.</p>
+
+            <div class="dato-curioso">
+              <div class="dato-curioso-label">✦ ¿Sabías que?</div>
+              <div class="dato-curioso-texto">La canción "Muchachos" está basada en "Muchachos, esta noche me emborracho" de la banda La Mosca. Un hincha llamado Fernando Romero le cambió la letra y se hizo viral.</div>
+            </div>
+
+            <p>¡Y además salimos campeones! Por fin llegó la <span class="contexto">tercera estrella<span class="tooltip"><span class="tooltip-titulo">Tercera estrella</span>Cada estrella sobre el escudo de la camiseta representa un Mundial ganado. La primera fue en 1978, la segunda en 1986 con Maradona, y la tercera en 2022 con Messi.</span></span>. Cuando terminó el partido contra Francia, mi mamá nos dijo: "¡Pónganse las zapatillas que nos vamos a la calle!".</p>
+
+            <div class="imagen-wrapper">
+              <img class="imagen-real" 
+                   src="https://commons.wikimedia.org/wiki/Special:FilePath/2022_FIFA_World_Cup_Match_24,_Argentina_v_Mexico_-_04.jpg?width=600" 
+                   alt="Argentina vs México en el Mundial 2022"
+                   onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                   loading="lazy">
+              <div class="imagen-placeholder" style="display:none">
+                <div class="icon">🇦🇷</div>
+                <div class="label">Imagen — Argentina vs México 2022</div>
+                <div class="link">Argentina_vs_Mexico_2022.jpg</div>
+              </div>
+              <div class="imagen-caption">Argentina durante el Mundial de Qatar 2022 (Wikimedia Commons)</div>
+            </div>
+
+            <p>Nunca en mi vida vi tanta gente junta. Parecía que todo el país se había puesto de acuerdo para salir a copar cada esquina, cada plaza y cada monumento. Había personas llorando, chicos de mi edad saltando y gente que no se conocía dándose abrazos gigantes.</p>
+
+            <div class="dato-curioso">
+              <div class="dato-curioso-label">✦ Dato extra</div>
+              <div class="dato-curioso-texto">Se estima que más de 4 millones de personas salieron a festejar al Obelisco. Fue una de las celebraciones más grandes de la historia argentina.</div>
+            </div>
+
+            <p>En 2022 aprendí que la Selección es mucho más que fútbol. Es esa bandera vertical en nuestra espalda, es el sol que brilla en el cuello de la camiseta y es esa marea de gente celeste y blanca que hoy no quiere volverse a su casa.</p>
+
+            <p>¡Somos campeones del mundo y mi generación por fin lo vio con sus propios ojos!</p>
+          </div>
+
+          <div class="page-nav">
+            <button class="nav-btn nav-prev" data-prev="2002"><span>← Anterior: 2002</span></button>
+            <button class="nav-btn" disabled style="opacity:0.3;cursor:not-allowed">Siguiente →</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-info">
+    Ministerio de Educación · Ciudad de Buenos Aires · Material para Nivel Primario<br>
+    Imágenes: Wikimedia Commons (dominio público / Creative Commons)
+  </div>
+
+  <script>
+    const nodes = document.querySelectorAll('.timeline-node');
+    const relatos = document.querySelectorAll('.relato');
+    const body = document.body;
+    
+    function showRelato(year) {
+      nodes.forEach(n => n.classList.toggle('active', n.dataset.year === year));
+      relatos.forEach(r => r.classList.toggle('active', r.id === 'relato-' + year));
+      body.className = 'era-' + year;
+      window.scrollTo({ top: document.querySelector('.timeline-wrapper').offsetTop - 20, behavior: 'smooth' });
+    }
+    
+    nodes.forEach(node => {
+      node.addEventListener('click', () => showRelato(node.dataset.year));
+    });
+    
+    document.querySelectorAll('.nav-next').forEach(btn => {
+      btn.addEventListener('click', () => showRelato(btn.dataset.next));
+    });
+    document.querySelectorAll('.nav-prev').forEach(btn => {
+      btn.addEventListener('click', () => showRelato(btn.dataset.prev));
+    });
+  </script>
+
+</body>
+</html>
