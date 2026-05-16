@@ -27,63 +27,38 @@
   /* HEADER */
   .ba-head {
     background: #153244;
-    padding: 18px 32px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    padding: 22px 36px;
     border-bottom: 5px solid #FFCC00;
   }
-  .ba-head-left { display: flex; flex-direction: column; gap: 4px; }
   .ba-section {
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 500;
     color: #8DE2D6;
     letter-spacing: 0.2em;
     text-transform: uppercase;
+    margin-bottom: 4px;
   }
   .ba-title {
-    font-size: 28px;
+    font-size: 32px;
     font-weight: 700;
     color: #FFFFFF;
     letter-spacing: -0.01em;
     line-height: 1.1;
   }
-  .ba-logo { display: flex; align-items: center; gap: 12px; }
-  .ba-logo-text {
-    color: #FFFFFF;
-    font-size: 11px;
-    font-weight: 500;
-    line-height: 1.2;
-    text-align: right;
-  }
-  .ba-logo-text strong { color: #8DE2D6; font-weight: 700; }
-  .ba-ba {
-    width: 50px;
-    height: 38px;
-    background: #FFCC00;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #153244;
-    font-weight: 700;
-    font-size: 16px;
-    letter-spacing: -0.04em;
-  }
 
   /* BODY */
   .ba-body {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 18px;
-    padding: 22px 28px;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    padding: 28px 36px;
     background: #F7F9FA;
   }
   .ba-card {
     background: #FFFFFF;
     border: 1px solid #D9DFE3;
-    border-radius: 10px;
-    padding: 18px 18px 16px;
+    border-radius: 12px;
+    padding: 24px 24px 22px;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -95,21 +70,21 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 6px;
+    height: 7px;
     background: #8DE2D6;
   }
   .ba-card-head {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin: 8px 0 14px;
+    gap: 14px;
+    margin: 10px 0 16px;
   }
   .ba-num {
-    width: 38px;
-    height: 38px;
+    width: 44px;
+    height: 44px;
     background: #153244;
     color: #FFCC00;
-    font-size: 18px;
+    font-size: 22px;
     font-weight: 700;
     border-radius: 50%;
     display: flex;
@@ -118,78 +93,112 @@
     flex-shrink: 0;
   }
   .ba-action {
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 700;
     color: #153244;
     text-transform: uppercase;
     letter-spacing: 0.14em;
   }
   .ba-text {
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 400;
     color: #1f1f1f;
-    line-height: 1.5;
-    margin-bottom: 12px;
+    line-height: 1.55;
+    margin-bottom: 16px;
   }
   .ba-link {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 9px;
     background: #FFCC00;
     color: #153244;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 700;
-    padding: 7px 14px;
-    border-radius: 18px;
+    padding: 9px 16px;
+    border-radius: 20px;
     text-decoration: none;
     align-self: flex-start;
-    margin-bottom: 14px;
+    margin-bottom: 18px;
     transition: background 0.15s;
   }
   .ba-link:hover { background: #FFD633; }
-  .ba-link svg { width: 14px; height: 14px; flex-shrink: 0; }
+  .ba-link svg { width: 16px; height: 16px; flex-shrink: 0; }
 
   .ba-questions {
     background: #F2FBFA;
     border-left: 4px solid #8DE2D6;
-    padding: 10px 14px;
+    padding: 14px 18px;
     border-radius: 0 6px 6px 0;
     margin-top: auto;
   }
   .ba-qlabel {
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 700;
     color: #153244;
     text-transform: uppercase;
     letter-spacing: 0.14em;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 7px;
   }
-  .ba-qlabel svg { width: 16px; height: 16px; flex-shrink: 0; }
+  .ba-qlabel svg { width: 18px; height: 18px; flex-shrink: 0; }
   .ba-questions ul {
     margin: 0;
-    padding-left: 16px;
-    font-size: 12px;
+    padding-left: 18px;
+    font-size: 13.5px;
     color: #153244;
-    line-height: 1.45;
+    line-height: 1.5;
   }
-  .ba-questions li { margin-bottom: 3px; }
+  .ba-questions li { margin-bottom: 6px; }
+  .ba-hint {
+    display: block;
+    color: #5a7a8c;
+    font-style: italic;
+    font-size: 12.5px;
+    font-weight: 400;
+    margin-top: 2px;
+  }
 
   /* FOOTER */
   .ba-foot {
     background: #FFFFFF;
     border-top: 1px solid #D9DFE3;
-    padding: 10px 32px;
+    padding: 14px 36px 16px;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    align-items: flex-start;
+    gap: 18px;
     font-size: 11px;
     color: #153244;
   }
-  .ba-foot-left { font-weight: 500; }
-  .ba-foot-right { font-weight: 700; }
+  .ba-foot-label {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 10.5px;
+    color: #153244;
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+  .ba-foot-sources {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .ba-foot-sources p {
+    font-size: 10.5px;
+    line-height: 1.4;
+    color: #3a4a55;
+    font-weight: 400;
+    /* Sangría francesa, como pide APA */
+    padding-left: 18px;
+    text-indent: -18px;
+    word-break: break-word;
+  }
+  .ba-foot-sources em {
+    font-style: italic;
+  }
 
   /* Responsivo */
   @media (max-width: 900px) {
@@ -208,16 +217,8 @@
   <div class="ba-stage">
 
     <header class="ba-head">
-      <div class="ba-head-left">
-        <span class="ba-section">Recorrido didáctico</span>
-        <h1 class="ba-title">La camiseta argentina</h1>
-      </div>
-      <div class="ba-logo">
-        <div class="ba-logo-text">
-          Ministerio<br><strong>de Educación</strong>
-        </div>
-        <div class="ba-ba">BA</div>
-      </div>
+      <span class="ba-section">Recorrido didáctico</span>
+      <h1 class="ba-title">La camiseta argentina</h1>
     </header>
 
     <section class="ba-body">
@@ -227,7 +228,7 @@
           <div class="ba-num">1</div>
           <span class="ba-action">Observar</span>
         </div>
-        <p class="ba-text">Ingresen a la nota de Tiempo Argentino, observen la obra de Nora Iniesta inspirada en la selección argentina de fútbol y busquen datos sobre la intención de la artista y las decisiones técnicas que tomó para concretarla.</p>
+        <p class="ba-text">Entrá a la nota de Tiempo Argentino y mirá la obra que hizo la artista Nora Iniesta inspirada en la camiseta de la Selección. Buscá qué quiso contar con su obra y cómo la hizo.</p>
         <a class="ba-link" href="https://www.tiempoar.com.ar/ta_article/la-camiseta-de-la-seleccion-argentina-inspiro-una-obra-de-la-artista-nora-iniesta/" target="_blank" rel="noopener">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="#153244"><path d="M48 4h10c1 0 2 1 2 2v10c0 1-1 2-2 2s-2-1-2-2V8.8L31 33.4c-.8.8-2 .8-2.8 0s-.8-2 0-2.8L52.2 6H48c-1 0-2-1-2-2s1-2 2-2z" stroke="#153244" stroke-width="2"/><path d="M10 12h18c1 0 2 1 2 2s-1 2-2 2H14v34h34V36c0-1 1-2 2-2s2 1 2 2v16c0 1-1 2-2 2H10c-1 0-2-1-2-2V14c0-1 1-2 2-2z" stroke="#153244" stroke-width="2"/></svg>
           Nota — Tiempo Argentino
@@ -235,9 +236,9 @@
         <div class="ba-questions">
           <p class="ba-qlabel"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="#153244"><path d="M32 4c-9 0-17 8-17 17 0 6 3 11 7 14v3c0 1 1 2 2 2h16c1 0 2-1 2-2v-3c4-3 7-8 7-14 0-9-8-17-17-17zm-7 36v-2h14v2H25zm9-9l-2 3-2-3-4-5c-1-1 0-3 1-3h10c1 0 2 2 1 3l-4 5z"/><path d="M32 0v4M19 4l3 4M45 4l-3 4M11 19h4M53 19h-4" stroke="#153244" stroke-width="3" stroke-linecap="round" fill="none"/><circle cx="16" cy="48" r="6"/><circle cx="32" cy="50" r="7"/><circle cx="48" cy="48" r="6"/><path d="M8 64c0-4 4-8 8-8s8 4 8 8H8zm16 0c0-5 4-9 8-9s8 4 8 9H24zm16 0c0-4 4-8 8-8s8 4 8 8H40z"/></svg> Para pensar</p>
           <ul>
-            <li>¿Qué se propuso comunicar Nora Iniesta?</li>
-            <li>¿Por qué creen que eligió elementos cotidianos para representar la pasión por el fútbol?</li>
-            <li>¿Con qué otra idea importante para nuestro país quiso conectar su obra?</li>
+            <li>¿Qué quiso contarnos Nora Iniesta con su obra? <span class="ba-hint">(¿qué mensaje, idea o sentimiento querría transmitir?)</span></li>
+            <li>¿Por qué te parece que usó objetos de todos los días para hablar del fútbol? <span class="ba-hint">(juguetes, materiales escolares, cosas comunes)</span></li>
+            <li>¿Con qué otra idea importante para nuestro país quiso conectar? <span class="ba-hint">(pista: tiene que ver con un aniversario)</span></li>
           </ul>
         </div>
       </article>
@@ -245,24 +246,9 @@
       <article class="ba-card">
         <div class="ba-card-head">
           <div class="ba-num">2</div>
-          <span class="ba-action">Reflexionar en grupo</span>
-        </div>
-        <p class="ba-text">Nora Iniesta dice que la camiseta es una "piel". Reflexionen en grupos.</p>
-        <div class="ba-questions">
-          <p class="ba-qlabel"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="#153244"><path d="M32 4c-9 0-17 8-17 17 0 6 3 11 7 14v3c0 1 1 2 2 2h16c1 0 2-1 2-2v-3c4-3 7-8 7-14 0-9-8-17-17-17zm-7 36v-2h14v2H25zm9-9l-2 3-2-3-4-5c-1-1 0-3 1-3h10c1 0 2 2 1 3l-4 5z"/><path d="M32 0v4M19 4l3 4M45 4l-3 4M11 19h4M53 19h-4" stroke="#153244" stroke-width="3" stroke-linecap="round" fill="none"/><circle cx="16" cy="48" r="6"/><circle cx="32" cy="50" r="7"/><circle cx="48" cy="48" r="6"/><path d="M8 64c0-4 4-8 8-8s8 4 8 8H8zm16 0c0-5 4-9 8-9s8 4 8 9H24zm16 0c0-4 4-8 8-8s8 4 8 8H40z"/></svg> Para pensar</p>
-          <ul>
-            <li>¿Qué significa que un color o una prenda se sienta como la propia piel?</li>
-            <li>¿Cómo utiliza la artista los espacios, las formas y las texturas para transmitir la idea de un "abrazo" nacional?</li>
-          </ul>
-        </div>
-      </article>
-
-      <article class="ba-card">
-        <div class="ba-card-head">
-          <div class="ba-num">3</div>
           <span class="ba-action">Analizar</span>
         </div>
-        <p class="ba-text">Ingresen a la nota periodística de la revista digital Puro Diseño, en la que se presenta un diseño experimental y no oficial de la camiseta de la Selección Argentina creado por Dan K. Norris.</p>
+        <p class="ba-text">Entrá a la nota de la revista Puro Diseño. Vas a ver un diseño distinto y experimental de la camiseta argentina, hecho por Dan K. Norris (no es la camiseta oficial).</p>
         <a class="ba-link" href="https://purodiseno.lat/tendencias/asi-imagino-la-camiseta-de-la-seleccion-argentina-de-futbol-un-disenador-top/" target="_blank" rel="noopener">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="#153244"><path d="M48 4h10c1 0 2 1 2 2v10c0 1-1 2-2 2s-2-1-2-2V8.8L31 33.4c-.8.8-2 .8-2.8 0s-.8-2 0-2.8L52.2 6H48c-1 0-2-1-2-2s1-2 2-2z" stroke="#153244" stroke-width="2"/><path d="M10 12h18c1 0 2 1 2 2s-1 2-2 2H14v34h34V36c0-1 1-2 2-2s2 1 2 2v16c0 1-1 2-2 2H10c-1 0-2-1-2-2V14c0-1 1-2 2-2z" stroke="#153244" stroke-width="2"/></svg>
           Nota — Puro Diseño
@@ -270,9 +256,9 @@
         <div class="ba-questions">
           <p class="ba-qlabel"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="#153244"><path d="M32 4c-9 0-17 8-17 17 0 6 3 11 7 14v3c0 1 1 2 2 2h16c1 0 2-1 2-2v-3c4-3 7-8 7-14 0-9-8-17-17-17zm-7 36v-2h14v2H25zm9-9l-2 3-2-3-4-5c-1-1 0-3 1-3h10c1 0 2 2 1 3l-4 5z"/><path d="M32 0v4M19 4l3 4M45 4l-3 4M11 19h4M53 19h-4" stroke="#153244" stroke-width="3" stroke-linecap="round" fill="none"/><circle cx="16" cy="48" r="6"/><circle cx="32" cy="50" r="7"/><circle cx="48" cy="48" r="6"/><path d="M8 64c0-4 4-8 8-8s8 4 8 8H8zm16 0c0-5 4-9 8-9s8 4 8 9H24zm16 0c0-4 4-8 8-8s8 4 8 8H40z"/></svg> Para pensar</p>
           <ul>
-            <li>¿Qué les sugiere este diseño?</li>
-            <li>¿Cómo se relacionan las palabras con los símbolos gráficos?</li>
-            <li>¿Qué recursos visuales y materiales utilizó este diseñador para transformar la textura y la imagen en general en esta camiseta?</li>
+            <li>¿Qué te sugiere este diseño? <span class="ba-hint">(¿qué te hace sentir, pensar o imaginar al verlo?)</span></li>
+            <li>¿Cómo se relacionan las palabras con los dibujos y símbolos? <span class="ba-hint">(¿se complementan, se contradicen, cuentan una historia?)</span></li>
+            <li>¿Qué recursos usó el diseñador para cambiar la textura y el aspecto de la camiseta? <span class="ba-hint">(colores, materiales, tipografías, ilustraciones)</span></li>
           </ul>
         </div>
       </article>
@@ -280,8 +266,11 @@
     </section>
 
     <footer class="ba-foot">
-      <span class="ba-foot-left">buenosaires.gob.ar/educacion</span>
-      <span class="ba-foot-right">/educacionBA</span>
+      <span class="ba-foot-label">Fuentes</span>
+      <div class="ba-foot-sources">
+        <p>López Ocón, M. (2023, 5 de julio). <em>La camiseta de la Selección Argentina inspiró una obra de la artista Nora Iniesta</em>. Tiempo Argentino. https://www.tiempoar.com.ar/ta_article/la-camiseta-de-la-seleccion-argentina-inspiro-una-obra-de-la-artista-nora-iniesta/</p>
+        <p>Puro Diseño. (2021, 4 de abril). <em>Así imaginó la camiseta de la selección argentina de fútbol un diseñador top</em>. https://purodiseno.lat/tendencias/asi-imagino-la-camiseta-de-la-seleccion-argentina-de-futbol-un-disenador-top/</p>
+      </div>
     </footer>
 
   </div>
