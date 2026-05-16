@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Historia de los mundiales · Trabajo en grupos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; font-family: 'Archivo', sans-serif; background: #E9EDEF; color: #1f1f1f; }
+  body { display: flex; align-items: center; justify-content: center; padding: 20px; }
+
+  .ba-stage {
+    width: 100%;
+    max-width: 1067px;
+    max-height: 600px;
+    background: #FFFFFF;
+    border-radius: 8px;
+    box-shadow: 0 6px 24px rgba(21, 50, 68, 0.12);
+    display: grid;
+    grid-template-rows: auto 1fr;
+    overflow: hidden;
+  }
+
+  /* HEADER */
+  .ba-head {
+    background: #153244;
+    padding: 16px 28px;
+    border-bottom: 4px solid #FFCC00;
+  }
+  .ba-section {
+    font-size: 11px;
+    font-weight: 500;
+    color: #8DE2D6;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+  .ba-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: #FFFFFF;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+  }
+  .ba-subtitle {
+    font-size: 12px;
+    font-weight: 400;
+    color: #B8C8D2;
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+
+  /* BODY */
+  .ba-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    padding: 18px 22px;
+    background: #F7F9FA;
+    overflow: hidden;
+  }
+  .ba-card {
+    background: #FFFFFF;
+    border: 1px solid #D9DFE3;
+    border-radius: 10px;
+    padding: 16px 16px 14px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .ba-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: #8DE2D6;
+  }
+  .ba-card-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 6px 0 10px;
+  }
+  .ba-num {
+    width: 34px;
+    height: 34px;
+    background: #153244;
+    color: #FFCC00;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .ba-action {
+    font-size: 10.5px;
+    font-weight: 700;
+    color: #153244;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    line-height: 1.2;
+  }
+  .ba-text {
+    font-size: 12.5px;
+    font-weight: 400;
+    color: #1f1f1f;
+    line-height: 1.45;
+    margin-bottom: 10px;
+  }
+  .ba-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: #FFCC00;
+    color: #153244;
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 16px;
+    text-decoration: none;
+    align-self: flex-start;
+    margin-bottom: 10px;
+    transition: background 0.15s;
+  }
+  .ba-link:hover { background: #FFD633; }
+  .ba-link svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+  .ba-questions {
+    background: #F2FBFA;
+    border-left: 4px solid #8DE2D6;
+    padding: 10px 12px;
+    border-radius: 0 6px 6px 0;
+  }
+  .ba-qlabel {
+    font-size: 10px;
+    font-weight: 700;
+    color: #153244;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .ba-qlabel svg { width: 14px; height: 14px; flex-shrink: 0; }
+  .ba-questions ul {
+    margin: 0;
+    padding-left: 15px;
+    font-size: 11.5px;
+    color: #153244;
+    line-height: 1.4;
+  }
+  .ba-questions li { margin-bottom: 4px; }
+
+  /* Responsivo */
+  @media (max-width: 900px) {
+    .ba-stage { max-height: none; }
+    .ba-body { grid-template-columns: 1fr; }
+  }
+
+  @media print {
+    body { background: #FFFFFF; padding: 0; }
+    .ba-stage { box-shadow: none; max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="ba-stage">
+
+    <header class="ba-head">
+      <span class="ba-section">Trabajo en grupos</span>
+      <h1 class="ba-title">Historia de los mundiales</h1>
+    </header>
+
+    <section class="ba-body">
+
+      <article class="ba-card">
+        <div class="ba-card-head">
+          <div class="ba-num">1</div>
+          <span class="ba-action">Grupo 1<br>La historia</span>
+        </div>
+        <p class="ba-text">Lean la nota <em>Historia de los mundiales</em> del portal Argentina.gob.ar y prepárense para contarle al resto lo que aprendieron.</p>
+        <a class="ba-link" href="https://www.argentina.gob.ar/educacion/el-mundial-en-la-escuela/historia-de-los-mundiales" target="_blank" rel="noopener">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="#153244"><path d="M48 4h10c1 0 2 1 2 2v10c0 1-1 2-2 2s-2-1-2-2V8.8L31 33.4c-.8.8-2 .8-2.8 0s-.8-2 0-2.8L52.2 6H48c-1 0-2-1-2-2s1-2 2-2z" stroke="#153244" stroke-width="2"/><path d="M10 12h18c1 0 2 1 2 2s-1 2-2 2H14v34h34V36c0-1 1-2 2-2s2 1 2 2v16c0 1-1 2-2 2H10c-1 0-2-1-2-2V14c0-1 1-2 2-2z" stroke="#153244" stroke-width="2"/></svg>
+          Nota — Argentina.gob.ar
+        </a>
+        <div class="ba-questions">
+          <p class="ba-qlabel"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="#153244"><path d="M32 4c-9 0-17 8-17 17 0 6 3 11 7 14v3c0 1 1 2 2 2h16c1 0 2-1 2-2v-3c4-3 7-8 7-14 0-9-8-17-17-17zm-7 36v-2h14v2H25zm9-9l-2 3-2-3-4-5c-1-1 0-3 1-3h10c1 0 2 2 1 3l-4 5z"/><path d="M32 0v4M19 4l3 4M45 4l-3 4M11 19h4M53 19h-4" stroke="#153244" stroke-width="3" stroke-linecap="round" fill="none"/><circle cx="16" cy="48" r="6"/><circle cx="32" cy="50" r="7"/><circle cx="48" cy="48" r="6"/><path d="M8 64c0-4 4-8 8-8s8 4 8 8H8zm16 0c0-5 4-9 8-9s8 4 8 9H24zm16 0c0-4 4-8 8-8s8 4 8 8H40z"/></svg> Para responder</p>
+          <ul>
+            <li>¿Por qué Uruguay fue elegido como sede del primer Mundial en 1930?</li>
+            <li>¿Qué dato curioso encontraron sobre la pelota usada en alguno de los mundiales?</li>
+            <li>¿Qué pasaba en Argentina durante el Mundial de 1978? ¿Por qué la nota dice que el fútbol fue un "oasis"?</li>
+            <li>Elijan un Mundial que les llame la atención y cuenten qué tuvo de especial.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="ba-card">
+        <div class="ba-card-head">
+          <div class="ba-num">2</div>
+          <span class="ba-action">Grupo 2<br>El formato</span>
+        </div>
+        <p class="ba-text">Lean la nota <em>Cómo fue la evolución de los mundiales</em> del diario Ámbito Financiero y prepárense para contarle al resto lo que aprendieron.</p>
+        <a class="ba-link" href="https://www.ambito.com/portada-principal/como-fue-la-evolucion-los-mundiales-1930-la-actualidad-n3968868" target="_blank" rel="noopener">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="#153244"><path d="M48 4h10c1 0 2 1 2 2v10c0 1-1 2-2 2s-2-1-2-2V8.8L31 33.4c-.8.8-2 .8-2.8 0s-.8-2 0-2.8L52.2 6H48c-1 0-2-1-2-2s1-2 2-2z" stroke="#153244" stroke-width="2"/><path d="M10 12h18c1 0 2 1 2 2s-1 2-2 2H14v34h34V36c0-1 1-2 2-2s2 1 2 2v16c0 1-1 2-2 2H10c-1 0-2-1-2-2V14c0-1 1-2 2-2z" stroke="#153244" stroke-width="2"/></svg>
+          Nota — Ámbito Financiero
+        </a>
+        <div class="ba-questions">
+          <p class="ba-qlabel"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="#153244"><path d="M32 4c-9 0-17 8-17 17 0 6 3 11 7 14v3c0 1 1 2 2 2h16c1 0 2-1 2-2v-3c4-3 7-8 7-14 0-9-8-17-17-17zm-7 36v-2h14v2H25zm9-9l-2 3-2-3-4-5c-1-1 0-3 1-3h10c1 0 2 2 1 3l-4 5z"/><path d="M32 0v4M19 4l3 4M45 4l-3 4M11 19h4M53 19h-4" stroke="#153244" stroke-width="3" stroke-linecap="round" fill="none"/><circle cx="16" cy="48" r="6"/><circle cx="32" cy="50" r="7"/><circle cx="48" cy="48" r="6"/><path d="M8 64c0-4 4-8 8-8s8 4 8 8H8zm16 0c0-5 4-9 8-9s8 4 8 9H24zm16 0c0-4 4-8 8-8s8 4 8 8H40z"/></svg> Para responder</p>
+          <ul>
+            <li>¿Con cuántos equipos arrancó el primer Mundial y cuántos van a jugar en 2026?</li>
+            <li>¿En qué Mundial empezaron a usarse las tarjetas amarillas y rojas?</li>
+            <li>¿Por qué fue importante el Mundial de España 1982 para el cambio de formato?</li>
+            <li>¿Qué les parece que la cantidad de selecciones haya crecido tanto con los años?</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="ba-card">
+        <div class="ba-card-head">
+          <div class="ba-num">3</div>
+          <span class="ba-action">Grupo 3<br>Las reglas</span>
+        </div>
+        <p class="ba-text">Lean la nota <em>Los cambios reglamentarios más importantes en la historia de los Mundiales</em> de Primicias y prepárense para contarle al resto lo que aprendieron.</p>
+        <a class="ba-link" href="https://www.primicias.ec/noticias/catar2022/cambios-reglas-importantes-historia-mundiales-fifa/" target="_blank" rel="noopener">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="#153244"><path d="M48 4h10c1 0 2 1 2 2v10c0 1-1 2-2 2s-2-1-2-2V8.8L31 33.4c-.8.8-2 .8-2.8 0s-.8-2 0-2.8L52.2 6H48c-1 0-2-1-2-2s1-2 2-2z" stroke="#153244" stroke-width="2"/><path d="M10 12h18c1 0 2 1 2 2s-1 2-2 2H14v34h34V36c0-1 1-2 2-2s2 1 2 2v16c0 1-1 2-2 2H10c-1 0-2-1-2-2V14c0-1 1-2 2-2z" stroke="#153244" stroke-width="2"/></svg>
+          Nota — Primicias
+        </a>
+        <div class="ba-questions">
+          <p class="ba-qlabel"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="#153244"><path d="M32 4c-9 0-17 8-17 17 0 6 3 11 7 14v3c0 1 1 2 2 2h16c1 0 2-1 2-2v-3c4-3 7-8 7-14 0-9-8-17-17-17zm-7 36v-2h14v2H25zm9-9l-2 3-2-3-4-5c-1-1 0-3 1-3h10c1 0 2 2 1 3l-4 5z"/><path d="M32 0v4M19 4l3 4M45 4l-3 4M11 19h4M53 19h-4" stroke="#153244" stroke-width="3" stroke-linecap="round" fill="none"/><circle cx="16" cy="48" r="6"/><circle cx="32" cy="50" r="7"/><circle cx="48" cy="48" r="6"/><path d="M8 64c0-4 4-8 8-8s8 4 8 8H8zm16 0c0-5 4-9 8-9s8 4 8 9H24zm16 0c0-4 4-8 8-8s8 4 8 8H40z"/></svg> Para responder</p>
+          <ul>
+            <li>¿En qué Mundial se empezaron a usar números en las camisetas y cómo se asignaban?</li>
+            <li>¿Qué cambio se hizo con los puntos por victoria y para qué sirvió?</li>
+            <li>¿En qué Mundial debutó el VAR y para qué se usa?</li>
+            <li>¿Cuál de estos cambios les parece el más importante? ¿Por qué?</li>
+          </ul>
+        </div>
+      </article>
+
+    </section>
+
+  </div>
+
+</body>
+</html>
