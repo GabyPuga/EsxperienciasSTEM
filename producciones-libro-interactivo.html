@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Producciones para el Libro Interactivo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; font-family: 'Archivo', sans-serif; background: #E9EDEF; color: #1f1f1f; }
+  body { display: flex; align-items: center; justify-content: center; padding: 20px; }
+
+  .ba-stage {
+    width: 100%;
+    max-width: 1067px;
+    max-height: 600px;
+    background: #FFFFFF;
+    border-radius: 8px;
+    box-shadow: 0 6px 24px rgba(21, 50, 68, 0.12);
+    display: grid;
+    grid-template-rows: auto 1fr;
+    overflow: hidden;
+  }
+
+  /* HEADER */
+  .ba-head {
+    background: #153244;
+    padding: 14px 28px;
+    border-bottom: 4px solid #FFCC00;
+  }
+  .ba-section {
+    font-size: 11px;
+    font-weight: 500;
+    color: #8DE2D6;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+  .ba-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #FFFFFF;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+  }
+
+  /* BODY */
+  .ba-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    padding: 16px 22px;
+    background: #F7F9FA;
+    overflow: hidden;
+    align-content: start;
+  }
+  .ba-card {
+    background: #FFFFFF;
+    border: 1px solid #D9DFE3;
+    border-radius: 8px;
+    padding: 12px 14px 11px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .ba-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: #8DE2D6;
+  }
+  .ba-card-head {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin: 4px 0 7px;
+  }
+  .ba-num {
+    width: 28px;
+    height: 28px;
+    background: #153244;
+    color: #FFCC00;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .ba-action {
+    font-size: 12px;
+    font-weight: 700;
+    color: #153244;
+    line-height: 1.15;
+  }
+  .ba-text {
+    font-size: 11.5px;
+    font-weight: 400;
+    color: #1f1f1f;
+    line-height: 1.4;
+    margin-bottom: 9px;
+  }
+  .ba-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #FFCC00;
+    color: #153244;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 5px 11px;
+    border-radius: 14px;
+    text-decoration: none;
+    align-self: flex-start;
+    margin-top: auto;
+    transition: background 0.15s;
+  }
+  .ba-link:hover { background: #FFD633; }
+  .ba-link svg { width: 11px; height: 11px; flex-shrink: 0; }
+
+  .ba-resources {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: auto;
+  }
+  .ba-resources .ba-link { margin-top: 0; }
+
+  /* Celda de la mascota oficial al final de la 2da fila */
+  .ba-mascot-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+  .ba-mascot-cell img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  /* Responsivo */
+  @media (max-width: 900px) {
+    .ba-stage { max-height: none; }
+    .ba-body { grid-template-columns: 1fr; }
+    .ba-mascot-cell { display: none; }
+  }
+
+  @media print {
+    body { background: #FFFFFF; padding: 0; }
+    .ba-stage { box-shadow: none; max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="ba-stage">
+
+    <header class="ba-head">
+      <span class="ba-section">Producciones para el libro interactivo</span>
+      <h1 class="ba-title">Elegí tu formato</h1>
+    </header>
+
+    <section class="ba-body">
+
+      <article class="ba-card">
+        <div class="ba-card-head">
+          <div class="ba-num">1</div>
+          <span class="ba-action">Crónica deportiva</span>
+        </div>
+        <p class="ba-text">Contá qué pasó en un partido o momento importante, como si estuvieras narrando los hechos para un medio de comunicación.</p>
+        <a class="ba-link" href="https://www.rtve.es/deportes/20221218/argentina-gana-francia-messi-mundial-qatar-2022/2412177.shtml" target="_blank" rel="noopener">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="#153244"><path d="M48 4h10c1 0 2 1 2 2v10c0 1-1 2-2 2s-2-1-2-2V8.8L31 33.4c-.8.8-2 .8-2.8 0s-.8-2 0-2.8L52.2 6H48c-1 0-2-1-2-2s1-2 2-2z" stroke="#153244" stroke-width="2"/><path d="M10 12h18c1 0 2 1 2 2s-1 2-2 2H14v34h34V36c0-1 1-2 2-2s2 1 2 2v16c0 1-1 2-2 2H10c-1 0-2-1-2-2V14c0-1 1-2 2-2z" stroke="#153244" stroke-width="2"/></svg>
+          Ejemplo — RTVE
+        </a>
+      </article>
+
+      <article class="ba-card">
+        <div class="ba-card-head">
+          <div class="ba-num">2</div>
+          <span class="ba-action">Relato de hincha</span>
+        </div>
+        <p class="ba-text">Narrá una experiencia desde la emoción: cómo se vive, se espera o se festeja un Mundial.</p>
+        <div class="ba-resources">
+          <a class="ba-link" href="https://www.eltrecetv.com.ar/noticias/mundial-2022/la-impactante-historia-del-unico-hincha-que-beso-la-copa-del-mundo-y-se_181633/" target="_blank" rel="noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="#153244"><path d="M48 4h10c1 0 2 1 2 2v10c0 1-1 2-2 2s-2-1-2-2V8.8L31 33.4c-.8.8-2 .8-2.8 0s-.8-2 0-2.8L52.2 6H48c-1 0-2-1-2-2s1-2 2-2z" stroke="#153244" stroke-width="2"/><path d="M10 12h18c1 0 2 1 2 2s-1 2-2 2H14v34h34V36c0-1 1-2 2-2s2 1 2 2v16c0 1-1 2-2 2H10c-1 0-2-1-2-2V14c0-1 1-2 2-2z" stroke="#153244" stroke-width="2"/></svg>
+            Ejemplo — eltrecetv
+          </a>
+          <a class="ba-link" href="https://www.diariomendoza.com.ar/deportes/video-locura-river-hincha-mendocino-quemo-su-auto-viajar-mundial-clubes-n106951" target="_blank" rel="noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="#153244"><path d="M48 4h10c1 0 2 1 2 2v10c0 1-1 2-2 2s-2-1-2-2V8.8L31 33.4c-.8.8-2 .8-2.8 0s-.8-2 0-2.8L52.2 6H48c-1 0-2-1-2-2s1-2 2-2z" stroke="#153244" stroke-width="2"/><path d="M10 12h18c1 0 2 1 2 2s-1 2-2 2H14v34h34V36c0-1 1-2 2-2s2 1 2 2v16c0 1-1 2-2 2H10c-1 0-2-1-2-2V14c0-1 1-2 2-2z" stroke="#153244" stroke-width="2"/></svg>
+            Ejemplo — Diario Mendoza
+          </a>
+        </div>
+      </article>
+
+      <article class="ba-card">
+        <div class="ba-card-head">
+          <div class="ba-num">3</div>
+          <span class="ba-action">Relato de un gol</span>
+        </div>
+        <p class="ba-text">Relatá un gol importante minuto a minuto, con emoción.</p>
+        <a class="ba-link" href="https://www.youtube.com/watch?v=wkgCZApCI3k&t=36s" target="_blank" rel="noopener">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="#153244"><path d="M48 4h10c1 0 2 1 2 2v10c0 1-1 2-2 2s-2-1-2-2V8.8L31 33.4c-.8.8-2 .8-2.8 0s-.8-2 0-2.8L52.2 6H48c-1 0-2-1-2-2s1-2 2-2z" stroke="#153244" stroke-width="2"/><path d="M10 12h18c1 0 2 1 2 2s-1 2-2 2H14v34h34V36c0-1 1-2 2-2s2 1 2 2v16c0 1-1 2-2 2H10c-1 0-2-1-2-2V14c0-1 1-2 2-2z" stroke="#153244" stroke-width="2"/></svg>
+          Ejemplo — Di María vs Francia
+        </a>
+      </article>
+
+      <article class="ba-card">
+        <div class="ba-card-head">
+          <div class="ba-num">4</div>
+          <span class="ba-action">Noticia periodística</span>
+        </div>
+        <p class="ba-text">Informá un hecho del Mundial con datos claros: qué pasó, cuándo, dónde y quiénes participaron.</p>
+        <a class="ba-link" href="https://www.olympics.com/es/noticias/argentina-campeona-del-mundo-resumen-estadisticas-y-records-final-catar-2022" target="_blank" rel="noopener">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="#153244"><path d="M48 4h10c1 0 2 1 2 2v10c0 1-1 2-2 2s-2-1-2-2V8.8L31 33.4c-.8.8-2 .8-2.8 0s-.8-2 0-2.8L52.2 6H48c-1 0-2-1-2-2s1-2 2-2z" stroke="#153244" stroke-width="2"/><path d="M10 12h18c1 0 2 1 2 2s-1 2-2 2H14v34h34V36c0-1 1-2 2-2s2 1 2 2v16c0 1-1 2-2 2H10c-1 0-2-1-2-2V14c0-1 1-2 2-2z" stroke="#153244" stroke-width="2"/></svg>
+          Ejemplo — Olympics.com
+        </a>
+      </article>
+
+      <article class="ba-card">
+        <div class="ba-card-head">
+          <div class="ba-num">5</div>
+          <span class="ba-action">Comentario previo</span>
+        </div>
+        <p class="ba-text">Anticipá un partido: presentá expectativas, posibles estrategias, jugadores o datos para tener en cuenta.</p>
+        <a class="ba-link" href="https://www.youtube.com/watch?v=M2oufmmkmh0&t=105s" target="_blank" rel="noopener">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="#153244"><path d="M48 4h10c1 0 2 1 2 2v10c0 1-1 2-2 2s-2-1-2-2V8.8L31 33.4c-.8.8-2 .8-2.8 0s-.8-2 0-2.8L52.2 6H48c-1 0-2-1-2-2s1-2 2-2z" stroke="#153244" stroke-width="2"/><path d="M10 12h18c1 0 2 1 2 2s-1 2-2 2H14v34h34V36c0-1 1-2 2-2s2 1 2 2v16c0 1-1 2-2 2H10c-1 0-2-1-2-2V14c0-1 1-2 2-2z" stroke="#153244" stroke-width="2"/></svg>
+          Ejemplo — Previa Argentina-Francia
+        </a>
+      </article>
+
+    </section>
+
+  </div>
+
+</body>
+</html>
