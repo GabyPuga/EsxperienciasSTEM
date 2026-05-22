@@ -329,7 +329,7 @@
     <div class="slide-counter" id="slide-counter">Pelota 1 de 7</div>
     <div class="score-display">
       <span class="star-icon" id="star-icon">☆</span>
-      <span id="score-text">Puntos: 0 / 8</span>
+      <span id="score-text">Puntos: 0 / 21</span>
     </div>
   </div>
 
@@ -349,8 +349,8 @@
   <!-- Pantalla final -->
   <div class="final-screen" id="final-screen">
     <div class="final-title">¡Terminaste!</div>
-    <div class="final-score"><span id="final-points">0</span><span class="max"> / 8</span></div>
-    <div class="final-bonus" id="final-bonus" style="display:none">¡Bonus por perfección! +1</div>
+    <div class="final-score"><span id="final-points">0</span><span class="max"> / 21</span></div>
+    <div class="final-bonus" id="final-bonus" style="display:none">¡Puntaje perfecto!</div>
     <div class="final-msg" id="final-msg"></div>
     <button class="btn btn-primary" onclick="restartGame()">↺ Jugar de nuevo</button>
   </div>
@@ -583,14 +583,23 @@ const IMAGES = {"p1": "data:image/webp;base64,UklGRk5VAABXRUJQVlA4WAoAAAAQAAAAFw
     }
   }
 
+  // Calcula los puntos de una pelota según las reglas:
+  // 3: 1er intento sin pista | 2: 1er intento con pista | 1: cualquier otro | 0: sin resolver
+  function pointsFor(ballId) {
+    if (!solved[ballId]) return 0;
+    if (attempts[ballId] === 1 && !hintsUsed[ballId]) return 3;
+    if (attempts[ballId] === 1 && hintsUsed[ballId]) return 2;
+    return 1;
+  }
+
+  function totalPoints() {
+    return order.reduce((acc, b) => acc + pointsFor(b.id), 0);
+  }
+
   function updateScore() {
-    let points = 0;
-    Object.keys(solved).forEach(id => { if (solved[id]) points++; });
-    // Bonus si todas resueltas Y todas al primer intento
-    const allSolvedFirstTry = order.every(b => solved[b.id] && attempts[b.id] === 1);
-    const bonus = allSolvedFirstTry ? 1 : 0;
-    document.getElementById('score-text').textContent = `Puntos: ${points + bonus} / 8`;
-    document.getElementById('star-icon').textContent = (points + bonus >= 8) ? '★' : '☆';
+    const total = totalPoints();
+    document.getElementById('score-text').textContent = `Puntos: ${total} / 21`;
+    document.getElementById('star-icon').textContent = (total >= 21) ? '★' : '☆';
   }
 
   function showFinalScreen() {
@@ -598,21 +607,18 @@ const IMAGES = {"p1": "data:image/webp;base64,UklGRk5VAABXRUJQVlA4WAoAAAAQAAAAFw
     document.getElementById('controls').style.display = 'none';
     const screen = document.getElementById('final-screen');
 
-    let points = 0;
-    order.forEach(b => { if (solved[b.id]) points++; });
-    const allFirstTry = order.every(b => solved[b.id] && attempts[b.id] === 1);
-    const bonus = allFirstTry ? 1 : 0;
-    const total = points + bonus;
+    const total = totalPoints();
+    const solvedCount = order.filter(b => solved[b.id]).length;
 
     document.getElementById('final-points').textContent = total;
-    document.getElementById('final-bonus').style.display = bonus > 0 ? 'inline-block' : 'none';
+    document.getElementById('final-bonus').style.display = (total === 21) ? 'inline-block' : 'none';
 
     let msg = '';
-    if (total === 8) msg = '¡Perfecto! Identificaste todas las figuras al primer intento.';
-    else if (points === 7) msg = '¡Muy bien! Resolviste las 7 pelotas. Probá de nuevo si querés conseguir el bonus.';
-    else if (points >= 5) msg = `¡Buen trabajo! Resolviste ${points} pelotas. Volvé a intentar las que te quedaron.`;
-    else if (points >= 3) msg = `Resolviste ${points} pelotas. Probá de nuevo y mirá las pelotas con atención.`;
-    else msg = `Resolviste ${points} pelotas. ¡No te preocupes! Volvé a intentarlo y usá las Pistas si las necesitás.`;
+    if (total === 21) msg = '¡Perfecto! Resolviste las 7 pelotas al primer intento y sin pistas.';
+    else if (solvedCount === 7) msg = '¡Muy bien! Resolviste las 7 pelotas. Probá de nuevo a ver si subís el puntaje.';
+    else if (solvedCount >= 5) msg = `¡Buen trabajo! Resolviste ${solvedCount} pelotas. Volvé a intentar las que te quedaron.`;
+    else if (solvedCount >= 3) msg = `Resolviste ${solvedCount} pelotas. Probá de nuevo y mirá las pelotas con atención.`;
+    else msg = `Resolviste ${solvedCount} pelotas. ¡No te preocupes! Volvé a intentarlo y usá las Pistas si las necesitás.`;
     document.getElementById('final-msg').textContent = msg;
 
     screen.classList.add('show');
