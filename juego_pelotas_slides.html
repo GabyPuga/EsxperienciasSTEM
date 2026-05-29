@@ -488,7 +488,7 @@ const IMAGES = {"p1": "data:image/webp;base64,UklGRk5VAABXRUJQVlA4WAoAAAAQAAAAFw
     // Re-render solo de los chips (sin perder el resto)
     const chips = document.querySelectorAll('.figure-chip');
     chips.forEach(chip => {
-      chip.classList.remove('selected', 'wrong');
+      chip.classList.remove('selected', 'wrong', 'correct', 'inactive');
       if (selections[ball.id].includes(chip.dataset.figure)) {
         chip.classList.add('selected');
       }
