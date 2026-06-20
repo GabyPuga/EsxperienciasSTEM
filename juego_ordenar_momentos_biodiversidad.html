@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Las etapas del proyecto</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --yellow: #FFCC00;
+    --dark: #153244;
+    --teal-light: #8DE2D6;
+    --teal-mid: #79C7C3;
+    --dark-gray: #3C3C3B;
+    --bg: #f0f4f6;
+    --red: #e53935;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    font-family: 'Archivo', sans-serif;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 20px 12px;
+    gap: 8px;
+  }
+
+  /* ── INSTRUCCIÓN ── */
+  .instruccion {
+    background: var(--yellow);
+    color: var(--dark);
+    border-radius: 12px;
+    padding: 8px 24px;
+    text-align: center;
+    width: 100%;
+    max-width: 960px;
+  }
+  .instruccion .titulo-juego {
+    display: block;
+    font-size: 1rem;
+    font-weight: 800;
+  }
+  .instruccion .subtitulo {
+    font-size: 0.84rem;
+    font-weight: 700;
+  }
+
+  /* ── STAGE: posición relativa, alto determinado por game-content ── */
+  .stage {
+    width: 100%;
+    max-width: 960px;
+    position: relative;
+  }
+
+  /* game-content fluye normal y define el alto del stage */
+  .game-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: opacity 0.3s;
+  }
+  .game-content.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* summary se pone encima, mismo tamaño exacto */
+  .summary {
+    position: absolute;
+    inset: 0;
+    background: var(--dark);
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px 40px;
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .summary.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .summary h2 {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--yellow);
+  }
+  .summary .bajada {
+    color: var(--teal-light);
+    font-size: 0.84rem;
+    line-height: 1.6;
+    max-width: 560px;
+  }
+  .summary .bajada strong { color: white; }
+
+  /* ── LABELS ── */
+  .col-label {
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--dark-gray);
+    margin-bottom: 5px;
+    text-align: center;
+  }
+
+  /* ── FILAS — las 5 tarjetas/slots en fila, altura uniforme por CSS grid ── */
+  .fila {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    /* todas las celdas de la misma fila tienen el mismo alto automático */
+    align-items: stretch;
+  }
+
+  /* ── TARJETAS ── */
+  .card-item {
+    background: var(--dark);
+    border: 2.5px solid var(--dark);
+    border-radius: 12px;
+    padding: 11px 13px;
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: white;
+    line-height: 1.4;
+    /* sin height fijo: crece con el contenido */
+    transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s,
+                background 0.2s, border-color 0.2s, color 0.2s;
+  }
+
+  .card-item .etapa {
+    display: block;
+    font-weight: 800;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--teal-light);
+    margin-bottom: 5px;
+  }
+
+  .card-item:hover { transform: translateY(-2px); box-shadow: 0 5px 16px rgba(21,50,68,0.32); }
+  .card-item.dragging { opacity: 0.35; }
+
+  .card-item.ghost-drag {
+    position: fixed;
+    pointer-events: none;
+    z-index: 200;
+    opacity: 0.93;
+    box-shadow: 0 10px 28px rgba(21,50,68,0.38);
+    transform: rotate(-1.5deg) scale(1.03);
+    width: var(--ghost-w, 180px);
+    flex: none;
+  }
+
+  /* visibility:hidden para mantener el espacio en el pool */
+  .card-item.pool-hidden {
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .card-item.correct { background:#e8f5e9; border-color:#4CAF50; color:var(--dark); }
+  .card-item.correct .etapa { color:#2e7d32; }
+  .card-item.wrong   { background:#ffebee; border-color:var(--red); color:var(--dark); }
+  .card-item.wrong .etapa   { color:#b71c1c; }
+
+  /* ── DROP SLOTS — misma altura que las tarjetas del pool (por CSS grid row) ── */
+  .drop-slot {
+    border: 2.5px dashed rgba(21,50,68,0.2);
+    border-radius: 12px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    transition: border-color 0.2s, background 0.2s;
+    /* el slot ocupa todo el alto disponible en su celda de grid */
+    align-self: stretch;
+    min-height: 80px;
+  }
+  .drop-slot.drag-over { border-color:var(--teal-mid); background:rgba(141,226,214,0.18); }
+  .slot-placeholder {
+    color: rgba(21,50,68,0.22);
+    font-size: 0.72rem;
+    font-weight: 600;
+    pointer-events: none;
+    text-align: center;
+  }
+  /* la tarjeta dentro del slot hereda el alto del slot */
+  .drop-slot .card-item {
+    width: 100%;
+    height: 100%;
+    cursor: grab;
+  }
+
+  /* ── CONTROLES ── */
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: center;
+    width: 100%;
+    max-width: 960px;
+  }
+
+  .retro-inline {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--dark);
+    display: none;
+  }
+  .retro-inline.visible { display: block; }
+
+  .btn {
+    background: var(--dark);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 10px 22px;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  .btn:hover { background:#1e4a63; transform:translateY(-1px); }
+  .btn:active { transform:scale(0.97); }
+  .btn.btn-yellow { background:var(--yellow); color:var(--dark); }
+  .btn.btn-yellow:hover { background:#f0c000; }
+</style>
+</head>
+<body>
+
+<!-- INSTRUCCIÓN -->
+<div class="instruccion">
+  <span class="titulo-juego">Las etapas del proyecto</span>
+  <span class="subtitulo">Arrastrá cada tarjeta al lugar correcto según el orden en que las realizaste</span>
+</div>
+
+<!-- STAGE -->
+<div class="stage">
+
+  <!-- JUEGO -->
+  <div class="game-content" id="game-content">
+    <div>
+      <div class="col-label">Etapas del proyecto</div>
+      <div class="fila" id="pool"></div>
+    </div>
+    <div>
+      <div class="col-label">Orden correcto →</div>
+      <div class="fila" id="slots"></div>
+    </div>
+  </div>
+
+  <!-- CARTEL — mismo inset que game-content, sin empujar nada -->
+  <div class="summary" id="summary">
+    <h2>¡Muy bien! Ordenaste todas las etapas</h2>
+    <p class="bajada">
+      Los proyectos se construyen paso a paso.<br>
+      <strong>Observar, clasificar, investigar, organizar información y tomar decisiones antes de crear</strong> son acciones que permiten avanzar desde una idea inicial hasta una propuesta concreta.
+    </p>
+    <button class="btn btn-yellow" onclick="resetGame()" style="margin-top:4px">↺ Jugar de nuevo</button>
+  </div>
+
+</div>
+
+<!-- CONTROLES -->
+<div class="controls">
+  <button class="btn btn-yellow" id="btn-check" onclick="checkAnswers()">✔ Comprobar</button>
+  <button class="btn" id="btn-retry" onclick="resetGame()" style="display:none">↺ Volver a intentar</button>
+  <span class="retro-inline" id="retro-inline"></span>
+</div>
+
+<script>
+  const ITEMS = [
+    { id:'c1', etapa:'Observar',   texto:'Recorrimos la escuela para registrar los seres vivos que habitan en ella.',                       order:1 },
+    { id:'c2', etapa:'Clasificar', texto:'Agrupamos lo que encontramos según semejanzas y diferencias.',                                    order:2 },
+    { id:'c3', etapa:'Investigar', texto:'Buscamos información en fuentes confiables sobre plantas nativas.',                               order:3 },
+    { id:'c4', etapa:'Diseñar',    texto:'Creamos un prototipo y luego armamos el jardín con plantas nativas para la escuela.',             order:4 },
+    { id:'c5', etapa:'Comunicar',  texto:'Compartimos lo aprendido y propusimos cómo nuestras acciones pueden cuidar la biodiversidad.',    order:5 },
+  ];
+
+  const MSG_PARCIAL = '¡Casi lo lográs! Revisá bien y volvé a intentarlo.';
+  const MSG_ERROR   = 'Seguí intentando. Revisá los pasos del proyecto y ordenalos una vez más.';
+
+  let placed = {}, inSlot = {}, dragId = null, ghost = null;
+  let offsetX = 0, offsetY = 0, checked = false;
+
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length-1; i > 0; i--) {
+      const j = Math.floor(Math.random()*(i+1));
+      [a[i],a[j]]=[a[j],a[i]];
+    }
+    return a;
+  }
+
+  function buildUI() {
+    placed={}; inSlot={}; dragId=null; checked=false;
+    document.getElementById('pool').innerHTML='';
+    document.getElementById('slots').innerHTML='';
+    shuffle(ITEMS).forEach(item => document.getElementById('pool').appendChild(makeCard(item)));
+    for(let i=1;i<=ITEMS.length;i++) document.getElementById('slots').appendChild(makeSlot(i));
+    document.getElementById('btn-check').style.display='flex';
+    document.getElementById('btn-retry').style.display='none';
+    document.getElementById('game-content').classList.remove('hidden');
+    document.getElementById('summary').classList.remove('visible');
+    hideRetro();
+  }
+
+  function makeCard(item) {
+    const div=document.createElement('div');
+    div.className='card-item';
+    div.id='card-'+item.id;
+    div.dataset.id=item.id;
+    div.innerHTML=`<span class="etapa">${item.etapa}</span>${item.texto}`;
+    div.addEventListener('mousedown', onMouseDown);
+    div.addEventListener('touchstart', onTouchStart, {passive:false});
+    return div;
+  }
+
+  function makeSlot(num) {
+    const wrap=document.createElement('div');
+    wrap.className='drop-slot';
+    wrap.id='slot-'+num;
+    wrap.dataset.slot=num;
+    wrap.innerHTML='<div class="slot-placeholder">Soltá aquí</div>';
+    wrap.addEventListener('dragover', e=>{e.preventDefault();wrap.classList.add('drag-over');});
+    wrap.addEventListener('dragleave',()=>wrap.classList.remove('drag-over'));
+    wrap.addEventListener('drop', e=>{e.preventDefault();dropOnSlot(wrap);});
+    return wrap;
+  }
+
+  /* MOUSE */
+  function onMouseDown(e) {
+    if(checked)return;
+    e.preventDefault();
+    dragId=e.currentTarget.dataset.id;
+    startGhost(e.currentTarget,e.clientX,e.clientY);
+    document.addEventListener('mousemove',onMouseMove);
+    document.addEventListener('mouseup',onMouseUp);
+  }
+  function onMouseMove(e){moveGhost(e.clientX,e.clientY);highlightSlotUnder(e.clientX,e.clientY);}
+  function onMouseUp(e){
+    document.removeEventListener('mousemove',onMouseMove);
+    document.removeEventListener('mouseup',onMouseUp);
+    const slot=slotAtPoint(e.clientX,e.clientY);
+    if(slot)dropOnSlot(slot);
+    removeGhost();clearSlotHighlights();
+  }
+
+  /* TOUCH */
+  function onTouchStart(e){
+    if(checked)return;
+    e.preventDefault();
+    dragId=e.currentTarget.dataset.id;
+    const t=e.touches[0];
+    startGhost(e.currentTarget,t.clientX,t.clientY);
+    document.addEventListener('touchmove',onTouchMove,{passive:false});
+    document.addEventListener('touchend',onTouchEnd);
+  }
+  function onTouchMove(e){e.preventDefault();const t=e.touches[0];moveGhost(t.clientX,t.clientY);highlightSlotUnder(t.clientX,t.clientY);}
+  function onTouchEnd(e){
+    document.removeEventListener('touchmove',onTouchMove);
+    document.removeEventListener('touchend',onTouchEnd);
+    const t=e.changedTouches[0];
+    const slot=slotAtPoint(t.clientX,t.clientY);
+    if(slot)dropOnSlot(slot);
+    removeGhost();clearSlotHighlights();
+  }
+
+  /* GHOST */
+  function startGhost(el,cx,cy){
+    const rect=el.getBoundingClientRect();
+    offsetX=cx-rect.left;offsetY=cy-rect.top;
+    ghost=el.cloneNode(true);
+    ghost.classList.add('ghost-drag');
+    ghost.style.setProperty('--ghost-w',rect.width+'px');
+    ghost.style.width=rect.width+'px';
+    ghost.style.left=(cx-offsetX)+'px';
+    ghost.style.top=(cy-offsetY)+'px';
+    document.body.appendChild(ghost);
+    el.classList.add('dragging');
+  }
+  function moveGhost(cx,cy){if(!ghost)return;ghost.style.left=(cx-offsetX)+'px';ghost.style.top=(cy-offsetY)+'px';}
+  function removeGhost(){
+    if(ghost){ghost.remove();ghost=null;}
+    const el=document.getElementById('card-'+dragId);
+    if(el)el.classList.remove('dragging');
+    dragId=null;
+  }
+
+  /* SLOTS */
+  function slotAtPoint(x,y){
+    for(const s of document.querySelectorAll('.drop-slot')){
+      const r=s.getBoundingClientRect();
+      if(x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom)return s;
+    }
+    return null;
+  }
+  function highlightSlotUnder(x,y){clearSlotHighlights();const s=slotAtPoint(x,y);if(s)s.classList.add('drag-over');}
+  function clearSlotHighlights(){document.querySelectorAll('.drop-slot.drag-over').forEach(s=>s.classList.remove('drag-over'));}
+
+  /* DROP */
+  function dropOnSlot(slot){
+    const slotId=slot.id,itemId=dragId;
+    if(!itemId)return;
+    if(placed[slotId])returnCardToPool(placed[slotId]);
+    if(inSlot[itemId]){
+      const oldSlot=document.getElementById(inSlot[itemId]);
+      if(oldSlot)oldSlot.innerHTML='<div class="slot-placeholder">Soltá aquí</div>';
+      delete placed[inSlot[itemId]];
+    }
+    placed[slotId]=itemId;inSlot[itemId]=slotId;
+    const card=document.getElementById('card-'+itemId);
+    if(card)card.classList.add('pool-hidden');
+    const item=ITEMS.find(i=>i.id===itemId);
+    slot.innerHTML='';
+    const clone=makeCard(item);
+    clone.id='slot-card-'+itemId;
+    slot.appendChild(clone);
+    slot.classList.remove('drag-over');
+  }
+
+  function returnCardToPool(itemId){
+    const card=document.getElementById('card-'+itemId);
+    if(card)card.classList.remove('pool-hidden');
+    const slotCard=document.getElementById('slot-card-'+itemId);
+    if(slotCard)slotCard.remove();
+    if(inSlot[itemId]){
+      const old=document.getElementById(inSlot[itemId]);
+      if(old&&!old.querySelector('.card-item'))old.innerHTML='<div class="slot-placeholder">Soltá aquí</div>';
+      delete placed[inSlot[itemId]];
+    }
+    delete inSlot[itemId];
+  }
+
+  /* CHECK */
+  function checkAnswers(){
+    let correct=0;
+    for(let i=1;i<=ITEMS.length;i++){
+      const itemId=placed['slot-'+i];
+      if(!itemId)continue;
+      const item=ITEMS.find(it=>it.id===itemId);
+      const slotCard=document.getElementById('slot-card-'+itemId);
+      if(item&&item.order===i){correct++;if(slotCard)slotCard.classList.add('correct');}
+      else{if(slotCard)slotCard.classList.add('wrong');}
+    }
+    checked=true;
+    if(correct===ITEMS.length){
+      document.getElementById('game-content').classList.add('hidden');
+      document.getElementById('summary').classList.add('visible');
+      document.getElementById('btn-check').style.display='none';
+      document.getElementById('btn-retry').style.display='none';
+    } else {
+      const retro=document.getElementById('retro-inline');
+      retro.textContent=correct===0?MSG_ERROR:MSG_PARCIAL;
+      retro.classList.add('visible');
+      document.getElementById('btn-check').style.display='none';
+      document.getElementById('btn-retry').style.display='flex';
+    }
+  }
+
+  function hideRetro(){const r=document.getElementById('retro-inline');if(r)r.classList.remove('visible');}
+  function resetGame(){buildUI();}
+  buildUI();
+</script>
+</body>
+</html>
