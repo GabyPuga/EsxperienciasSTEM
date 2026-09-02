@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>¿Es phishing? — Experiencias STEM+</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --azul:#153244;
+  --azul-2:#1E4A63;
+  --aqua:#8DE2D6;
+  --amarillo:#FFCC00;
+  --fondo:#EFF3F6;
+  --blanco:#FFFFFF;
+  --texto:#1B2B36;
+  --gris:#5C7080;
+  --linea:#D5DEE4;
+  --ok:#0F7A5A;      --ok-b:#CDEBE0;  --ok-f:#EAF7F2;
+  --med:#9A6A00;     --med-b:#F3DFA0; --med-f:#FFF7E2;
+  --mal:#B3261E;     --mal-b:#F2C7C3; --mal-f:#FCEEEC;
+  --radio:10px;
+  --sombra:0 1px 3px rgba(21,50,68,.10), 0 8px 24px rgba(21,50,68,.06);
+}
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:'Archivo',-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  background:var(--fondo);color:var(--texto);
+  font-size:15px;line-height:1.45;overflow:hidden;
+}
+.app{height:100%;display:flex;flex-direction:column}
+
+/* ---------- Encabezado ---------- */
+.top{background:var(--azul);color:#fff;padding:9px 20px;display:flex;align-items:center;gap:14px;flex:none}
+.top__sello{height:46px;width:auto;display:block;flex:none;background:#fff;border-radius:7px;padding:3px}
+.top__txt h1{margin:0;font-size:18px;font-weight:700;letter-spacing:.2px}
+.top__txt p{margin:1px 0 0;font-size:12.5px;color:#B6CBD8;font-weight:400}
+.top__meta{margin-left:auto;display:flex;gap:8px;align-items:center;flex:none}
+.chip{
+  font-size:12px;font-weight:600;letter-spacing:.3px;text-transform:uppercase;
+  color:#BBD1DE;border:1.5px solid #2C5570;border-radius:999px;padding:5px 13px;white-space:nowrap;
+}
+.chip b{color:#fff;font-weight:700}
+.chip--pts{background:var(--amarillo);border-color:var(--amarillo);color:#5A4600}
+.chip--pts b{color:var(--azul);font-size:14px}
+
+/* ---------- Estructura ---------- */
+main{flex:1;min-height:0;padding:14px 20px 16px;display:flex;justify-content:center}
+.vista{width:100%;max-width:880px;height:100%;min-height:0;display:flex;flex-direction:column}
+.consigna{
+  font-size:14px;color:var(--azul);font-weight:600;margin:0 0 8px;
+  display:flex;align-items:baseline;gap:8px;flex:none;
+}
+.consigna::before{content:"";width:5px;height:15px;background:var(--amarillo);border-radius:3px;flex:none;align-self:center}
+.consigna span{font-weight:400;color:var(--gris);font-size:13.5px}
+
+.tarjeton{
+  background:var(--blanco);border:1px solid var(--linea);border-radius:var(--radio);
+  box-shadow:var(--sombra);display:flex;flex-direction:column;min-height:0;flex:1;overflow:hidden;
+}
+
+/* ---------- Mensaje simulado ---------- */
+.mail{position:relative;overflow:auto;min-height:0;flex:1}
+.mail__aviso{
+  background:#F7F9FB;border-bottom:1px solid var(--linea);padding:5px 16px;
+  font-size:11px;color:var(--gris);letter-spacing:.4px;text-transform:uppercase;font-weight:700;
+  position:sticky;top:0;z-index:3;
+}
+.mail__head{padding:10px 16px 8px;border-bottom:1px solid var(--linea)}
+.mail__row{display:flex;gap:8px;font-size:13.5px;padding:1px 0;align-items:baseline}
+.mail__label{color:var(--gris);min-width:50px;font-size:11.5px;text-transform:uppercase;letter-spacing:.4px;font-weight:700;flex:none;padding-top:3px}
+.mail__body{padding:12px 16px 16px;font-size:14.5px}
+.mail__body p{margin:0 0 9px}
+.mail__firma{margin-top:12px;border-top:1px dashed var(--linea);padding-top:9px}
+
+/* Fragmentos seleccionables — todos iguales, no delatan nada */
+.frag{
+  display:inline;cursor:pointer;border-radius:5px;padding:2px 4px;margin:0 -2px;
+  border:1.5px solid transparent;box-decoration-break:clone;-webkit-box-decoration-break:clone;
+  transition:background .12s,border-color .12s;outline-offset:2px;
+}
+.frag:hover{background:#F0F4F7;border-color:#C3D2DB}
+.frag:focus-visible{outline:2px solid var(--azul)}
+.frag.sel{background:#E7EFF4;border-color:var(--azul);border-style:dashed;font-weight:500}
+.frag.sel::after{content:" ✓";font-weight:800;color:var(--azul);font-size:12px}
+.mail__firma .frag{color:var(--gris);font-size:13.5px}
+.enlace-falso{color:#1155CC;text-decoration:underline;word-break:break-all}
+
+/* Estado tras comprobar */
+.mail.revisado .frag{cursor:default}
+.mail.revisado .frag.sel::after{content:none}
+.frag.r-ok{background:var(--ok-f);border-color:var(--ok);border-style:solid;cursor:pointer !important}
+.frag.r-mal{background:var(--mal-f);border-color:var(--mal);border-style:solid;cursor:pointer !important}
+.frag .marca{
+  display:inline-block;font-size:11px;font-weight:800;line-height:1;padding:3px 6px;border-radius:4px;
+  margin-right:6px;color:#fff;vertical-align:1px;
+}
+.frag.r-ok .marca{background:var(--ok)}
+.frag.r-mal .marca{background:var(--mal)}
+
+/* ---------- Capa de explicación sobre el texto ---------- */
+.pop{
+  position:absolute;z-index:20;width:330px;max-width:calc(100% - 24px);
+  background:var(--azul);color:#fff;border-radius:9px;padding:11px 13px 12px;
+  box-shadow:0 10px 30px rgba(21,50,68,.35);animation:aparece .16s ease-out;
+}
+.pop::before{
+  content:"";position:absolute;left:18px;top:-7px;width:14px;height:14px;
+  background:var(--azul);transform:rotate(45deg);border-radius:2px;
+}
+.pop.arriba::before{top:auto;bottom:-7px}
+.pop__t{margin:0 22px 4px 0;font-size:13px;font-weight:700;letter-spacing:.2px;color:var(--amarillo)}
+.pop__t.v{color:var(--aqua)}
+.pop__p{margin:0;font-size:13px;line-height:1.42;color:#DDE8EE}
+.pop__x{
+  position:absolute;top:6px;right:7px;background:none;border:0;color:#8FB0C2;
+  font-size:20px;line-height:1;cursor:pointer;padding:2px 5px;border-radius:5px;font-family:inherit;
+}
+.pop__x:hover{color:#fff;background:rgba(255,255,255,.12)}
+@keyframes aparece{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
+
+/* ---------- Barra inferior / resultado ---------- */
+.barra{
+  border-top:1px solid var(--linea);padding:10px 14px;flex:none;
+  display:flex;align-items:center;gap:12px;background:#FBFCFD;
+}
+.barra__txt{font-size:13.5px;color:var(--gris);flex:1;min-width:0}
+.barra__txt b{color:var(--azul)}
+.resultado{
+  flex:1;min-width:0;display:flex;align-items:center;gap:10px;
+  border-radius:8px;padding:8px 12px;font-size:13.5px;line-height:1.35;border:1.5px solid;
+}
+.resultado .pts{font-size:15px;font-weight:800;white-space:nowrap}
+.resultado.verde{background:var(--ok-f);border-color:var(--ok-b);color:#0B5A43}
+.resultado.verde .pts{color:var(--ok)}
+.resultado.amarillo{background:var(--med-f);border-color:var(--med-b);color:#6B4B00}
+.resultado.amarillo .pts{color:var(--med)}
+.resultado.rojo{background:var(--mal-f);border-color:var(--mal-b);color:#8C1D18}
+.resultado.rojo .pts{color:var(--mal)}
+.botones{display:flex;gap:8px;flex:none}
+
+/* ---------- Botones ---------- */
+.btn{
+  font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;
+  background:var(--azul);color:#fff;border:2px solid var(--azul);
+  border-radius:8px;padding:8px 18px;transition:background .15s,transform .05s;
+}
+.btn:hover:not(:disabled){background:var(--azul-2)}
+.btn:active:not(:disabled){transform:translateY(1px)}
+.btn:disabled{background:#CBD6DD;border-color:#CBD6DD;color:#7B8D99;cursor:not-allowed}
+.btn--sec{background:transparent;color:var(--azul);border-color:var(--azul)}
+.btn--sec:hover:not(:disabled){background:#E7EEF2}
+
+/* ---------- Momento 2 ---------- */
+.quiz{padding:16px 18px;overflow:auto;flex:1;min-height:0}
+.quiz h2{margin:0 0 3px;font-size:18px;color:var(--azul);font-weight:700;line-height:1.25}
+.quiz__ayuda{margin:0 0 12px;font-size:13px;color:var(--gris)}
+.ops{display:flex;flex-direction:column;gap:8px}
+.op{
+  display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;
+  font-family:inherit;font-size:14px;color:var(--texto);line-height:1.35;
+  background:var(--blanco);border:1.5px solid var(--linea);border-radius:8px;
+  padding:9px 12px;cursor:pointer;transition:border-color .15s,background .15s;
+}
+.op:hover:not(:disabled){border-color:var(--azul);background:#F7FAFC}
+.op:disabled{cursor:default}
+.op__caja{
+  width:19px;height:19px;border:2px solid #A9BAC4;border-radius:5px;flex:none;margin-top:1px;
+  display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;
+}
+.op.sel{border-color:var(--azul);background:#EDF3F7}
+.op.sel .op__caja{background:var(--azul);border-color:var(--azul)}
+.op.sel .op__caja::after{content:"✓"}
+.op__cuerpo{flex:1;min-width:0}
+.op__fb{display:block;margin-top:4px;font-size:12.5px;line-height:1.38}
+.op__fb b{font-weight:700}
+.op.r-ok{border-color:var(--ok);background:var(--ok-f)}
+.op.r-ok .op__caja{background:var(--ok);border-color:var(--ok)}
+.op.r-ok .op__fb{color:#0B5A43}
+.op.r-mal{border-color:var(--mal);background:var(--mal-f)}
+.op.r-mal .op__caja{background:var(--mal);border-color:var(--mal)}
+.op.r-mal .op__caja::after{content:"✕"}
+.op.r-mal .op__fb{color:#8C1D18}
+.cierre{
+  margin-top:12px;padding:12px 14px;border-radius:8px;background:var(--azul);color:#fff;
+  font-size:15px;font-weight:600;line-height:1.4;display:flex;gap:12px;align-items:center;
+  animation:aparece .22s ease-out;
+}
+.cierre b{color:var(--amarillo)}
+.cierre::before{content:"";width:6px;align-self:stretch;background:var(--amarillo);border-radius:3px;flex:none}
+
+/* ---------- Adaptaciones ---------- */
+@media (max-height:680px){
+  body{font-size:14px}
+  .top{padding:6px 16px}
+  .top__sello{height:38px}
+  .top__txt h1{font-size:16px}
+  .top__txt p{font-size:11.5px}
+  .chip{padding:4px 10px;font-size:11px}
+  main{padding:10px 16px 12px}
+  .consigna{margin-bottom:6px;font-size:13px}
+  .mail__body{padding:9px 14px 12px;font-size:13.5px}
+  .mail__body p{margin-bottom:7px}
+  .mail__head{padding:8px 14px 6px}
+  .mail__firma{margin-top:9px;padding-top:7px}
+  .quiz{padding:12px 14px}
+  .quiz h2{font-size:16px}
+  .quiz__ayuda{margin-bottom:9px;font-size:12px}
+  .ops{gap:6px}
+  .op{padding:7px 10px;font-size:13.5px}
+  .op__fb{font-size:12px}
+  .barra{padding:8px 12px}
+  .cierre{font-size:14px;padding:10px 12px;margin-top:9px}
+}
+@media (max-width:820px){
+  body{overflow:auto;height:auto}
+  html{height:auto}
+  .app{height:auto;min-height:100%}
+  main{padding:12px}
+  .vista{height:auto}
+  .tarjeton{flex:none}
+  .mail{overflow:visible}
+  .top__meta .chip:first-child{display:none}
+  .barra{flex-wrap:wrap}
+  .botones{width:100%}
+  .botones .btn{flex:1}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="top">
+    <img class="top__sello" src="data:image/png;base64,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" alt="Sello Experiencias STEM+">
+    <div class="top__txt">
+      <h1>¿Es phishing? Detectar y decidir</h1>
+      <p>Ciudadanía digital · 7.º grado · Actividad interactiva</p>
+    </div>
+    <div class="top__meta">
+      <span class="chip">Momento <b id="chipMomento">1</b> de 2</span>
+      <span class="chip chip--pts">Puntaje <b id="chipPts">0</b> / 9</span>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ================= MOMENTO 1 ================= -->
+    <section class="vista" id="m1" aria-labelledby="consigna1">
+      <p class="consigna" id="consigna1">Momento 1: detectar señales de alerta&nbsp;<span>Marcá con un clic las partes del mensaje que te resulten sospechosas. Después comprobá.</span></p>
+
+      <div class="tarjeton">
+        <article class="mail" id="mail">
+          <div class="mail__aviso">Mensaje simulado · No es un correo real</div>
+
+          <div class="mail__head">
+            <div class="mail__row">
+              <span class="mail__label">De</span>
+              <span class="frag" data-s="remitente" tabindex="0" role="button" aria-pressed="false">Soporte BancoPlus &lt;segur1dad-clientes@bancoplus-verificar.info&gt;</span>
+            </div>
+            <div class="mail__row">
+              <span class="mail__label">Para</span>
+              <span class="frag" tabindex="0" role="button" aria-pressed="false">mi.correo@ejemplo.com</span>
+            </div>
+            <div class="mail__row">
+              <span class="mail__label">Asunto</span>
+              <span class="frag" tabindex="0" role="button" aria-pressed="false">Verificación obligatoria de tu cuenta</span>
+            </div>
+          </div>
+
+          <div class="mail__body">
+            <p><span class="frag" tabindex="0" role="button" aria-pressed="false">Estimado cliente:</span></p>
+            <p><span class="frag" tabindex="0" role="button" aria-pressed="false">Nuestro sistema detectó un acceso a tu cuenta desde un dispositivo que no reconocemos.</span></p>
+            <p><span class="frag" data-s="urgencia" tabindex="0" role="button" aria-pressed="false">Para evitar inconvenientes, tenés que completar la verificación dentro de las próximas 2 horas.</span></p>
+            <p><span class="frag" tabindex="0" role="button" aria-pressed="false">Ingresá desde este enlace:</span> <span class="frag" data-s="enlace" tabindex="0" role="button" aria-pressed="false"><span class="enlace-falso">http://bancoplus.verificacion-clientes.info/acceso-seguro</span></span></p>
+            <p><span class="frag" data-s="datos" tabindex="0" role="button" aria-pressed="false">En el formulario vas a tener que escribir tu usuario, tu contraseña y el número completo de tu tarjeta con el código de seguridad.</span></p>
+            <p><span class="frag" data-s="presion" tabindex="0" role="button" aria-pressed="false">Si no lo hacés a tiempo, tu cuenta será bloqueada de forma permanente. Si lo completás hoy, recibís un bono de $50.000 en tu saldo.</span></p>
+            <p class="mail__firma"><span class="frag" tabindex="0" role="button" aria-pressed="false">Saludos cordiales. Departamento de Seguridad · BancoPlus</span></p>
+          </div>
+
+          <div class="pop" id="pop" hidden role="dialog" aria-live="polite">
+            <button class="pop__x" id="popX" aria-label="Cerrar explicación">×</button>
+            <h3 class="pop__t" id="popT"></h3>
+            <p class="pop__p" id="popP"></p>
+          </div>
+        </article>
+
+        <div class="barra">
+          <p class="barra__txt" id="barraTxt">Marcaste <b id="nMarcas">0</b> partes del mensaje. Podés marcar todas las que quieras.</p>
+          <div class="resultado" id="res1" hidden>
+            <span class="pts" id="res1Pts"></span>
+            <span id="res1Txt"></span>
+          </div>
+          <div class="botones">
+            <button class="btn" id="btnComp1" disabled>Comprobar</button>
+            <button class="btn" id="btnSeguir" hidden>Continuar</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= MOMENTO 2 ================= -->
+    <section class="vista" id="m2" hidden aria-labelledby="preg">
+      <p class="consigna">Momento 2: ¿qué conviene hacer?&nbsp;<span>Puede haber más de una respuesta correcta.</span></p>
+
+      <div class="tarjeton">
+        <div class="quiz">
+          <h2 id="preg" tabindex="-1">Antes de actuar frente a un mensaje sospechoso, ¿qué conviene hacer?</h2>
+          <p class="quiz__ayuda" id="ayuda2">Marcá todas las opciones que consideres adecuadas y después comprobá tus respuestas.</p>
+          <div class="ops" id="ops" role="group" aria-labelledby="preg"></div>
+          <div class="cierre" id="cierre" hidden role="status">
+            <span><b id="ptsFinal"></b>Antes de actuar, detenerse, verificar y proteger los datos puede ayudar a evitar una estafa.</span>
+          </div>
+        </div>
+
+        <div class="barra">
+          <p class="barra__txt" id="barra2Txt">Sumás 1 punto por cada opción correcta que marques y 1 por cada incorrecta que dejes sin marcar. Total del momento: 4 puntos.</p>
+          <div class="resultado" id="res2" hidden>
+            <span class="pts" id="res2Pts"></span>
+            <span id="res2Txt"></span>
+          </div>
+          <div class="botones">
+            <button class="btn" id="btnComp2" disabled>Comprobar respuestas</button>
+            <button class="btn" id="btnReiniciar" hidden>Volver a intentar</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var TOTAL_GENERAL = 9, TOT1 = 5, TOT2 = 4;
+  var pts1 = 0, pts2 = 0, comprobado1 = false, comprobado2 = false;
+
+  var chipPts = document.getElementById('chipPts');
+  var chipMomento = document.getElementById('chipMomento');
+  function actualizarPuntaje(){ chipPts.textContent = pts1 + pts2; }
+
+  /* ============ Explicaciones ============ */
+  var SENALES = {
+    remitente:{t:"Remitente extraño",
+      p:"La dirección no pertenece al dominio oficial del banco: imita el nombre, reemplaza una letra por un número y termina en un dominio poco habitual."},
+    urgencia:{t:"Pedido urgente",
+      p:"El plazo corto busca que actúes sin pensar ni verificar. Una entidad real no resuelve un trámite de seguridad por correo en dos horas."},
+    enlace:{t:"Enlace sospechoso",
+      p:"El nombre del banco aparece como parte de otro dominio, que es el verdadero destino. Además la conexión no es segura (http)."},
+    datos:{t:"Solicitud de datos personales o bancarios",
+      p:"Ningún banco pide la contraseña ni el número completo de la tarjeta con su código de seguridad por correo, mensaje o teléfono."},
+    presion:{t:"Amenaza y premio",
+      p:"Combina un castigo y una recompensa para provocar una reacción rápida. Esa presión emocional es una marca típica del phishing."}
+  };
+  var TXT_NO_SENAL = "Esto por sí solo no permite saber si el mensaje es falso. Es información común en cualquier correo.";
+
+  /* ============ Capa flotante ============ */
+  var mail = document.getElementById('mail');
+  var pop = document.getElementById('pop');
+  var popT = document.getElementById('popT');
+  var popP = document.getElementById('popP');
+
+  function cerrarPop(){ pop.hidden = true; pop.classList.remove('arriba'); }
+  document.getElementById('popX').addEventListener('click', function(e){ e.stopPropagation(); cerrarPop(); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') cerrarPop(); });
+
+  function abrirPop(el, titulo, texto, verde){
+    popT.textContent = titulo;
+    popT.className = 'pop__t' + (verde ? ' v' : '');
+    popP.textContent = texto;
+    pop.hidden = false;
+    pop.classList.remove('arriba');
+
+    var r = el.getBoundingClientRect();
+    var m = mail.getBoundingClientRect();
+    var ancho = pop.offsetWidth;
+    var alto = pop.offsetHeight;
+    var izq = r.left - m.left + mail.scrollLeft;
+    izq = Math.max(10, Math.min(izq, mail.clientWidth - ancho - 10));
+    var arriba = r.bottom - m.top + mail.scrollTop + 8;
+
+    if(arriba + alto > mail.scrollHeight - 4){
+      arriba = r.top - m.top + mail.scrollTop - alto - 8;
+      pop.classList.add('arriba');
+    }
+    pop.style.left = izq + 'px';
+    pop.style.top = Math.max(4, arriba) + 'px';
+
+    var vTop = mail.scrollTop, vBot = vTop + mail.clientHeight;
+    if(arriba < vTop) mail.scrollTop = Math.max(0, arriba - 8);
+    else if(arriba + alto > vBot) mail.scrollTop = arriba + alto - mail.clientHeight + 10;
+  }
+
+  /* ============ MOMENTO 1 ============ */
+  var frags = Array.prototype.slice.call(mail.querySelectorAll('.frag'));
+  var nMarcas = document.getElementById('nMarcas');
+  var barraTxt = document.getElementById('barraTxt');
+  var btnComp1 = document.getElementById('btnComp1');
+  var btnSeguir = document.getElementById('btnSeguir');
+  var res1 = document.getElementById('res1'), res1Pts = document.getElementById('res1Pts'), res1Txt = document.getElementById('res1Txt');
+
+  function contarMarcas(){
+    var n = frags.filter(function(f){ return f.classList.contains('sel'); }).length;
+    nMarcas.textContent = n;
+    btnComp1.disabled = (n === 0);
+    return n;
+  }
+
+  frags.forEach(function(f){
+    f.addEventListener('click', function(ev){
+      ev.stopPropagation();
+      if(comprobado1){
+        var es = f.getAttribute('data-s');
+        if(f.classList.contains('r-ok'))    abrirPop(f, SENALES[es].t, SENALES[es].p, true);
+        else if(f.classList.contains('r-falta')) abrirPop(f, 'Se te escapó: ' + SENALES[es].t, SENALES[es].p, false);
+        else if(f.classList.contains('r-mal'))   abrirPop(f, 'No era una señal de alerta', TXT_NO_SENAL, false);
+        return;
+      }
+      var on = f.classList.toggle('sel');
+      f.setAttribute('aria-pressed', on ? 'true' : 'false');
+      contarMarcas();
+    });
+    f.addEventListener('keydown', function(ev){
+      if(ev.key === 'Enter' || ev.key === ' '){ ev.preventDefault(); f.click(); }
+    });
+  });
+
+  mail.addEventListener('click', cerrarPop);
+
+  function pintarResultado(caja, elPts, elTxt, puntos, total, textoOk, textoMedio, textoMal){
+    caja.hidden = false;
+    caja.className = 'resultado ' + (puntos === total ? 'verde' : (puntos === 0 ? 'rojo' : 'amarillo'));
+    elPts.textContent = puntos + ' / ' + total;
+    elTxt.textContent = puntos === total ? textoOk : (puntos === 0 ? textoMal : textoMedio);
+  }
+
+  btnComp1.addEventListener('click', function(){
+    comprobado1 = true;
+    pts1 = 0;
+    cerrarPop();
+    mail.classList.add('revisado');
+
+    frags.forEach(function(f){
+      var esSenal = !!f.getAttribute('data-s');
+      var marcada = f.classList.contains('sel');
+      f.classList.remove('sel');
+      var etiqueta = null;
+
+      if(marcada && esSenal){ f.classList.add('r-ok'); pts1++; etiqueta = '+1'; }
+      else if(marcada && !esSenal){ f.classList.add('r-mal'); etiqueta = 'No'; }
+
+      if(etiqueta){
+        var b = document.createElement('span');
+        b.className = 'marca';
+        b.textContent = etiqueta;
+        f.insertBefore(b, f.firstChild);
+        f.setAttribute('tabindex','0');
+      } else {
+        f.removeAttribute('tabindex');
+        f.setAttribute('aria-disabled','true');
+      }
+    });
+
+    barraTxt.hidden = true;
+    pintarResultado(res1, res1Pts, res1Txt, pts1, TOT1,
+      '¡Muy bien! Encontraste las 5 señales de alerta. Hacé clic en cada parte marcada del mensaje para saber más.',
+      'Hacé clic en cada parte marcada del mensaje para saber más: te va a explicar por qué era o no era una señal de alerta.',
+      'Ninguna de tus marcas era una señal de alerta. Hacé clic en cada parte marcada del mensaje para saber más.');
+    actualizarPuntaje();
+
+    btnComp1.hidden = true;
+    btnSeguir.hidden = false;
+    btnSeguir.focus();
+  });
+
+  btnSeguir.addEventListener('click', function(){
+    cerrarPop();
+    document.getElementById('m1').hidden = true;
+    document.getElementById('m2').hidden = false;
+    chipMomento.textContent = '2';
+    document.getElementById('preg').focus();
+  });
+
+  /* ============ MOMENTO 2 ============ */
+  var OPCIONES = [
+    { texto:"Verificar quién envió el mensaje y consultar los canales oficiales.", correcta:true,
+      fb:"Entrar a la app o al sitio oficial escribiendo la dirección, o llamar al número que figura en el resumen o en la tarjeta, permite confirmar si el mensaje es real." },
+    { texto:"Ingresar rápidamente al enlace para evitar un problema.", correcta:false,
+      fb:"Es justamente lo que busca el mensaje: apurarte. El enlace puede llevar a una página falsa que copia la del banco para robar tus datos." },
+    { texto:"Evitar compartir contraseñas o datos personales y bancarios.", correcta:true,
+      fb:"Esos datos son lo que el engaño quiere obtener y no se comparten por correo, mensaje ni teléfono, aunque quien escribe parezca conocido." },
+    { texto:"Reenviar el mensaje para preguntar si a otras personas les llegó.", correcta:false,
+      fb:"Reenviarlo hace circular el engaño y el enlace. Si querés consultar, contá lo que pasó a una persona adulta sin reenviar el mensaje." }
+  ];
+
+  var ops = document.getElementById('ops');
+  var btnComp2 = document.getElementById('btnComprobar2') || document.getElementById('btnComp2');
+  var btnReiniciar = document.getElementById('btnReiniciar');
+  var cierre = document.getElementById('cierre');
+  var ayuda2 = document.getElementById('ayuda2');
+  var barra2Txt = document.getElementById('barra2Txt');
+  var res2 = document.getElementById('res2'), res2Pts = document.getElementById('res2Pts'), res2Txt = document.getElementById('res2Txt');
+
+  OPCIONES.forEach(function(o, i){
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'op'; b.dataset.i = i;
+    b.setAttribute('aria-pressed','false');
+    b.innerHTML = '<span class="op__caja" aria-hidden="true"></span><span class="op__cuerpo"><span class="op__texto"></span></span>';
+    b.querySelector('.op__texto').textContent = o.texto;
+    b.addEventListener('click', function(){
+      if(comprobado2) return;
+      var on = b.classList.toggle('sel');
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      btnComp2.disabled = !ops.querySelector('.op.sel');
+    });
+    ops.appendChild(b);
+  });
+
+  btnComp2.addEventListener('click', function(){
+    comprobado2 = true; pts2 = 0;
+    Array.prototype.forEach.call(ops.children, function(b, i){
+      var o = OPCIONES[i];
+      var elegida = b.classList.contains('sel');
+      b.disabled = true;
+      if(!elegida){ if(!o.correcta) pts2++; return; }
+
+      var rotulo;
+      if(o.correcta){ b.classList.add('r-ok'); rotulo = 'Correcto (+1).'; pts2++; }
+      else { b.classList.add('r-mal'); rotulo = 'Incorrecto.'; }
+
+      var fb = document.createElement('span');
+      fb.className = 'op__fb';
+      var neg = document.createElement('b');
+      neg.textContent = rotulo + ' ';
+      fb.appendChild(neg);
+      fb.appendChild(document.createTextNode(o.fb));
+      b.querySelector('.op__cuerpo').appendChild(fb);
+    });
+
+    ayuda2.hidden = true;
+    barra2Txt.hidden = true;
+    pintarResultado(res2, res2Pts, res2Txt, pts2, TOT2,
+      '¡Excelente! Resolviste bien las cuatro opciones.',
+      'Leé la explicación debajo de cada opción que marcaste y volvé a intentar la actividad.',
+      'Leé la explicación debajo de cada opción que marcaste y volvé a intentar la actividad.');
+    actualizarPuntaje();
+
+    btnComp2.hidden = true;
+    if(pts2 === TOT2){
+      document.getElementById('ptsFinal').textContent = 'Puntaje final: ' + (pts1 + pts2) + ' de ' + TOTAL_GENERAL + '. ';
+      cierre.hidden = false;
+    }
+    btnReiniciar.hidden = false;
+    btnReiniciar.focus();
+  });
+
+  btnReiniciar.addEventListener('click', function(){
+    // Momento 2 a cero
+    comprobado2 = false; pts2 = 0;
+    Array.prototype.forEach.call(ops.children, function(b){
+      b.disabled = false;
+      b.classList.remove('sel','r-ok','r-mal');
+      b.setAttribute('aria-pressed','false');
+      var fb = b.querySelector('.op__fb'); if(fb) fb.remove();
+    });
+    cierre.hidden = true; res2.hidden = true;
+    ayuda2.hidden = false; barra2Txt.hidden = false;
+    btnReiniciar.hidden = true;
+    btnComp2.hidden = false; btnComp2.disabled = true;
+
+    // Momento 1 a cero
+    comprobado1 = false; pts1 = 0;
+    cerrarPop();
+    mail.classList.remove('revisado');
+    frags.forEach(function(f){
+      f.classList.remove('r-ok','r-mal','sel');
+      f.setAttribute('tabindex','0');
+      f.removeAttribute('aria-disabled');
+      f.setAttribute('aria-pressed','false');
+      var m = f.querySelector('.marca'); if(m) m.remove();
+    });
+    res1.hidden = true; barraTxt.hidden = false;
+    btnSeguir.hidden = true; btnComp1.hidden = false;
+    contarMarcas();
+
+    actualizarPuntaje();
+    document.getElementById('m2').hidden = true;
+    document.getElementById('m1').hidden = false;
+    chipMomento.textContent = '1';
+    frags[0].focus();
+  });
+
+  actualizarPuntaje();
+})();
+</script>
+</body>
+</html>
