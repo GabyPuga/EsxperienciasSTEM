@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Residuos domiciliarios por habitante (2009-2019)</title>
+<title>Actividad interactiva — Residuos por habitante</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; }
 
@@ -13,310 +13,337 @@
     --ink:#1f3350;
     --ink-2:#4a5f7a;
     --muted:#7b8ca3;
-    --teal:#5aada2;
-    --teal-dark:#3f9186;
-    --amber:#f2c13d;
-    --amber-dark:#e0aa22;
+    --line:#dfe3e8;
+    --green:#1f8a5c;
+    --green-bg:#e8f6ee;
+    --green-br:#a9dcc2;
+    --red:#c0392b;
+    --red-bg:#fdecea;
+    --red-br:#f2bcb5;
     --grey-cap:#e8eaed;
     --grey-cap-br:#d3d7dd;
-    --grey-badge:#5a6672;
   }
 
   body{ margin:0; font-family:'Segoe UI', system-ui, -apple-system, Roboto, Arial, sans-serif; }
 
-  .viz{
-    max-height:500px;
+  .act{
     height:500px;
+    max-height:500px;
     background:linear-gradient(160deg, var(--navy-1) 0%, var(--navy-2) 100%);
     border-radius:14px;
-    padding:20px 24px 18px;
+    padding:18px 22px 16px;
     display:flex;
     flex-direction:column;
-    gap:12px;
+    gap:10px;
     overflow:hidden;
   }
 
-  .viz__title{
-    margin:0;
-    color:#fff;
-    font-size:19px;
-    font-weight:700;
-    line-height:1.25;
-    letter-spacing:.1px;
+  .act__top{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .act__kicker{
+    font-size:10.5px; font-weight:800; letter-spacing:.14em;
+    text-transform:uppercase; color:#8fa6c4;
   }
+  .score{
+    display:inline-flex; align-items:center; gap:6px;
+    background:rgba(255,255,255,.10); color:#cfdcee;
+    border:1px solid rgba(255,255,255,.18);
+    border-radius:999px; padding:4px 12px;
+    font-size:12px; font-weight:800; white-space:nowrap;
+    transition:all .2s ease;
+  }
+  .score.is-win{ background:var(--green-bg); color:#146b4a; border-color:var(--green-br); }
+  .score.is-loss{ background:var(--red-bg); color:#8e2b20; border-color:var(--red-br); }
 
   /* ---------- TARJETA BLANCA ---------- */
   .card{
-    background:#ffffff;
+    background:#fff;
     border-radius:16px;
-    padding:16px 20px 12px;
+    padding:16px 20px;
     flex:1 1 auto;
     min-height:0;
     display:flex;
     flex-direction:column;
     gap:10px;
+    overflow:auto;
   }
 
-  .card__head{
-    display:flex; align-items:center; justify-content:space-between; gap:12px;
-  }
-  .card__title{ margin:0; font-size:17px; font-weight:700; color:var(--ink); }
-  .card__unit{
-    display:inline-flex; align-items:center; gap:6px;
-    background:#eaf4f2; color:#2f7d72;
-    border-radius:999px; padding:5px 12px;
-    font-size:12.5px; font-weight:700; white-space:nowrap;
+  .q{
+    margin:0;
+    font-size:16.5px; font-weight:700; color:var(--ink); line-height:1.3;
   }
 
-  /* ---------- GRAFICO ---------- */
-  .chart{
-    position:relative;
-    flex:1 1 auto;
-    min-height:0;
-    display:grid;
-    grid-template-columns:44px 1fr;
-    grid-template-rows:1fr auto;
-    column-gap:8px;
-  }
+  .opts{ display:flex; flex-direction:column; gap:7px; }
 
-  .yaxis{ position:relative; }
-  .yaxis span{
-    position:absolute; right:0; transform:translateY(-50%);
-    font-size:11.5px; color:var(--muted); font-weight:600;
-  }
-
-  .plot{
-    position:relative;
-    border-bottom:1.5px solid #dfe3e8;
-  }
-  .grid{ position:absolute; inset:0; pointer-events:none; }
-  .grid i{
-    position:absolute; left:0; right:0; height:0;
-    border-top:1px dashed #e3e7ec;
-  }
-
-  .bars{
-    position:absolute; inset:0;
-    display:flex; align-items:flex-end; gap:6px;
-  }
-  .bar{
-    position:relative;
-    flex:1 1 0;
-    height:100%;
-    display:flex; align-items:flex-end;
-    background:none; border:0; padding:0; margin:0;
-    cursor:pointer;
-    border-radius:6px 6px 0 0;
-  }
-  .bar__fill{
-    width:100%;
-    background:linear-gradient(180deg, var(--teal) 0%, var(--teal-dark) 100%);
-    border-radius:5px 5px 0 0;
-    transition:filter .15s ease, transform .15s ease;
-    transform-origin:bottom;
-  }
-  .bar.is-peak .bar__fill{
-    background:linear-gradient(180deg, var(--amber) 0%, var(--amber-dark) 100%);
-  }
-  .bar:hover .bar__fill,
-  .bar:focus-visible .bar__fill{ filter:brightness(1.08); }
-  .bar:focus-visible{ outline:2px solid var(--ink); outline-offset:2px; }
-
-  .xaxis{
-    display:flex; gap:6px; padding-top:7px;
-  }
-  .xaxis span{
-    flex:1 1 0; text-align:center;
-    font-size:12.5px; font-weight:700; color:var(--ink-2);
-  }
-
-  /* ---------- TOOLTIP ---------- */
-  .tip{
-    position:absolute;
-    z-index:5;
-    transform:translate(-50%, -100%);
-    background:var(--ink);
-    color:#fff;
-    border-radius:9px;
-    padding:7px 11px;
-    font-size:12.5px;
+  .opt{
+    display:flex; align-items:flex-start; gap:10px;
+    width:100%; text-align:left;
+    background:#f7f9fb;
+    border:1.5px solid var(--line);
+    border-radius:11px;
+    padding:9px 12px;
+    font-family:inherit; font-size:14px; color:var(--ink-2);
     line-height:1.35;
-    white-space:nowrap;
-    box-shadow:0 6px 16px rgba(21,34,56,.28);
-    opacity:0; visibility:hidden;
-    transition:opacity .12s ease;
+    cursor:pointer;
+    transition:border-color .15s ease, background .15s ease, color .15s ease;
   }
-  .tip.is-on{ opacity:1; visibility:visible; }
-  .tip b{ display:block; font-size:14px; }
-  .tip::after{
-    content:""; position:absolute; left:50%; bottom:-5px;
-    width:10px; height:10px; background:var(--ink);
-    transform:translateX(-50%) rotate(45deg);
-    border-radius:2px;
+  .opt:hover:not(:disabled){ border-color:#b9c4d1; background:#f1f5f9; }
+  .opt:focus-visible{ outline:2px solid var(--ink); outline-offset:2px; }
+  .opt:disabled{ cursor:default; }
+
+  .opt__key{
+    flex:0 0 auto;
+    width:24px; height:24px; border-radius:50%;
+    background:#e5eaf0; color:var(--ink);
+    display:flex; align-items:center; justify-content:center;
+    font-size:12.5px; font-weight:800;
+    transition:all .15s ease;
   }
-  .tip.is-below{ transform:translate(-50%, 0); }
-  .tip.is-below::after{ bottom:auto; top:-5px; }
+  .opt__txt{ flex:1 1 auto; padding-top:2px; }
+  .opt__mark{ flex:0 0 auto; font-size:16px; font-weight:800; line-height:1.4; opacity:0; }
 
-  .hint{ margin:0; text-align:center; font-size:11.5px; color:var(--muted); }
+  .opt.is-sel{ border-color:#8fa3ba; background:#eef3f8; color:var(--ink); }
+  .opt.is-sel .opt__key{ background:var(--ink); color:#fff; }
 
-  /* ---------- CAPSULA GRIS ---------- */
-  .note{
-    display:flex; align-items:center; gap:12px;
+  .opt.is-ok{ border-color:var(--green-br); background:var(--green-bg); color:#14603f; }
+  .opt.is-ok .opt__key{ background:var(--green); color:#fff; }
+  .opt.is-ok .opt__mark{ opacity:1; color:var(--green); }
+
+  .opt.is-bad{ border-color:var(--red-br); background:var(--red-bg); color:#8e2b20; }
+  .opt.is-bad .opt__key{ background:var(--red); color:#fff; }
+  .opt.is-bad .opt__mark{ opacity:1; color:var(--red); }
+
+  /* ---------- FEEDBACK ---------- */
+  .fb{
+    display:none;
+    gap:10px;
+    align-items:flex-start;
+    border-radius:11px;
+    padding:9px 12px;
+    font-size:13.5px; line-height:1.35;
+    border:1.5px solid transparent;
+  }
+  .fb.is-on{ display:flex; }
+  .fb__icon{
+    flex:0 0 auto; width:22px; height:22px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:13px; font-weight:800; color:#fff;
+  }
+  .fb__ttl{ font-weight:800; display:block; margin-bottom:1px; }
+  .fb--ok{ background:var(--green-bg); border-color:var(--green-br); color:#14603f; }
+  .fb--ok .fb__icon{ background:var(--green); }
+  .fb--bad{ background:var(--red-bg); border-color:var(--red-br); color:#8e2b20; }
+  .fb--bad .fb__icon{ background:var(--red); }
+
+  /* ---------- BOTONES ---------- */
+  .bar{
+    display:flex; align-items:center; gap:10px;
+    flex:0 0 auto;
     background:var(--grey-cap);
     border:1px solid var(--grey-cap-br);
     border-radius:14px;
-    padding:10px 14px;
+    padding:9px 12px;
+  }
+  .bar__hint{ flex:1 1 auto; font-size:12px; color:#5f6b79; line-height:1.3; }
+
+  .btn{
     flex:0 0 auto;
+    border:0; border-radius:10px;
+    padding:9px 18px;
+    font-family:inherit; font-size:13.5px; font-weight:800;
+    cursor:pointer;
+    transition:filter .15s ease, opacity .15s ease;
   }
-  .note__icon{
-    flex:0 0 auto;
-    width:32px; height:32px; border-radius:50%;
-    background:#cfd4da; color:#3f4a56;
-    display:flex; align-items:center; justify-content:center;
-    font-size:15px; font-weight:800;
-  }
-  .note__txt{ flex:1 1 auto; min-width:0; }
-  .note__kicker{
-    font-size:10.5px; font-weight:800; letter-spacing:.12em;
-    text-transform:uppercase; color:#6b7684; margin-bottom:1px;
-  }
-  .note__body{ font-size:13.5px; color:#33404e; line-height:1.3; }
-  .note__badge{
-    flex:0 0 auto;
-    background:var(--grey-badge); color:#fff;
-    border-radius:9px; padding:7px 12px;
-    font-size:13px; font-weight:800; white-space:nowrap;
-  }
+  .btn:focus-visible{ outline:2px solid var(--ink); outline-offset:2px; }
+  .btn:hover:not(:disabled){ filter:brightness(1.08); }
+  .btn--check{ background:var(--green); color:#fff; }
+  .btn--retry{ background:#5a6672; color:#fff; }
+  .btn:disabled{ opacity:.42; cursor:not-allowed; }
+  .btn[hidden]{ display:none; }
 
   @media (max-width:640px){
-    .viz{ padding:16px; }
-    .viz__title{ font-size:16px; }
-    .xaxis span{ font-size:10px; }
-    .note__body{ font-size:12px; }
-    .note__badge{ font-size:11.5px; padding:6px 9px; }
+    .act{ padding:14px; height:auto; max-height:none; }
+    .card{ padding:14px; }
+    .q{ font-size:15px; }
+    .opt{ font-size:13px; }
+    .bar{ flex-wrap:wrap; }
+    .bar__hint{ flex:1 1 100%; }
   }
 </style>
 </head>
 <body>
 
-<figure class="viz">
-  <h2 class="viz__title">Evolución anual del promedio diario de residuos generados por cada habitante (2009 a 2019)</h2>
+<section class="act" aria-labelledby="q-title">
+  <div class="act__top">
+    <span class="act__kicker">Actividad interactiva</span>
+    <span class="score" id="score">Puntaje: 0 / 10</span>
+  </div>
 
   <div class="card">
-    <div class="card__head">
-      <h3 class="card__title">Residuos domiciliarios promedio</h3>
-      <span class="card__unit">⚖ kg / habitante / día</span>
+    <h3 class="q" id="q-title">¿Cuál de estas afirmaciones describe mejor lo que observás?</h3>
+
+    <div class="opts" id="opts" role="radiogroup" aria-labelledby="q-title"></div>
+
+    <div class="fb" id="fb" role="status" aria-live="polite">
+      <span class="fb__icon" id="fbIcon"></span>
+      <span><span class="fb__ttl" id="fbTtl"></span><span id="fbTxt"></span></span>
     </div>
-
-    <div class="chart">
-      <div class="yaxis" id="yaxis"></div>
-
-      <div class="plot" id="plot">
-        <div class="grid" id="grid"></div>
-        <div class="bars" id="bars"></div>
-        <div class="tip" id="tip" role="status" aria-live="polite"></div>
-      </div>
-
-      <div></div>
-      <div class="xaxis" id="xaxis"></div>
-    </div>
-
-    <p class="hint">Pasá el cursor, tocá o navegá con Tab sobre una barra para consultar el dato.</p>
   </div>
 
-  <div class="note">
-    <div class="note__icon" aria-hidden="true">↗</div>
-    <div class="note__txt">
-      <div class="note__kicker">Pico del período</div>
-      <div class="note__body">El promedio más alto se registró en 2018, luego de un aumento sostenido desde 2016.</div>
-    </div>
-    <div class="note__badge">2018 · 1,49 kg</div>
+  <div class="bar">
+    <span class="bar__hint" id="hint">Elegí una opción y presioná «Comprobar».</span>
+    <button class="btn btn--check" id="btnCheck" disabled>Comprobar</button>
+    <button class="btn btn--retry" id="btnRetry" hidden>Reintentar</button>
   </div>
-</figure>
+</section>
 
 <script>
 (function(){
-  const DATA = [
-    {y:2009, v:1.26},{y:2010, v:1.28},{y:2011, v:1.30},{y:2012, v:1.30},
-    {y:2013, v:1.35},{y:2014, v:1.31},{y:2015, v:1.35},{y:2016, v:1.35},
-    {y:2017, v:1.46},{y:2018, v:1.49},{y:2019, v:1.43}
+  const OPTIONS = [
+    {
+      k:'A',
+      t:'El promedio disminuye de manera continua.',
+      ttl:'No exactamente. ',
+      fb:'Si recorrés los datos año por año, vas a ver que hay momentos en los que el promedio baja, pero también varios en los que aumenta. Compará especialmente 2009 con 2018 y 2019.'
+    },
+    {
+      k:'B',
+      t:'El promedio se mantiene exactamente igual.',
+      ttl:'Revisá nuevamente el gráfico. ',
+      fb:'Los valores cambian a lo largo del período: algunos años se parecen entre sí, pero el promedio no permanece igual. Observá, por ejemplo, la diferencia entre 2009 y 2018.'
+    },
+    {
+      k:'C',
+      t:'Aunque hay subas y bajas, hacia el final del período los valores son mayores que al comienzo.',
+      ttl:'¡Exacto! ',
+      fb:'Los valores no aumentan todos los años, pero el recorrido permite reconocer una tendencia general: hacia el final del período, el promedio diario por habitante es mayor que al comienzo.'
+    },
+    {
+      k:'D',
+      t:'No es posible comparar los distintos años.',
+      ttl:'Sí es posible compararlos. ',
+      fb:'Todos los datos están expresados con la misma unidad —kilogramos por habitante por día— y corresponden a distintos años del mismo período. Eso permite observar cómo varía el promedio a lo largo del tiempo.'
+    }
   ];
-  const MIN = 1.20, MAX = 1.50;
-  const TICKS = [1.20, 1.275, 1.35, 1.425, 1.50];
-  const PEAK = 2018;
+  const CORRECT = 'C';
+  const POINTS  = 10;   // puntaje máximo
+  const PENALTY = 2;    // se descuenta por cada error
 
-  const fmt = n => n.toFixed(2).replace('.', ',');
-  const fmtTick = n => (Math.round(n*1000)/1000).toString().replace('.', ',');
+  const optsEl  = document.getElementById('opts');
+  const fb      = document.getElementById('fb');
+  const fbIcon  = document.getElementById('fbIcon');
+  const fbTtl   = document.getElementById('fbTtl');
+  const fbTxt   = document.getElementById('fbTxt');
+  const score   = document.getElementById('score');
+  const hint    = document.getElementById('hint');
+  const btnCheck= document.getElementById('btnCheck');
+  const btnRetry= document.getElementById('btnRetry');
 
-  const yaxis = document.getElementById('yaxis');
-  const grid  = document.getElementById('grid');
-  const bars  = document.getElementById('bars');
-  const xaxis = document.getElementById('xaxis');
-  const plot  = document.getElementById('plot');
-  const tip   = document.getElementById('tip');
+  let selected  = null;
+  let locked    = false;
+  let available = POINTS;   // puntos en juego
+  let solved    = false;
 
-  TICKS.forEach(t => {
-    const pct = (1 - (t - MIN) / (MAX - MIN)) * 100;
-    const lbl = document.createElement('span');
-    lbl.textContent = fmtTick(t);
-    lbl.style.top = pct + '%';
-    yaxis.appendChild(lbl);
+  function paintScore(){
+    if (solved) {
+      score.textContent = 'Puntaje: ' + available + ' / ' + POINTS;
+      score.classList.add('is-win');
+      score.classList.remove('is-loss');
+    } else {
+      score.textContent = 'En juego: ' + available + ' / ' + POINTS + ' pts';
+      score.classList.remove('is-win');
+    }
+  }
+  paintScore();
 
-    const line = document.createElement('i');
-    line.style.top = pct + '%';
-    grid.appendChild(line);
+  const buttons = OPTIONS.map(o => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'opt';
+    b.dataset.key = o.k;
+    b.setAttribute('role','radio');
+    b.setAttribute('aria-checked','false');
+    b.innerHTML =
+      '<span class="opt__key">' + o.k + '</span>' +
+      '<span class="opt__txt">' + o.t + '</span>' +
+      '<span class="opt__mark" aria-hidden="true"></span>';
+    b.addEventListener('click', () => {
+      if (locked) return;
+      selected = o.k;
+      buttons.forEach(x => {
+        const on = x.dataset.key === o.k;
+        x.classList.toggle('is-sel', on);
+        x.setAttribute('aria-checked', on ? 'true' : 'false');
+      });
+      fb.classList.remove('is-on');
+      btnCheck.disabled = false;
+      hint.textContent = 'Presioná «Comprobar» para verificar tu respuesta.';
+    });
+    optsEl.appendChild(b);
+    return b;
   });
 
-  DATA.forEach(d => {
-    const h = ((d.v - MIN) / (MAX - MIN)) * 100;
+  btnCheck.addEventListener('click', () => {
+    if (!selected || locked) return;
+    const ok = selected === CORRECT;
+    const data = OPTIONS.find(o => o.k === selected);
+    const chosen = buttons.find(b => b.dataset.key === selected);
 
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'bar' + (d.y === PEAK ? ' is-peak' : '');
-    btn.setAttribute('aria-label', d.y + ': ' + fmt(d.v) + ' kg por habitante por día');
+    chosen.classList.remove('is-sel');
+    chosen.classList.add(ok ? 'is-ok' : 'is-bad');
+    chosen.querySelector('.opt__mark').textContent = ok ? '✓' : '✕';
 
-    const fill = document.createElement('div');
-    fill.className = 'bar__fill';
-    fill.style.height = Math.max(h, 2) + '%';
-    btn.appendChild(fill);
+    fb.classList.remove('fb--ok','fb--bad');
+    fb.classList.add('is-on', ok ? 'fb--ok' : 'fb--bad');
+    fbIcon.textContent = ok ? '✓' : '✕';
+    fbTtl.textContent  = data.ttl;
+    fbTxt.textContent  = data.fb;
 
-    const show = () => {
-      tip.innerHTML = '<b>' + d.y + '</b>' + fmt(d.v) + ' kg / hab. / día';
-      const pr = plot.getBoundingClientRect();
-      const br = btn.getBoundingClientRect();
-      const fr = fill.getBoundingClientRect();
-      let x = br.left - pr.left + br.width / 2;
-      x = Math.min(Math.max(x, 60), pr.width - 60);
-      tip.style.left = x + 'px';
-      tip.classList.add('is-on');
-      const barTop = fr.top - pr.top;
-      const tipH = tip.offsetHeight;
-      if (barTop - tipH - 10 < 0) {
-        tip.classList.add('is-below');
-        tip.style.top = (barTop + 10) + 'px';
-      } else {
-        tip.classList.remove('is-below');
-        tip.style.top = (barTop - 10) + 'px';
-      }
-    };
-    const hide = () => tip.classList.remove('is-on');
+    // Queda bloqueado en los dos casos: solo «Reintentar» reinicia la actividad.
+    locked = true;
+    buttons.forEach(b => { b.disabled = true; });
+    btnCheck.disabled = true;
+    btnRetry.hidden = false;
+    btnRetry.focus();
 
-    btn.addEventListener('mouseenter', show);
-    btn.addEventListener('mouseleave', hide);
-    btn.addEventListener('focus', show);
-    btn.addEventListener('blur', hide);
-    btn.addEventListener('click', show);
-    btn.addEventListener('touchstart', show, {passive:true});
-
-    bars.appendChild(btn);
-
-    const lbl = document.createElement('span');
-    lbl.textContent = d.y;
-    xaxis.appendChild(lbl);
+    if (ok) {
+      solved = true;
+      paintScore();
+      hint.textContent = available > 0
+        ? 'Respuesta correcta. Sumaste ' + available + ' de ' + POINTS + ' puntos.'
+        : 'Respuesta correcta, pero ya no quedaban puntos disponibles.';
+      btnRetry.textContent = 'Empezar de nuevo';
+    } else {
+      available = Math.max(0, available - PENALTY);
+      paintScore();
+      score.classList.add('is-loss');
+      setTimeout(() => score.classList.remove('is-loss'), 900);
+      hint.textContent = available > 0
+        ? '−' + PENALTY + ' puntos. Quedan ' + available + ' en juego: presioná «Reintentar».'
+        : 'Ya no quedan puntos en juego, pero podés seguir intentando.';
+      btnRetry.textContent = 'Reintentar';
+    }
   });
 
-  document.addEventListener('click', e => {
-    if (!e.target.closest('.bar')) tip.classList.remove('is-on');
+  btnRetry.addEventListener('click', () => {
+    selected = null;
+    locked = false;
+    buttons.forEach(b => {
+      b.disabled = false;
+      b.classList.remove('is-sel','is-ok','is-bad');
+      b.setAttribute('aria-checked','false');
+      b.querySelector('.opt__mark').textContent = '';
+    });
+    fb.classList.remove('is-on','fb--ok','fb--bad');
+    if (solved) {           // ya resuelta: se reinicia toda la actividad
+      solved = false;
+      available = POINTS;
+    }                        // si fue error, el descuento se mantiene
+    paintScore();
+    btnCheck.disabled = true;
+    btnRetry.hidden = true;
+    btnRetry.textContent = 'Reintentar';
+    hint.textContent = 'Elegí una opción y presioná «Comprobar».';
+    optsEl.querySelector('.opt').focus();
   });
 })();
 </script>
