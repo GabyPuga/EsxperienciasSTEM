@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Residuos domiciliarios por habitante (2009-2019)</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+
+  :root{
+    --navy-1:#152238;
+    --navy-2:#1d3050;
+    --ink:#1f3350;
+    --ink-2:#4a5f7a;
+    --muted:#7b8ca3;
+    --teal:#5aada2;
+    --teal-dark:#3f9186;
+    --amber:#f2c13d;
+    --amber-dark:#e0aa22;
+    --grey-cap:#e8eaed;
+    --grey-cap-br:#d3d7dd;
+    --grey-badge:#5a6672;
+  }
+
+  body{ margin:0; font-family:'Segoe UI', system-ui, -apple-system, Roboto, Arial, sans-serif; }
+
+  .viz{
+    max-height:500px;
+    height:500px;
+    background:linear-gradient(160deg, var(--navy-1) 0%, var(--navy-2) 100%);
+    border-radius:14px;
+    padding:20px 24px 18px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    overflow:hidden;
+  }
+
+  .viz__title{
+    margin:0;
+    color:#fff;
+    font-size:19px;
+    font-weight:700;
+    line-height:1.25;
+    letter-spacing:.1px;
+  }
+
+  /* ---------- TARJETA BLANCA ---------- */
+  .card{
+    background:#ffffff;
+    border-radius:16px;
+    padding:16px 20px 12px;
+    flex:1 1 auto;
+    min-height:0;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+
+  .card__head{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+  }
+  .card__title{ margin:0; font-size:17px; font-weight:700; color:var(--ink); }
+  .card__unit{
+    display:inline-flex; align-items:center; gap:6px;
+    background:#eaf4f2; color:#2f7d72;
+    border-radius:999px; padding:5px 12px;
+    font-size:12.5px; font-weight:700; white-space:nowrap;
+  }
+
+  /* ---------- GRAFICO ---------- */
+  .chart{
+    position:relative;
+    flex:1 1 auto;
+    min-height:0;
+    display:grid;
+    grid-template-columns:44px 1fr;
+    grid-template-rows:1fr auto;
+    column-gap:8px;
+  }
+
+  .yaxis{ position:relative; }
+  .yaxis span{
+    position:absolute; right:0; transform:translateY(-50%);
+    font-size:11.5px; color:var(--muted); font-weight:600;
+  }
+
+  .plot{
+    position:relative;
+    border-bottom:1.5px solid #dfe3e8;
+  }
+  .grid{ position:absolute; inset:0; pointer-events:none; }
+  .grid i{
+    position:absolute; left:0; right:0; height:0;
+    border-top:1px dashed #e3e7ec;
+  }
+
+  .bars{
+    position:absolute; inset:0;
+    display:flex; align-items:flex-end; gap:6px;
+  }
+  .bar{
+    position:relative;
+    flex:1 1 0;
+    height:100%;
+    display:flex; align-items:flex-end;
+    background:none; border:0; padding:0; margin:0;
+    cursor:pointer;
+    border-radius:6px 6px 0 0;
+  }
+  .bar__fill{
+    width:100%;
+    background:linear-gradient(180deg, var(--teal) 0%, var(--teal-dark) 100%);
+    border-radius:5px 5px 0 0;
+    transition:filter .15s ease, transform .15s ease;
+    transform-origin:bottom;
+  }
+  .bar.is-peak .bar__fill{
+    background:linear-gradient(180deg, var(--amber) 0%, var(--amber-dark) 100%);
+  }
+  .bar:hover .bar__fill,
+  .bar:focus-visible .bar__fill{ filter:brightness(1.08); }
+  .bar:focus-visible{ outline:2px solid var(--ink); outline-offset:2px; }
+
+  .xaxis{
+    display:flex; gap:6px; padding-top:7px;
+  }
+  .xaxis span{
+    flex:1 1 0; text-align:center;
+    font-size:12.5px; font-weight:700; color:var(--ink-2);
+  }
+
+  /* ---------- TOOLTIP ---------- */
+  .tip{
+    position:absolute;
+    z-index:5;
+    transform:translate(-50%, -100%);
+    background:var(--ink);
+    color:#fff;
+    border-radius:9px;
+    padding:7px 11px;
+    font-size:12.5px;
+    line-height:1.35;
+    white-space:nowrap;
+    box-shadow:0 6px 16px rgba(21,34,56,.28);
+    opacity:0; visibility:hidden;
+    transition:opacity .12s ease;
+  }
+  .tip.is-on{ opacity:1; visibility:visible; }
+  .tip b{ display:block; font-size:14px; }
+  .tip::after{
+    content:""; position:absolute; left:50%; bottom:-5px;
+    width:10px; height:10px; background:var(--ink);
+    transform:translateX(-50%) rotate(45deg);
+    border-radius:2px;
+  }
+  .tip.is-below{ transform:translate(-50%, 0); }
+  .tip.is-below::after{ bottom:auto; top:-5px; }
+
+  .hint{ margin:0; text-align:center; font-size:11.5px; color:var(--muted); }
+
+  /* ---------- CAPSULA GRIS ---------- */
+  .note{
+    display:flex; align-items:center; gap:12px;
+    background:var(--grey-cap);
+    border:1px solid var(--grey-cap-br);
+    border-radius:14px;
+    padding:10px 14px;
+    flex:0 0 auto;
+  }
+  .note__icon{
+    flex:0 0 auto;
+    width:32px; height:32px; border-radius:50%;
+    background:#cfd4da; color:#3f4a56;
+    display:flex; align-items:center; justify-content:center;
+    font-size:15px; font-weight:800;
+  }
+  .note__txt{ flex:1 1 auto; min-width:0; }
+  .note__kicker{
+    font-size:10.5px; font-weight:800; letter-spacing:.12em;
+    text-transform:uppercase; color:#6b7684; margin-bottom:1px;
+  }
+  .note__body{ font-size:13.5px; color:#33404e; line-height:1.3; }
+  .note__badge{
+    flex:0 0 auto;
+    background:var(--grey-badge); color:#fff;
+    border-radius:9px; padding:7px 12px;
+    font-size:13px; font-weight:800; white-space:nowrap;
+  }
+
+  @media (max-width:640px){
+    .viz{ padding:16px; }
+    .viz__title{ font-size:16px; }
+    .xaxis span{ font-size:10px; }
+    .note__body{ font-size:12px; }
+    .note__badge{ font-size:11.5px; padding:6px 9px; }
+  }
+</style>
+</head>
+<body>
+
+<figure class="viz">
+  <h2 class="viz__title">Evolución anual del promedio diario de residuos generados por cada habitante (2009 a 2019)</h2>
+
+  <div class="card">
+    <div class="card__head">
+      <h3 class="card__title">Residuos domiciliarios promedio</h3>
+      <span class="card__unit">⚖ kg / habitante / día</span>
+    </div>
+
+    <div class="chart">
+      <div class="yaxis" id="yaxis"></div>
+
+      <div class="plot" id="plot">
+        <div class="grid" id="grid"></div>
+        <div class="bars" id="bars"></div>
+        <div class="tip" id="tip" role="status" aria-live="polite"></div>
+      </div>
+
+      <div></div>
+      <div class="xaxis" id="xaxis"></div>
+    </div>
+
+    <p class="hint">Pasá el cursor, tocá o navegá con Tab sobre una barra para consultar el dato.</p>
+  </div>
+
+  <div class="note">
+    <div class="note__icon" aria-hidden="true">↗</div>
+    <div class="note__txt">
+      <div class="note__kicker">Pico del período</div>
+      <div class="note__body">El promedio más alto se registró en 2018, luego de un aumento sostenido desde 2016.</div>
+    </div>
+    <div class="note__badge">2018 · 1,49 kg</div>
+  </div>
+</figure>
+
+<script>
+(function(){
+  const DATA = [
+    {y:2009, v:1.26},{y:2010, v:1.28},{y:2011, v:1.30},{y:2012, v:1.30},
+    {y:2013, v:1.35},{y:2014, v:1.31},{y:2015, v:1.35},{y:2016, v:1.35},
+    {y:2017, v:1.46},{y:2018, v:1.49},{y:2019, v:1.43}
+  ];
+  const MIN = 1.20, MAX = 1.50;
+  const TICKS = [1.20, 1.275, 1.35, 1.425, 1.50];
+  const PEAK = 2018;
+
+  const fmt = n => n.toFixed(2).replace('.', ',');
+  const fmtTick = n => (Math.round(n*1000)/1000).toString().replace('.', ',');
+
+  const yaxis = document.getElementById('yaxis');
+  const grid  = document.getElementById('grid');
+  const bars  = document.getElementById('bars');
+  const xaxis = document.getElementById('xaxis');
+  const plot  = document.getElementById('plot');
+  const tip   = document.getElementById('tip');
+
+  TICKS.forEach(t => {
+    const pct = (1 - (t - MIN) / (MAX - MIN)) * 100;
+    const lbl = document.createElement('span');
+    lbl.textContent = fmtTick(t);
+    lbl.style.top = pct + '%';
+    yaxis.appendChild(lbl);
+
+    const line = document.createElement('i');
+    line.style.top = pct + '%';
+    grid.appendChild(line);
+  });
+
+  DATA.forEach(d => {
+    const h = ((d.v - MIN) / (MAX - MIN)) * 100;
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'bar' + (d.y === PEAK ? ' is-peak' : '');
+    btn.setAttribute('aria-label', d.y + ': ' + fmt(d.v) + ' kg por habitante por día');
+
+    const fill = document.createElement('div');
+    fill.className = 'bar__fill';
+    fill.style.height = Math.max(h, 2) + '%';
+    btn.appendChild(fill);
+
+    const show = () => {
+      tip.innerHTML = '<b>' + d.y + '</b>' + fmt(d.v) + ' kg / hab. / día';
+      const pr = plot.getBoundingClientRect();
+      const br = btn.getBoundingClientRect();
+      const fr = fill.getBoundingClientRect();
+      let x = br.left - pr.left + br.width / 2;
+      x = Math.min(Math.max(x, 60), pr.width - 60);
+      tip.style.left = x + 'px';
+      tip.classList.add('is-on');
+      const barTop = fr.top - pr.top;
+      const tipH = tip.offsetHeight;
+      if (barTop - tipH - 10 < 0) {
+        tip.classList.add('is-below');
+        tip.style.top = (barTop + 10) + 'px';
+      } else {
+        tip.classList.remove('is-below');
+        tip.style.top = (barTop - 10) + 'px';
+      }
+    };
+    const hide = () => tip.classList.remove('is-on');
+
+    btn.addEventListener('mouseenter', show);
+    btn.addEventListener('mouseleave', hide);
+    btn.addEventListener('focus', show);
+    btn.addEventListener('blur', hide);
+    btn.addEventListener('click', show);
+    btn.addEventListener('touchstart', show, {passive:true});
+
+    bars.appendChild(btn);
+
+    const lbl = document.createElement('span');
+    lbl.textContent = d.y;
+    xaxis.appendChild(lbl);
+  });
+
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.bar')) tip.classList.remove('is-on');
+  });
+})();
+</script>
+</body>
+</html>
