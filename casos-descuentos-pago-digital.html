@@ -41,11 +41,10 @@
     font-family:var(--font);
   }
 
-  /* Toma la altura del contenedor; nunca pasa de 600 px. La lámina se queda con casi todo. */
+  /* Altura total tope: 550 px. La lámina se queda con casi todo. */
   .wrap{
-    height:100dvh;
-    max-height:600px;
-    min-height:320px;
+    height:min(550px,100dvh);
+    max-height:550px;
     display:flex;flex-direction:column;gap:6px;
     padding-inline:4px;padding-block:4px;
   }
