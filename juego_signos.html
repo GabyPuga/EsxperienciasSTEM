@@ -158,25 +158,40 @@ const SVG = {
     <line x1="96" y1="61" x2="224" y2="189" stroke="#D94B56" stroke-width="14" stroke-linecap="round"/>
   </svg>`,
   xcontexts: `
-  <svg viewBox="0 0 420 250" role="img" aria-label="La misma X en dos contextos">
-    <!-- Pantalla de computadora apaisada -->
+  <svg viewBox="0 0 420 250" role="img" aria-label="La misma X en dos contextos: botón para cerrar una ventana y marca en una actividad">
+    <!-- Pantalla: ventana simple con una sola X para cerrar -->
     <rect x="14" y="50" width="230" height="130" rx="12" fill="#FFFFFF" stroke="#153244" stroke-width="5"/>
-    <rect x="14" y="50" width="230" height="32" rx="12" fill="#8DE2D6"/>
-    <circle cx="222" cy="66" r="12" fill="#153244"/>
-    <line x1="217" y1="61" x2="227" y2="71" stroke="#FFCC00" stroke-width="4" stroke-linecap="round"/>
-    <line x1="227" y1="61" x2="217" y2="71" stroke="#FFCC00" stroke-width="4" stroke-linecap="round"/>
+    <path d="M26 52.5 H232 A9.5 9.5 0 0 1 241.5 62 V84 H16.5 V62 A9.5 9.5 0 0 1 26 52.5 Z" fill="#8DE2D6"/>
+    <line x1="16.5" y1="84" x2="241.5" y2="84" stroke="#153244" stroke-width="4"/>
+    <rect x="38" y="104" width="120" height="9" rx="4.5" fill="#153244" opacity=".2"/>
+    <rect x="38" y="124" width="170" height="9" rx="4.5" fill="#153244" opacity=".2"/>
+    <rect x="38" y="144" width="140" height="9" rx="4.5" fill="#153244" opacity=".2"/>
+    <rect x="210" y="57" width="22" height="22" rx="6" fill="#153244"/>
+    <line x1="216" y1="63" x2="226" y2="73" stroke="#FFCC00" stroke-width="4" stroke-linecap="round"/>
+    <line x1="226" y1="63" x2="216" y2="73" stroke="#FFCC00" stroke-width="4" stroke-linecap="round"/>
     <rect x="100" y="180" width="58" height="10" rx="5" fill="#153244"/>
     <rect x="76" y="190" width="106" height="8" rx="4" fill="#153244" opacity=".65"/>
-    <text x="129" y="222" text-anchor="middle" font-family="Archivo, sans-serif" font-size="15" font-weight="700" fill="#153244">Ventana</text>
+    <text x="129" y="222" text-anchor="middle" font-family="Archivo, sans-serif" font-size="15" font-weight="700" fill="#153244">Pantalla</text>
 
-    <!-- Hoja / actividad -->
-    <rect x="270" y="38" width="136" height="170" rx="10" fill="#FFFFFF" stroke="#153244" stroke-width="5"/>
-    <line x1="290" y1="73" x2="382" y2="73" stroke="#153244" stroke-width="4"/>
-    <line x1="290" y1="98" x2="368" y2="98" stroke="#153244" stroke-width="4"/>
-    <line x1="290" y1="123" x2="352" y2="123" stroke="#153244" stroke-width="4"/>
-    <line x1="329" y1="138" x2="372" y2="181" stroke="#D94B56" stroke-width="9" stroke-linecap="round"/>
-    <line x1="372" y1="138" x2="329" y2="181" stroke="#D94B56" stroke-width="9" stroke-linecap="round"/>
-    <text x="338" y="228" text-anchor="middle" font-family="Archivo, sans-serif" font-size="15" font-weight="700" fill="#153244">Actividad</text>
+    <!-- Hoja: actividad de marcar con una X -->
+    <rect x="262" y="34" width="146" height="176" rx="10" fill="#FFFFFF" stroke="#153244" stroke-width="5"/>
+    <text font-family="Archivo, sans-serif" font-size="11.5" font-weight="700" fill="#153244">
+      <tspan x="276" y="59">Marcá con una X lo</tspan>
+      <tspan x="276" y="74">que no corresponda.</tspan>
+    </text>
+    <line x1="276" y1="86" x2="394" y2="86" stroke="#153244" stroke-width="2" opacity=".25"/>
+
+    <line x1="276" y1="112" x2="356" y2="112" stroke="#153244" stroke-width="4" stroke-linecap="round"/>
+    <rect x="368" y="101" width="22" height="22" rx="4" fill="#FFFFFF" stroke="#153244" stroke-width="3"/>
+
+    <line x1="276" y1="146" x2="346" y2="146" stroke="#153244" stroke-width="4" stroke-linecap="round"/>
+    <rect x="368" y="135" width="22" height="22" rx="4" fill="#FFFFFF" stroke="#153244" stroke-width="3"/>
+    <line x1="373" y1="140" x2="385" y2="152" stroke="#D94B56" stroke-width="4" stroke-linecap="round"/>
+    <line x1="385" y1="140" x2="373" y2="152" stroke="#D94B56" stroke-width="4" stroke-linecap="round"/>
+
+    <line x1="276" y1="180" x2="352" y2="180" stroke="#153244" stroke-width="4" stroke-linecap="round"/>
+    <rect x="368" y="169" width="22" height="22" rx="4" fill="#FFFFFF" stroke="#153244" stroke-width="3"/>
+    <text x="335" y="232" text-anchor="middle" font-family="Archivo, sans-serif" font-size="15" font-weight="700" fill="#153244">Actividad</text>
   </svg>`
 };
 
@@ -221,10 +236,10 @@ const slides = [
     kicker:'Situación 5',
     visual:SVG.xcontexts,
     question:'La misma forma aparece en dos lugares. ¿Significa lo mismo?',
-    context:'En una aparece en una ventana digital y en la otra, sobre una actividad.',
-    options:['Sí, significa exactamente lo mismo','No. Puede significar cosas diferentes','No estoy seguro'],
-    correct:1,
-    feedback:'Una misma forma puede comunicar cosas diferentes según dónde aparece y el significado que las personas conocen o acuerdan para ese contexto.'
+    context:'En una aparece en la pantalla de una computadora y en la otra, en una actividad sobre papel.',
+    options:['No estoy seguro.','Sí, significa lo mismo.','No. La misma forma puede significar cosas diferentes según dónde aparece.'],
+    correct:2,
+    feedback:'La X no significa lo mismo en los dos casos: en la ventana indica cerrar y en la actividad sirve para marcar una opción.'
   }
 ];
 
