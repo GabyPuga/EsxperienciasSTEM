@@ -75,7 +75,7 @@
     width:19px; height:19px; border-radius:50%;
     background:var(--acento); color:#fff;
     display:flex; align-items:center; justify-content:center;
-    font-size:11px; font-weight:800; font-style:normal;
+    font-size:11.5px; font-weight:800; font-style:normal; line-height:1;
   }
   .pasos b{ font-weight:800; color:var(--ink); }
 
@@ -196,12 +196,12 @@
   <div class="card">
     <div>
       <h2 class="h">Del recurso al residuo</h2>
-      <p class="sub">Ordená las etapas según el recorrido que podría realizar un objeto de uso cotidiano.</p>
+      <p class="sub">Ordená las etapas según el recorrido que podría realizar un objeto de uso cotidiano. El número de cada tarjeta indica la posición que le estás dando en el recorrido.</p>
       <ul class="pasos">
-        <li><i>1</i>Arrastrá las tarjetas (o usá las flechas ← →)</li>
-        <li><i>2</i>Armá el recorrido de principio a fin</li>
-        <li><i>3</i>Tocá el botón <b>Comprobar</b></li>
-        <li><i>4</i>Si no está correcto, tocá <b>Volver a intentar</b></li>
+        <li><i aria-hidden="true">↔</i>Arrastrá las tarjetas (o usá las flechas ← →)</li>
+        <li><i aria-hidden="true">→</i>Armá el recorrido de principio a fin</li>
+        <li><i aria-hidden="true">✓</i>Tocá el botón <b>Comprobar</b></li>
+        <li><i aria-hidden="true">↻</i>Si no está correcto, tocá <b>Volver a intentar</b></li>
       </ul>
     </div>
 
